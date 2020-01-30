@@ -55,7 +55,7 @@ TBD after discussion with mentors
 
 ## 6.  Release Planning:
 
-TBF after discussion with mentors
+TBD after discussion with mentors
 1st sprint: knowledge spike
 
 ** **
