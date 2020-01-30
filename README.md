@@ -22,11 +22,11 @@ The vision of this project is an OpenStack service for data centers to implement
 
 ## 2. Users/Personas Of The Project:
 
--Data Center Managers: OpenStack users that are interested in hosting marketplace services to tenants that do not create security issues.
+- Data Center Managers: OpenStack users that are interested in hosting marketplace services to tenants that do not create security issues.
 
--Tenants with extra resources: Desire this application to reduce the cost of ownership for resources not always needed- may have different reasons or times/amounts etc. of resource to rent.
+- Tenants with extra resources: Desire this application to reduce the cost of ownership for resources not always needed- may have different reasons or times/amounts etc. of resource to rent.
 
--Tenants that desire extra resources: Desire this application to quickly scale (industry), or run applications when cost-effective (HPC).
+- Tenants that desire extra resources: Desire this application to quickly scale (industry), or run applications when cost-effective (HPC).
 
 Note that it is important to keep in mind DC tenants have some rationale for choosing a DC over cloud solutions, including security or specific resource needs.
 
@@ -34,9 +34,7 @@ Note that it is important to keep in mind DC tenants have some rationale for cho
 
 ## 3.   Scope and Features Of The Project:
 
-The Scope places a boundary around the solution by detailing the range of features and functions of the project. This section helps to clarify the solution scope and can explicitly state what will not be delivered as well.
-
-It should be specific enough that you can determine that e.g. feature A is in-scope, while feature B is out-of-scope.
+The scope of this project is to design an auction system and related features- it is not to implement the core principles of the bare metal trading system. Included in this scope are UI elements related to the auction system, delivering information about nodes, selecting relevant resources based on cost, etc. Not included in this scope are cybersecurity aspects of bare metal access, delivery of the bare metal resource, etc. 
 
 ** **
 
