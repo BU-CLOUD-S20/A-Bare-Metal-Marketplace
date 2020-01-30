@@ -1,15 +1,15 @@
 ## A-Bare-Metal-Marketplace Project Description
 
-#Context: 
-- Many hosts do not use cloud servers due to multiple constraints including security, privacy, or a need for specific hardware. Hosts often rent space in a computing center for their servers.
+### Context: 
+- Many hosts do not use cloud servers due to multiple constraints including security, privacy, or a need for specific hardware. Hosts often rent space in a data center for their servers.
 
-#Bare-Metal Marketplace: 
+### Bare-Metal Marketplace: 
 - In order to allow for scalability or temporarily increased resources and the opposite- productive use of unnecessary resources, a marketplace to buy and sell time on bare-metal nodes where a renter can use nodes for any purpose. 
 
-#Project Goal: 
+### Project Goal: 
 - Implementing an auction system in order to facilitate the fair economics of the bare-metal marketplace system.
 
-#Reach Goals:
+### Reach Goals:
 - Adding a system for filtering based on resource 
 - Autobuy systems for HPC and temporary scaling purposes based on various criteria including cost per resource
 - An enhanced UI
@@ -18,9 +18,7 @@
 
 ## 1.   Vision and Goals Of The Project:
 
-The vision section describes the final desired state of the project once the project is complete. It also specifies the key goals of the project. This section provides a context for decision-making. A shared vision among all team members can help ensuring that the solution meets the intended goals. A solid vision clarifies perspective and facilitates decision-making.
-
-The vision statement should be specific enough that you can look at a proposed solution and say either "yes, this meets the vision and goals", or "no, it does not".
+The vision of this project is an Openstack service for data centers to implement an auction system for already written Bare Metal Marketplace technology in order to facilitate the trade of computing resources among DC clients. This has applications primarially in industry and in research contexts.
 
 ## 2. Users/Personas Of The Project:
 
