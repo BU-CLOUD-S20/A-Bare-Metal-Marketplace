@@ -40,30 +40,28 @@ The scope of this project is to design an auction system and related features- i
 
 ## 4. Solution Concept
 
-This section provides a high-level outline of the solution.
-
 Global Architectural Structure Of the Project:
 
-This section provides a high-level architecture or a conceptual diagram showing the scope of the solution. If wireframes or visuals have already been done, this section could also be used to show how the intended solution will look. This section also provides a walkthrough explanation of the architectural structure.
+Overall, this project aims to be implemented in OpenStack with the use of Ironic for bare-metal provisioning.
 
- 
 
 Design Implications and Discussion:
 
-This section discusses the implications and reasons of the design decisions made during the global architecture design.
+The microservice itself neets to be light to run as to not consume unnecessary resources.
 
 ## 5. Acceptance criteria
 
-This section discusses the minimum acceptance criteria at the end of the project and stretch goals.
+TBD after discussion with mentors
 
 ## 6.  Release Planning:
 
-Release planning section describes how the project will deliver incremental sets of features and functions in a series of releases to completion. Identification of user stories associated with iterations that will ease/guide sprint planning sessions is encouraged. Higher level details for the first iteration is expected.
+TBF after discussion with mentors
+1st sprint: knowledge spike
 
 ** **
 
 ## General comments
 
-Remember that you can always add features at the end of the semester, but you can't go back in time and gain back time you spent on features that you couldn't complete.
+#TODO all
 
 ** **
