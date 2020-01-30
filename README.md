@@ -18,13 +18,17 @@
 
 ## 1.   Vision and Goals Of The Project:
 
-The vision of this project is an Openstack service for data centers to implement an auction system for already written Bare Metal Marketplace technology in order to facilitate the trade of computing resources among DC clients. This has applications primarially in industry and in research contexts.
+The vision of this project is an OpenStack service for data centers to implement an auction system for already written Bare Metal Marketplace technology in order to facilitate the rapid and secure trade of computing resources among DC tenants without physical interference. This tool has applications primarially in industry and in research contexts.
 
 ## 2. Users/Personas Of The Project:
 
-This section describes the principal user roles of the project together with the key characteristics of these roles. This information will inform the design and the user scenarios. A complete set of roles helps in ensuring that high-level requirements can be identified in the product backlog.
+-Data Center Managers: OpenStack users that are interested in hosting marketplace services to tenants that do not create security issues.
 
-Again, the description should be specific enough that you can determine whether user A, performing action B, is a member of the set of users the project is designed for.
+-Tenants with extra resources: Desire this application to reduce the cost of ownership for resources not always needed- may have different reasons or times/amounts etc. of resource to rent.
+
+-Tenants that desire extra resources: Desire this application to quickly scale (industry), or run applications when cost-effective (HPC).
+
+Note that it is important to keep in mind DC tenants have some rationale for choosing a DC over cloud solutions, including security or specific resource needs.
 
 ** **
 
