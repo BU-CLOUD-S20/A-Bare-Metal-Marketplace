@@ -76,10 +76,10 @@ Global Architectural Structure Of the Project:
 
 
 
-`![alt text](https://github.com/BU-CLOUD-S20/A-Bare-Metal-Marketplace/images/InitialOverview.png "BMM Hierarchy")`
+![Current System Overview](./images/InitialOverview.png)
 
 
-`![alt text](https://github.com/BU-CLOUD-S20/A-Bare-Metal-Marketplace/images/InitialBlowupView.png "BMM Internal Blowup")`
+![Current Internal Overview](./images/InitialBlowupView.png)
 
 Overall, this project aims to be implemented in OpenStack with the use of Ironic for bare-metal provisioning.
 
