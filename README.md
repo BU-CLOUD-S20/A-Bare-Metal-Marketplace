@@ -75,11 +75,11 @@ The scope of this project is to design an auction system and related features- i
 Global Architectural Structure Of the Project:
 
 
-Inline-style: 
-![alt text](https://github.com/BU-CLOUD-S20/A-Bare-Metal-Marketplace/images/InitialOverview.png "BMM Hierarchy")
 
-Inline-style: 
-![alt text](https://github.com/BU-CLOUD-S20/A-Bare-Metal-Marketplace/images/InitialBlowupView.png "BMM Internal Blowup"
+`![alt text](https://github.com/BU-CLOUD-S20/A-Bare-Metal-Marketplace/images/InitialOverview.png "BMM Hierarchy")`
+
+
+`![alt text](https://github.com/BU-CLOUD-S20/A-Bare-Metal-Marketplace/images/InitialBlowupView.png "BMM Internal Blowup")`
 
 Overall, this project aims to be implemented in OpenStack with the use of Ironic for bare-metal provisioning.
 
