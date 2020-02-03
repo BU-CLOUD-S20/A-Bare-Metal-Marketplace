@@ -100,14 +100,19 @@ Minimum Criteria would be a simple auction system that could serve as the BMM. S
 ## 6.  Release Planning:
 Week 3 goals:
 * Basic UI
+
 Week 5 goals:
 * Start of Auction system
+
 Week 7 goals:
 * Finishing Auction System
+
 Week 9 Goals:
 * OpenStack Implementation
+
 Week 11 Goals:
 * Autobuy and Content Filtering
+
 Week 13 Goals:
 * Analytics
 
