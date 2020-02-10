@@ -1,5 +1,8 @@
 ## A-Bare-Metal-Marketplace Project Description
 
+By Parker Van Roy, Ayush Upneja, Manan Monga, Camden Kronhaus, Haoxuan Jia
+Mentored by Sahil Tikale and Jonathan Chamberlain
+
 ### Context: 
 * Many hosts do not use cloud servers due to multiple constraints including security, privacy, or a need for specific hardware. Hosts often rent space in a data center for their servers.
 
@@ -106,22 +109,28 @@ Minimum Criteria would be a simple auction system that could serve as the BMM. S
 
 ## 6.  Release Planning:
 Week 3 goals:
-* Basic UI
+* Implement simplified auction system in Python + test cases
+* Create tests for base Ironic built in functionality
 
 Week 5 goals:
-* Start of Auction system
+* Implement Bare Metal transfers with simplified auction system
+* Create autobuy system structure
+* Set up databases
 
 Week 7 goals:
 * Finishing Auction System
+* Implement UI 
+* Connected Databases
 
 Week 9 Goals:
-* OpenStack Implementation
+* Full OpenStack Implementation
+* Clean code/Refactor
 
 Week 11 Goals:
-* Autobuy and Content Filtering
+* Autobuy and Content Filtering addition features
 
 Week 13 Goals:
-* Analytics
+* Analytics / UI additional features + Profile features
 
 
 ** **
