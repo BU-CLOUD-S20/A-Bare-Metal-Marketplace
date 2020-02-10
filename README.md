@@ -1,7 +1,8 @@
 ## A-Bare-Metal-Marketplace Project Description
 
-By Parker Van Roy, Ayush Upneja, Manan Monga, Camden Kronhaus, Haoxuan Jia
-Mentored by Sahil Tikale and Jonathan Chamberlain
+#### By Parker Van Roy, Ayush Upneja, Manan Monga, Camden Kronhaus, Haoxuan Jia
+
+#### Mentored by Sahil Tikale and Jonathan Chamberlain
 
 ### Context: 
 * Many hosts do not use cloud servers due to multiple constraints including security, privacy, or a need for specific hardware. Hosts often rent space in a data center for their servers.
@@ -16,6 +17,16 @@ Mentored by Sahil Tikale and Jonathan Chamberlain
 * Adding a system for filtering based on resource 
 * Autobuy systems for HPC and temporary scaling purposes based on various criteria including cost per resource
 * An enhanced UI
+
+### Relevant Resources:
+* [Project Github](https://github.com/BU-CLOUD-S21/A-Bare-Metal-Marketplace)
+* [Original FLOCX Marketplace](https://github.com/CCI-MOC/flocx-market)
+* [Forked FLOCX Marketplace](https://github.com/SahilTikale/flocx)
+* [OpenStack Intro Docs](https://docs.openstack.org/security-guide/introduction/introduction-to-openstack.html)
+* [Ironic Documentation](https://docs.openstack.org/ironic/latest/)
+* [Multi-Tenant Ironic](https://docs.openstack.org/ironic/pike/admin/multitenancy.html)
+* [MOC ESI](https://github.com/CCI-MOC/esi-leap)
+* [KeyStone](https://docs.openstack.org/keystone/latest/) 
 
 ** **
 
@@ -116,15 +127,18 @@ Week 5 goals:
 * Implement Bare Metal transfers with simplified auction system
 * Create autobuy system structure
 * Set up databases
+* Create base CLI
 
 Week 7 goals:
 * Finishing Auction System
 * Implement UI 
 * Connected Databases
+* Improve CLI for current functionality
 
 Week 9 Goals:
 * Full OpenStack Implementation
 * Clean code/Refactor
+* CLI/UI updates
 
 Week 11 Goals:
 * Autobuy and Content Filtering addition features
