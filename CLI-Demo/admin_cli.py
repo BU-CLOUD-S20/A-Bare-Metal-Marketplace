@@ -22,6 +22,7 @@ def list_nodes():
 def get_node():
     """This interactive CLI provides more specific information about a node."""
     cla.get_node()
+    
 @main.command()
 @click.argument('user')
 def get_user(user):
