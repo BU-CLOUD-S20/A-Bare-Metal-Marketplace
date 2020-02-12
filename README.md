@@ -1,6 +1,6 @@
 ## A-Bare-Metal-Marketplace Project Description
 
-#### By Parker Van Roy, Ayush Upneja, Manan Monga, Camden Kronhaus, Haoxuan Jia
+#### By Parker Van Roy, Ayush Upneja, Manan Monga, Haoxuan Jia
 
 #### Mentored by Sahil Tikale and Jonathan Chamberlain
 
@@ -27,6 +27,7 @@
 * [Multi-Tenant Ironic](https://docs.openstack.org/ironic/pike/admin/multitenancy.html)
 * [MOC ESI](https://github.com/CCI-MOC/esi-leap)
 * [KeyStone](https://docs.openstack.org/keystone/latest/) 
+* [Bolted](https://www.usenix.org/system/files/atc19-mosayyebzadeh.pdf)
 
 ** **
 
