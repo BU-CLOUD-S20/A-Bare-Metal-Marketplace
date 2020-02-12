@@ -91,10 +91,7 @@ Global Architectural Structure Of the Project:
 
 
 
-![Current System Overview](./images/InitialOverview.png)
-
-
-![Current Internal Overview](./images/InitialBlowupView.png)
+![Current System Overview](./images/overview-2.png)
 
 Overall, this project aims to be implemented in OpenStack with the use of Ironic for bare-metal provisioning.
 
