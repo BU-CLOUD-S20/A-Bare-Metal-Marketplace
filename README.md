@@ -59,6 +59,8 @@ BMM will be used by clients who sell resources, and clients who buy nodes on our
 * Buying End Users: (Buyers) Desire this application to obtain temporary additional resources from other tenants.
     * Type X- Desire this application to quickly scale (industry)
     * Type Y- Desire to run applications when cost-effective (HPC)
+    
+* Currency-Using Developers: (Devs) As currency systems are new to OpenStack, developing the system in a secure way that can be shared by multiple applications is a desired goal.
 
 Note that it is important to keep in mind DC tenants have some rationale for choosing a DC over cloud solutions, including security or specific resource needs.
 
