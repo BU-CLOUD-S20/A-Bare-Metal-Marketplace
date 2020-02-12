@@ -1,0 +1,19 @@
+{
+	"organizations": [
+		{
+		"name": "Boston University ECE",
+		"id": 55,
+		"credits" : 2000
+		},
+		{
+		"name": "Harvard ECE",
+		"id": 66,
+		"credits" : 1400
+		},		
+		{
+		"name": "Red Hat",
+		"id": 77,
+		"credits" : 20000
+		}
+	]
+}

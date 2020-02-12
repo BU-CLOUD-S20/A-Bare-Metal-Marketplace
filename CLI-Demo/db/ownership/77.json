@@ -1,0 +1,40 @@
+{
+	"nodes": [
+		{
+		"node": "A",
+		"status": "O",
+		"ownerID": 77,
+		},
+		{
+		"node": "B",
+		"status": "O",
+		"ownerID": 77,
+		"timeRemaining": "73:11",
+		"pricePerHour":	10
+		},
+		{
+		"node": "C",
+		"status": "U",
+		"ownerID": 66,
+		"renterID": 77,
+		"timeRemaining": "14:10",
+		"pricePerHour":	4
+		},
+		{
+		"node": "D",
+		"status": "U",
+		"ownerID": 55,
+		"renterID": 77,
+		"timeRemaining": "20:20",
+		"pricePerHour":	5
+		},
+		{
+		"node": "E",
+		"status": "U",
+		"ownerID": 55,
+		"renterID": 77,
+		"timeRemaining": "00:20",
+		"pricePerHour":	8
+		}
+	]
+}
