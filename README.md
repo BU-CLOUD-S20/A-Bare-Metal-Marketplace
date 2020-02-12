@@ -27,6 +27,7 @@
 * [Multi-Tenant Ironic](https://docs.openstack.org/ironic/pike/admin/multitenancy.html)
 * [MOC ESI](https://github.com/CCI-MOC/esi-leap)
 * [KeyStone](https://docs.openstack.org/keystone/latest/) 
+* [Bolted](https://www.usenix.org/system/files/atc19-mosayyebzadeh.pdf)
 
 ** **
 
