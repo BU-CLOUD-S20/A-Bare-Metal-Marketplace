@@ -1,3 +1,5 @@
+
+
 def get_node():
     print("")
     print ("Welcome to the Node Dashboard!")
@@ -10,7 +12,7 @@ def get_node():
     print("Node E, Status: In Use")
     while True:
         statement = input("> ")
-        
+
         if statement == "A" :
           print("Node: A ")
           print("Owner: You")
@@ -32,7 +34,7 @@ def get_node():
           print("Status: Rented by You and In Use")
           print("Price: Bought at 11$ / hour")
           print("Time: 2.25 hours remaining")
-          
+
         elif statement == "E" :
           print("Node: F ")
           print("Owner: MIT ECE")
