@@ -114,4 +114,16 @@ def rent_node():
   current_time = now.strftime("%H:%M:%S")
   print("A match has been found. You will be given access to Node A for {} starting at {}".format(timing,current_time))
 def sell_node():
-  print("blank")
+  print("Welcome to the interactive Bare Metal Selling Service!")
+  cpu = input("How many CPUs does your node have? ")
+  ram = input("How much RAM does it have (in GB) ")
+  timing = input("How long can you sell access to the node for? ")
+
+  print("You are selling a bare metal node with {} CPUs, {} RAM for {}.".format(cpu, ram, timing))
+  print("Running your specifications through our Auction Engine...")
+  time.sleep(3)
+  print("Mutliple matches have been identified. Our Auction Engine is currently determining the price.")
+  time.sleep(3)
+  now = datetime. now()
+  current_time = now.strftime("%H:%M:%S")
+  print("A match has been found! You will be renting your node out for {} starting at {}. The price determined was $400.".format(timing,current_time))
