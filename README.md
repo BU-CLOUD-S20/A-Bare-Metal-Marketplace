@@ -1,6 +1,6 @@
 ## A-Bare-Metal-Marketplace Project Description
 
-#### By Parker Van Roy, Ayush Upneja, Manan Monga, Camden Kronhaus, Haoxuan Jia
+#### By Parker Van Roy, Ayush Upneja, Manan Monga, Haoxuan Jia
 
 #### Mentored by Sahil Tikale and Jonathan Chamberlain
 
