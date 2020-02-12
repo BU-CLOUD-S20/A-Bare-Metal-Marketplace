@@ -1,6 +1,6 @@
 ## A-Bare-Metal-Marketplace Project Description
 
-#### By Parker Van Roy, Ayush Upneja, Manan Monga, Camden Kronhaus, Haoxuan Jia
+#### By Parker Van Roy, Ayush Upneja, Manan Monga, Haoxuan Jia
 
 #### Mentored by Sahil Tikale and Jonathan Chamberlain
 
@@ -27,6 +27,7 @@
 * [Multi-Tenant Ironic](https://docs.openstack.org/ironic/pike/admin/multitenancy.html)
 * [MOC ESI](https://github.com/CCI-MOC/esi-leap)
 * [KeyStone](https://docs.openstack.org/keystone/latest/) 
+* [Bolted](https://www.usenix.org/system/files/atc19-mosayyebzadeh.pdf)
 
 ** **
 
@@ -47,15 +48,19 @@ High-Level goals of BMM include:
 
 BMM will be used by clients who sell resources, and clients who buy nodes on our marketplace. 
 
-* Shared Data Center Managers: OpenStack users that are interested in hosting marketplace services to tenants that do not create security issues.
+* Shared Data Center Operators: (OPs) OpenStack users that are interested in hosting marketplace services to tenants that do not create security issues. In charge of currency system etc. but should not have inside information on tenant nodes, only trivial information on offered nodes.
 
-* Tenants with extra resources: Desire this application to reduce the cost of ownership for resources not always needed- may have different reasons or times/amounts etc. of resources to rent.
+* Hierarchy of Administrators: (Admins) Desire to control currency flow within hierarchy and assign roles/permissions to users below themselves in the hierarchy. Also have the option to modify projects and their connected servers, drive resources etc. May also be End Users.
+
+* Selling End Users: (Sellers) Desire this application to reduce the cost of ownership for resources not always needed- may have different reasons or times/amounts etc. of resources to rent.
     * Type A- Wants to maximize money overall for a period of resource being rented
     * Type B- Wants to maximize money per amount of time that resource is being rented
 
-* Tenants that desire extra resources:
-    * Desire this application to quickly scale (industry)
-    * Desire to run applications when cost-effective (HPC)
+* Buying End Users: (Buyers) Desire this application to obtain temporary additional resources from other tenants.
+    * Type X- Desire this application to quickly scale (industry)
+    * Type Y- Desire to run applications when cost-effective (HPC)
+    
+* Currency-Using Developers: (Devs) As currency systems are new to OpenStack, developing the system in a secure way that can be shared by multiple applications is a desired goal.
 
 Note that it is important to keep in mind DC tenants have some rationale for choosing a DC over cloud solutions, including security or specific resource needs.
 
@@ -90,10 +95,7 @@ Global Architectural Structure Of the Project:
 
 
 
-![Current System Overview](./images/InitialOverview.png)
-
-
-![Current Internal Overview](./images/InitialBlowupView.png)
+![Current System Overview](./images/overview-2.png)
 
 Overall, this project aims to be implemented in OpenStack with the use of Ironic for bare-metal provisioning.
 
