@@ -48,15 +48,17 @@ High-Level goals of BMM include:
 
 BMM will be used by clients who sell resources, and clients who buy nodes on our marketplace. 
 
-* Shared Data Center Managers: OpenStack users that are interested in hosting marketplace services to tenants that do not create security issues.
+* Shared Data Center Operators: (OPs) OpenStack users that are interested in hosting marketplace services to tenants that do not create security issues. In charge of currency system etc. but should not have inside information on tenant nodes, only trivial information on offered nodes.
 
-* Tenants with extra resources: Desire this application to reduce the cost of ownership for resources not always needed- may have different reasons or times/amounts etc. of resources to rent.
+* Hierarchy of Administrators: (Admins) Desire to control currency flow within hierarchy and assign roles/permissions to users below themselves in the hierarchy. May also be End Users.
+
+* Selling End Users: (Sellers) Desire this application to reduce the cost of ownership for resources not always needed- may have different reasons or times/amounts etc. of resources to rent.
     * Type A- Wants to maximize money overall for a period of resource being rented
     * Type B- Wants to maximize money per amount of time that resource is being rented
 
-* Tenants that desire extra resources:
-    * Desire this application to quickly scale (industry)
-    * Desire to run applications when cost-effective (HPC)
+* Buying End Users: (Buyers) Desire this application to obtain temporary additional resources from other tenants.
+    * Type X- Desire this application to quickly scale (industry)
+    * Type Y- Desire to run applications when cost-effective (HPC)
 
 Note that it is important to keep in mind DC tenants have some rationale for choosing a DC over cloud solutions, including security or specific resource needs.
 
