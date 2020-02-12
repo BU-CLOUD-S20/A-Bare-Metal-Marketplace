@@ -50,7 +50,7 @@ BMM will be used by clients who sell resources, and clients who buy nodes on our
 
 * Shared Data Center Operators: (OPs) OpenStack users that are interested in hosting marketplace services to tenants that do not create security issues. In charge of currency system etc. but should not have inside information on tenant nodes, only trivial information on offered nodes.
 
-* Hierarchy of Administrators: (Admins) Desire to control currency flow within hierarchy and assign roles/permissions to users below themselves in the hierarchy. May also be End Users.
+* Hierarchy of Administrators: (Admins) Desire to control currency flow within hierarchy and assign roles/permissions to users below themselves in the hierarchy. Also have the option to modify projects and their connected servers, drive resources etc. May also be End Users.
 
 * Selling End Users: (Sellers) Desire this application to reduce the cost of ownership for resources not always needed- may have different reasons or times/amounts etc. of resources to rent.
     * Type A- Wants to maximize money overall for a period of resource being rented
