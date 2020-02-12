@@ -1,5 +1,5 @@
-
-
+import time
+from datetime import datetime
 def get_node():
     print("")
     print ("Welcome to the Node Dashboard!")
@@ -74,7 +74,6 @@ def add_credits():
       break
     else:
       print("Please enter a valid Organization ID or type quit to exit.")
-
 def remove_credits():
   print("Please enter the ID of the Organization you would like to remove credits from.")
   print("Here is a list of organizations you can remove credits from.")
@@ -101,3 +100,18 @@ def remove_credits():
       break
     else:
       print("Please enter a valid Organization ID or type quit to exit.")
+def rent_node():
+  print("Welcome to the interactive Bare Metal Renting Service!")
+  cpu = input("How many CPUs do you need? ")
+  ram = input("How much RAM do you need (in GB) ")
+  timing = input("How long do you need access to the node for? ")
+  price = input("What is the max price you are willing to rent the node for? ")
+
+  print("You requested {} CPUs, {} GB of RAM, for {} at a {} max price.".format(cpu, ram, timing, price))
+  print("Running your specifications through our Auction Engine...")
+  time.sleep(5)
+  now = datetime. now()
+  current_time = now.strftime("%H:%M:%S")
+  print("A match has been found. You will be given access to Node A for {} starting at {}".format(timing,current_time))
+def sell_node():
+  print("blank")
