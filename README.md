@@ -104,7 +104,7 @@ Overall, this project aims to be implemented in OpenStack with the use of Ironic
 
 * Tenant & Renter UI
     * React/Bootstrap for reusable components and pre-written CSS
-* MongoDB- JSON like, popular and versatile
+* MySQL- Relational Database Management System
 * Credential System- Reusing credentials in OpenStack and Ironic
 * Nodes- Requiring BareMetal Hypervisor to be rented
 * OpenStack-The desired service to make use of Ironic
