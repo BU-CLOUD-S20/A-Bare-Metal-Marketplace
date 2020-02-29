@@ -1,0 +1,40 @@
+Provider Service
+As a buyer
+I want to add bid
+I want to delete bid
+I want to check existing bid
+I want to be able to bid on new systems before giving up current system
+
+As a seller
+I want to add offer
+I want to delete offer
+I want to check existing offer
+I want to be able check average price by entering my configuration
+
+
+Market Service
+As an operator
+I want to search offers based on bids
+I want to match earliest offer first to incoming bids
+I want to disable matched bids and offers
+I want seller to get most money out of offer i.e. match seller with highest bidder for his configuration
+I want to be able to see if any offers have been dormant for a while
+
+Account Service
+As an admin
+I want to create new users
+I want to delete existing users
+I want to be able to take or grant credits 
+#do we want the admin to be able to cut off buyers or sellers from putting in bids or offers if we find them malicious
+
+As a buyer and seller
+I want to check existing credits
+I want to be able to request for more credits
+I want to check existing contracts
+I want to be informed when a contract is made
+
+As an operator
+I want to check credits of buyer and seller
+I want to take credits from buyer and give it to seller
+I want to confirm contract after checking credits from buyer
+
