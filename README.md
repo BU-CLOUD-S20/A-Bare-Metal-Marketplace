@@ -105,14 +105,13 @@ Overall, this project aims to be implemented in OpenStack with the use of Ironic
 
 ### Design Implications and Discussion:
 
-* Tenant & Renter UI
-    * React/Bootstrap for reusable components and pre-written CSS
-* MySQL- Relational Database Management System
-* Credential System- Reusing credentials in OpenStack and Ironic
-* Nodes- Requiring BareMetal Hypervisor to be rented
-* OpenStack-The desired service to make use of Ironic
-* Ironic Plugins-Any necessary plugins such as the python agent
-* Paypal- An easy external system to implement for payment transfer
+* CLI/UIs- Terminal and Web Clients for interacting with the system
+* Multi-Tenant Ironic- Allows cross-organization bare metal node transfers
+* OpenStack- Red Hat Cloud Computing Environment
+* Keystone- Organization OpenStack based authentication
+* Service Databases- Databases for administration and matching that are operator-owned
+* Administration API- Connects to user control system to return administrative features
+* Matching API- Connects to auction system to serve matches
 
 The microservice itself needs to be light to run as to not consume unnecessary resources.
 
