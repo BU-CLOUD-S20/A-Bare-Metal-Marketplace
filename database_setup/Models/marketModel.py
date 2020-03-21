@@ -49,5 +49,6 @@ class CBORelation(Base):
     bid_pid = Column(BigInteger)
 
 
-Base.metadata.create_all(engine)
+def init():
+    Base.metadata.create_all(engine)
 
