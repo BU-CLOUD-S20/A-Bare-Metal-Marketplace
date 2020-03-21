@@ -28,9 +28,8 @@ def select():
 def select_by_pid():
     Session = sessionmaker(bind=engine)
     session = Session()
-    result = session.query(account.Users).filter(account.Users.pid == 1)
-    for row in result:
-        print(row.username, row.role, row.credit)
+    result = session.query(account.Users).filter(account.Users.pid == 1).one()
+    print(result)
 
 
 def ucrelation_insert():
@@ -65,4 +64,4 @@ def user_delete():
 
 
 if __name__ == "__main__":
-    select()
+    select_by_pid()
