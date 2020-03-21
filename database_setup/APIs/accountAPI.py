@@ -11,6 +11,9 @@ def user_insert(username, role, credit):
     session = Session()
     user = account.Users(username=username, role=role, credit=credit)
     session.add(user)
+    session.flush()
+    pid = user.pid
+    print(pid)
     session.commit()
 
 
@@ -19,7 +22,7 @@ def select():
     session = Session()
     result = session.query(account.Users).all()
     for row in result:
-        print(row.username, row.role, row.credit)
+        print(row)
 
 
 def select_by_pid():
@@ -59,3 +62,7 @@ def user_delete():
     session = Session()
     session.query(account.Users).filter(account.Users.pid == 1).delete()
     session.commit()
+
+
+if __name__ == "__main__":
+    select()
