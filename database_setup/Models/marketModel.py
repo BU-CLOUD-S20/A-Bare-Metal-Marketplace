@@ -63,6 +63,3 @@ class CBORelation(Base):
 
 def init():
     Base.metadata.create_all(engine)
-
-
-init()
