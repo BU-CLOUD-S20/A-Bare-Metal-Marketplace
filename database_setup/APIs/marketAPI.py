@@ -6,10 +6,10 @@ import Models.marketModel as Market
 engine = create_engine("mysql+pymysql://user:pwd@localhost/market")
 
 
-def bid_insert(quantity, start_time, end_time, duration, status, config_query, cost):
+def bid_insert(project_id, quantity, start_time, end_time, duration, status, config_query, cost):
     Session = sessionmaker(bind=engine)
     session = Session()
-    bid = Market.Bids(quantity=quantity, start_time=start_time, end_time=end_time, duration=duration, status=status,
+    bid = Market.Bids(project_id=project_id, quantity=quantity, start_time=start_time, end_time=end_time, duration=duration, status=status,
                       config_query=config_query, cost=cost)
     session.add(bid)
     session.flush()
@@ -18,10 +18,10 @@ def bid_insert(quantity, start_time, end_time, duration, status, config_query, c
     return pid
 
 
-def offer_insert(status, resource_id, resource_type, start_time, end_time, config, cost):
+def offer_insert(project_id, status, resource_id, resource_type, start_time, end_time, config, cost):
     Session = sessionmaker(bind=engine)
     session = Session()
-    offer = Market.Offers(status=status, resource_id=resource_id, resource_type=resource_type, start_time=start_time,
+    offer = Market.Offers(project_id=project_id, status=status, resource_id=resource_id, resource_type=resource_type, start_time=start_time,
                           end_time=end_time, config=config, cost=cost)
     session.add(offer)
     session.flush()
@@ -30,10 +30,10 @@ def offer_insert(status, resource_id, resource_type, start_time, end_time, confi
     return pid
 
 
-def contract_insert(status, start_time, end_time, cost):
+def contract_insert(status, start_time, end_time, cost, project_id):
     Session = sessionmaker(bind=engine)
     session = Session()
-    offer = Market.Offers(status=status, start_time=start_time, end_time=end_time, cost=cost)
+    offer = Market.Offers(status=status, start_time=start_time, end_time=end_time, cost=cost, project_id=project_id)
     session.add(offer)
     session.flush()
     pid = offer.pid
@@ -47,7 +47,7 @@ def relation_insert(contract_pid, offer_pid, bid_pid):
     relation = Market.CBORelation(contract_pid, offer_pid, bid_pid)
     session.add(relation)
     session.flush()
-    pid = relation.contract_pid
+    pid = relation.pid
     session.commit()
     return pid
 
@@ -76,7 +76,14 @@ def contract_select_by_pid(pid):
 def relation_select_by_pid(pid):
     Session = sessionmaker(bind=engine)
     session = Session()
-    result = session.query(Market.CBORelation).filter(Market.CBORelation.contract_pid == pid).one()
+    result = session.query(Market.CBORelation).filter(Market.CBORelation.pid == pid).one()
+    return result
+
+
+def relation_select_by_contract_pid(contract_pid):
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    result = session.query(Market.CBORelation).filter(Market.CBORelation.contract_pid == contract_pid).one()
     return result
 
 
@@ -118,7 +125,14 @@ def contract_delete_by_pid(pid):
 def relation_delete_by_pid(pid):
     Session = sessionmaker(bind=engine)
     session = Session()
-    session.query(Market.CBORelation).filter(Market.CBORelation.contract_pid == pid).delete()
+    session.query(Market.CBORelation).filter(Market.CBORelation.pid == pid).delete()
+    session.commit()
+
+
+def relation_delete_by_contract_pid(contract_pid):
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    session.query(Market.CBORelation).filter(Market.CBORelation.contract_pid == contract_pid).delete()
     session.commit()
 
 
