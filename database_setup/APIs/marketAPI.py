@@ -2,74 +2,69 @@ from sqlalchemy import create_engine, Column, Integer, String, Float, DateTime, 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import Models.marketModel as Market
+import data
 
 engine = create_engine("mysql+pymysql://user:pwd@localhost/market")
 
 
-def bid_insert(project_id, quantity, start_time, end_time, duration, status, config_query, cost):
+def bid_insert(values):
     Session = sessionmaker(bind=engine)
     session = Session()
-    bid = Market.Bids(project_id=project_id, quantity=quantity, start_time=start_time, end_time=end_time, duration=duration, status=status,
-                      config_query=config_query, cost=cost)
+    bid = Market.Bids(bid_id=values['bid_id'], project_id=values['project_id'], quantity=values['quantity'],
+                      start_time=values['start_time'], end_time=values['end_time'], duration=values['duration'],
+                      status=values['status'], config_query=values['config_query'], cost=values['cost'])
     session.add(bid)
-    session.flush()
-    pid = bid.pid
     session.commit()
-    return pid
 
 
-def offer_insert(project_id, status, resource_id, resource_type, start_time, end_time, config, cost):
+def offer_insert(values):
     Session = sessionmaker(bind=engine)
     session = Session()
-    offer = Market.Offers(project_id=project_id, status=status, resource_id=resource_id, resource_type=resource_type, start_time=start_time,
-                          end_time=end_time, config=config, cost=cost)
+    offer = Market.Offers(project_id=values['project_id'], status=values['status'], resource_id=values['resource_id'],
+                          offer_id=values['offer_id'],start_time=values['start_time'], end_time=values['end_time'],
+                          config=values['config'], cost=values['cost'])
     session.add(offer)
-    session.flush()
-    pid = offer.pid
     session.commit()
-    return pid
 
 
-def contract_insert(status, start_time, end_time, cost, project_id):
+def contract_insert(values):
     Session = sessionmaker(bind=engine)
     session = Session()
-    offer = Market.Offers(status=status, start_time=start_time, end_time=end_time, cost=cost, project_id=project_id)
+    offer = Market.Offers(contract_id=values['contract_id'], status=values['status'], start_time=values['start_time'],
+                          end_time=values['end_time'], cost=values['cost'], project_id=values['project_id'])
     session.add(offer)
-    session.flush()
-    pid = offer.pid
     session.commit()
-    return pid
 
 
-def relation_insert(contract_pid, offer_pid, bid_pid):
+def relation_insert(contract_id, offer_id, bid_id):
     Session = sessionmaker(bind=engine)
     session = Session()
-    relation = Market.CBORelation(contract_pid, offer_pid, bid_pid)
+    relation = Market.CBORelation(contract_id=contract_id, offer_id=offer_id, bid_id=bid_id)
     session.add(relation)
-    session.flush()
-    pid = relation.pid
     session.commit()
-    return pid
 
 
-def bid_select_by_pid(pid):
+def bid_select_by_id(bid_id):
     Session = sessionmaker(bind=engine)
     session = Session()
-    result = session.query(Market.Bids).filter(Market.Bids.pid == pid).one()
+    result = session.query(Market.Bids).filter(Market.Bids.bid_id == bid_id).one()
+    session.close()
     return result
 
 
-def offer_select_by_pid(pid):
+def offer_select_by_id(offer_id):
     Session = sessionmaker(bind=engine)
     session = Session()
-    result = session.query(Market.Offers).filter(Market.Offers.pid == pid).one()
+    result = session.query(Market.Offers).filter(Market.Offers.offer_id == offer_id).one()
+    session.close()
     return result
 
 
-def contract_select_by_pid(pid):
+def contract_select_by_id(contract_id):
     Session = sessionmaker(bind=engine)
     session = Session()
-    result = session.query(Market.Contracts).filter(Market.Contracts.pid == pid).one()
+    result = session.query(Market.Contracts).filter(Market.Contracts.contract_id == contract_id).one()
+    session.close()
     return result
 
 
@@ -77,13 +72,15 @@ def relation_select_by_pid(pid):
     Session = sessionmaker(bind=engine)
     session = Session()
     result = session.query(Market.CBORelation).filter(Market.CBORelation.pid == pid).one()
+    session.close()
     return result
 
 
-def relation_select_by_contract_pid(contract_pid):
+def relation_select_by_contract_id(contract_id):
     Session = sessionmaker(bind=engine)
     session = Session()
-    result = session.query(Market.CBORelation).filter(Market.CBORelation.contract_pid == contract_pid).one()
+    result = session.query(Market.CBORelation).filter(Market.CBORelation.contract_id == contract_id).one()
+    session.close()
     return result
 
 
@@ -91,6 +88,7 @@ def bid_select_all():
     Session = sessionmaker(bind=engine)
     session = Session()
     result = session.query(Market.Bids).all()
+    session.close()
     return result
 
 
@@ -98,27 +96,28 @@ def offer_select_all():
     Session = sessionmaker(bind=engine)
     session = Session()
     result = session.query(Market.Offers).all()
+    session.close()
     return result
 
 
-def bid_delete_by_pid(pid):
+def bid_delete_by_id(bid_id):
     Session = sessionmaker(bind=engine)
     session = Session()
-    session.query(Market.Bids).filter(Market.Bids.pid == pid).delete()
+    session.query(Market.Bids).filter(Market.Bids.bid_id == bid_id).delete()
     session.commit()
 
 
-def offer_delete_by_pid(pid):
+def offer_delete_by_id(offer_id):
     Session = sessionmaker(bind=engine)
     session = Session()
-    session.query(Market.Offers).filter(Market.Offers.pid == pid).delete()
+    session.query(Market.Offers).filter(Market.Offers.offer_id == offer_id).delete()
     session.commit()
 
 
-def contract_delete_by_pid(pid):
+def contract_delete_by_id(contract_id):
     Session = sessionmaker(bind=engine)
     session = Session()
-    session.query(Market.Contracts).filter(Market.Contracts.pid == pid).delete()
+    session.query(Market.Contracts).filter(Market.Contracts.contract_id == contract_id).delete()
     session.commit()
 
 
@@ -129,10 +128,10 @@ def relation_delete_by_pid(pid):
     session.commit()
 
 
-def relation_delete_by_contract_pid(contract_pid):
+def relation_delete_by_contract_id(contract_id):
     Session = sessionmaker(bind=engine)
     session = Session()
-    session.query(Market.CBORelation).filter(Market.CBORelation.contract_pid == contract_pid).delete()
+    session.query(Market.CBORelation).filter(Market.CBORelation.contract_id == contract_id).delete()
     session.commit()
 
 
@@ -155,3 +154,4 @@ def contract_update_by_pid(pid, contract):
     session = Session()
     session.query(Market.Bids).filter(Market.Bids.pid == pid).update(contract)
     session.commit()
+
