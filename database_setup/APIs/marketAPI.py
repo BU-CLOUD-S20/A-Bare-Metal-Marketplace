@@ -21,7 +21,7 @@ def offer_insert(values):
     Session = sessionmaker(bind=engine)
     session = Session()
     offer = Market.Offers(project_id=values['project_id'], status=values['status'], resource_id=values['resource_id'],
-                          offer_id=values['offer_id'],start_time=values['start_time'], end_time=values['end_time'],
+                          offer_id=values['offer_id'], start_time=values['start_time'], end_time=values['end_time'],
                           config=values['config'], cost=values['cost'])
     session.add(offer)
     session.commit()
@@ -30,9 +30,10 @@ def offer_insert(values):
 def contract_insert(values):
     Session = sessionmaker(bind=engine)
     session = Session()
-    offer = Market.Offers(contract_id=values['contract_id'], status=values['status'], start_time=values['start_time'],
-                          end_time=values['end_time'], cost=values['cost'], project_id=values['project_id'])
-    session.add(offer)
+    contract = Market.Contracts(contract_id=values['contract_id'], status=values['status'],
+                                start_time=values['start_time'], end_time=values['end_time'], cost=values['cost'],
+                                project_id=values['project_id'])
+    session.add(contract)
     session.commit()
 
 
@@ -135,23 +136,23 @@ def relation_delete_by_contract_id(contract_id):
     session.commit()
 
 
-def bid_update_by_pid(pid, bid):
+def bid_update_by_id(bid_id, bid):
     Session = sessionmaker(bind=engine)
     session = Session()
-    session.query(Market.Bids).filter(Market.Bids.pid == pid).update(bid)
+    session.query(Market.Bids).filter(Market.Bids.bid_id == bid_id).update(bid)
     session.commit()
 
 
-def offer_update_by_pid(pid, offer):
+def offer_update_by_id(offer_id, offer):
     Session = sessionmaker(bind=engine)
     session = Session()
-    session.query(Market.Bids).filter(Market.Bids.pid == pid).update(offer)
+    session.query(Market.Offers).filter(Market.Offers.offer_id == offer_id).update(offer)
     session.commit()
 
 
-def contract_update_by_pid(pid, contract):
+def contract_update_by_id(contract_id, contract):
     Session = sessionmaker(bind=engine)
     session = Session()
-    session.query(Market.Bids).filter(Market.Bids.pid == pid).update(contract)
+    session.query(Market.Contracts).filter(Market.Contracts.contract_id == contract_id).update(contract)
     session.commit()
 
