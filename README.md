@@ -4,6 +4,9 @@
 
 #### Mentored by Sahil Tikale and Jonathan Chamberlain
 
+Most Recent Presentation:
+https://docs.google.com/presentation/d/1ctKHpw6f-cWnQRyc4Fy7mRsUEGOcJaAn5l6lQ7XLHXQ/edit?usp=sharing
+
 ### Context: 
 * Many hosts do not use cloud servers due to multiple constraints including security, privacy, or a need for specific hardware. Hosts often rent space in a data center for their servers.
 
@@ -95,21 +98,20 @@ Global Architectural Structure Of the Project:
 
 
 
-![Current System Overview](./images/overview-2.png)
+![Current System Overview](./images/overview-3.png)
 
 Overall, this project aims to be implemented in OpenStack with the use of Ironic for bare-metal provisioning.
 
 
 ### Design Implications and Discussion:
 
-* Tenant & Renter UI
-    * React/Bootstrap for reusable components and pre-written CSS
-* MySQL- Relational Database Management System
-* Credential System- Reusing credentials in OpenStack and Ironic
-* Nodes- Requiring BareMetal Hypervisor to be rented
-* OpenStack-The desired service to make use of Ironic
-* Ironic Plugins-Any necessary plugins such as the python agent
-* Paypal- An easy external system to implement for payment transfer
+* CLI/UIs- Terminal and Web Clients for interacting with the system
+* Multi-Tenant Ironic- Allows cross-organization bare metal node transfers
+* OpenStack- Red Hat Cloud Computing Environment
+* Keystone- Organization OpenStack based authentication
+* Service Databases- Databases for administration and matching that are operator-owned
+* Administration API- Connects to user control system to return administrative features
+* Matching API- Connects to auction system to serve matches
 
 The microservice itself needs to be light to run as to not consume unnecessary resources.
 
