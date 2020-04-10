@@ -102,6 +102,14 @@ def offer_select_all():
     return result
 
 
+def contract_select_all():
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    result = session.query(Market.Contracts).all()
+    session.close()
+    return result
+
+
 def bid_delete_by_id(bid_id):
     Session = sessionmaker(bind=engine)
     session = Session()
