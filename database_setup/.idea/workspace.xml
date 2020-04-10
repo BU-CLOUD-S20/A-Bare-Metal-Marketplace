@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e7b4589f-0e69-45ce-9e48-5e4652b244f8" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/APIs/marketAPI.py" beforeDir="false" afterPath="$PROJECT_DIR$/APIs/marketAPI.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/marketModel.py" beforeDir="false" afterPath="$PROJECT_DIR$/Models/marketModel.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data.py" beforeDir="false" afterPath="$PROJECT_DIR$/data.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -12,22 +14,34 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/APIs/marketAPI.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="986">
-              <caret line="62" lean-forward="true" selection-start-line="62" selection-end-line="62" />
+            <state relative-caret-position="-1190">
+              <caret line="21" column="39" lean-forward="true" selection-start-line="21" selection-start-column="39" selection-end-line="21" selection-end-column="39" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test_db.py">
+        <entry file="file://$PROJECT_DIR$/data.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1156">
-              <caret line="68" selection-start-line="68" selection-end-line="68" />
+            <state relative-caret-position="642">
+              <caret line="102" column="260" selection-start-line="102" selection-start-column="260" selection-end-line="102" selection-end-column="260" />
               <folding>
                 <element signature="e#0#11#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Models/marketModel.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-415">
+              <caret line="10" column="26" lean-forward="true" selection-start-line="10" selection-start-column="26" selection-end-line="10" selection-end-column="26" />
+              <folding>
+                <element signature="e#0#102#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -38,18 +52,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="68">
               <caret line="4" column="18" selection-start-line="4" selection-start-column="18" selection-end-line="4" selection-end-column="18" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/data.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2193">
-              <caret line="129" lean-forward="true" selection-start-line="129" selection-end-line="129" />
-              <folding>
-                <element signature="e#0#11#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -76,13 +78,13 @@
         <option value="$PROJECT_DIR$/test_db.py" />
         <option value="$PROJECT_DIR$/Models/creditAccountModel.py" />
         <option value="$PROJECT_DIR$/APIs/accountAPI.py" />
-        <option value="$PROJECT_DIR$/APIs/marketAPI.py" />
         <option value="$PROJECT_DIR$/APIs/providerAPI.py" />
         <option value="$PROJECT_DIR$/APIs/renterAPI.py" />
-        <option value="$PROJECT_DIR$/Models/marketModel.py" />
         <option value="$PROJECT_DIR$/Models/accountModel.py" />
         <option value="$PROJECT_DIR$/Models/providerModel.py" />
         <option value="$PROJECT_DIR$/Models/renterModel.py" />
+        <option value="$PROJECT_DIR$/APIs/marketAPI.py" />
+        <option value="$PROJECT_DIR$/Models/marketModel.py" />
         <option value="$PROJECT_DIR$/data.py" />
       </list>
     </option>
@@ -99,7 +101,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -107,10 +108,21 @@
               <item name="database_setup" type="b2602c69:ProjectViewProjectNode" />
               <item name="database_setup" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="database_setup" type="b2602c69:ProjectViewProjectNode" />
+              <item name="database_setup" type="462c0819:PsiDirectoryNode" />
+              <item name="APIs" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="database_setup" type="b2602c69:ProjectViewProjectNode" />
+              <item name="database_setup" type="462c0819:PsiDirectoryNode" />
+              <item name="Models" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -134,7 +146,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.renterModel">
+  <component name="RunManager" selected="Python.marketModel">
     <configuration name="accountModel" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="database_setup" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -242,9 +254,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.marketModel" />
         <item itemvalue="Python.renterModel" />
         <item itemvalue="Python.providerModel" />
-        <item itemvalue="Python.marketModel" />
         <item itemvalue="Python.accountModel" />
         <item itemvalue="Python.data" />
       </list>
@@ -362,16 +374,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Models/marketModel.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
-          <folding>
-            <element signature="e#0#102#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Models/accountModel.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="663">
@@ -389,13 +391,6 @@
           <folding>
             <element signature="e#0#90#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/APIs/marketAPI.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="986">
-          <caret line="62" lean-forward="true" selection-start-line="62" selection-end-line="62" />
         </state>
       </provider>
     </entry>
@@ -436,13 +431,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Models/marketModel.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-415">
+          <caret line="10" column="26" lean-forward="true" selection-start-line="10" selection-start-column="26" selection-end-line="10" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#102#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/data.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2193">
-          <caret line="129" lean-forward="true" selection-start-line="129" selection-end-line="129" />
+        <state relative-caret-position="642">
+          <caret line="102" column="260" selection-start-line="102" selection-start-column="260" selection-end-line="102" selection-end-column="260" />
           <folding>
             <element signature="e#0#11#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/APIs/marketAPI.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1190">
+          <caret line="21" column="39" lean-forward="true" selection-start-line="21" selection-start-column="39" selection-end-line="21" selection-end-column="39" />
         </state>
       </provider>
     </entry>

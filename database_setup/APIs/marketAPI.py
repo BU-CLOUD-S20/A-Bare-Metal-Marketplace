@@ -11,8 +11,9 @@ def bid_insert(values):
     Session = sessionmaker(bind=engine)
     session = Session()
     bid = Market.Bids(bid_id=values['bid_id'], project_id=values['project_id'], quantity=values['quantity'],
-                      start_time=values['start_time'], end_time=values['end_time'], duration=values['duration'],
-                      status=values['status'], config_query=values['config_query'], cost=values['cost'])
+                      start_time=values['start_time'], end_time=values['end_time'], expire_time=values['expire_time'],
+                      duration=values['duration'], status=values['status'], config_query=values['config_query'],
+                      cost=values['cost'])
     session.add(bid)
     session.commit()
 
@@ -22,7 +23,7 @@ def offer_insert(values):
     session = Session()
     offer = Market.Offers(project_id=values['project_id'], status=values['status'], resource_id=values['resource_id'],
                           offer_id=values['offer_id'], start_time=values['start_time'], end_time=values['end_time'],
-                          config=values['config'], cost=values['cost'])
+                          expire_time=values['expire_time'], config=values['config'], cost=values['cost'])
     session.add(offer)
     session.commit()
 

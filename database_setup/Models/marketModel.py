@@ -15,6 +15,7 @@ class Bids(Base):
     quantity = Column(Integer, nullable=False)
     start_time = Column(DateTime(timezone=True), nullable=False)
     end_time = Column(DateTime(timezone=True), nullable=False)
+    expire_time = Column(DateTime(timezone=True), nullable=False)
     duration = Column(Integer, nullable=False)
     status = Column(String(16), nullable=False, default=statuses.AVAILABLE)
     # config_query = Column(String(200))
@@ -34,6 +35,7 @@ class Offers(Base):
     # resource_type = Column(String(100), nullable=False)
     start_time = Column(DateTime(timezone=True), nullable=False)
     end_time = Column(DateTime(timezone=True), nullable=False)
+    expire_time = Column(DateTime(timezone=True), nullable=False)
     config = Column(sqlalchemy_jsonfield.JSONField(
         enforce_string=True,
         enforce_unicode=False), nullable=False)
