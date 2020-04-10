@@ -36,7 +36,6 @@ class Engine:
         self.bids = bids
         self.offers = offers
 
-
     bids = Bid(123,456,700,5,1)
 
     def get_bid(self, bids):
@@ -76,9 +75,5 @@ class Engine:
 
 
 
-
-
-
-
-
-
+if  __name__ == "__main__":
+    x =  Engine.get_bid()
