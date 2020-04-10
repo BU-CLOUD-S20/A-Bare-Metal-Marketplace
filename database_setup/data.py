@@ -24,7 +24,15 @@ import statuses
 # if len(resource_ids) == 0:
 #     for i in range(0, 10):
 #         resource_ids.append(uuid.uuid4())
+
+# provider_ids = []
+# for i in range(0, 10):
+#     provider_ids.append(uuid.uuid4())
 #
+# renter_ids = []
+# for i in range(0, 10):
+#     renter_ids.append(uuid.uuid4())
+
 # ny = gettz('America/New_York')
 # time = datetime(2020, 3, 1, 10, 30, tzinfo=ny)
 #
@@ -39,15 +47,15 @@ import statuses
 # if len(end_times) == 0:
 #     for i in range(0, 10):
 #         end_times.append(time + timedelta(days=i))
-#
-#
+
+
 # config = {"memory_gb": 10240,
 # "cpu_arch": "x86_64",
 # "cpu_physical_count": 4,
 # "cpu_core_count": 16,
 # "cpu_ghz": 3
 # }
-#
+
 # bids = []
 # for i in range(0, 10):
 #     bids.append(dict(
@@ -60,8 +68,16 @@ import statuses
 #         status = statuses.AVAILABLE,
 #         config_query = config,
 #         cost = 11))
+
+# providers = []
+# renters = []
+# for i in range(0, 10):
+#     providers.append(dict(user_id=provider_ids[i], username="provider" + str(i), role="provider", credit=100))
+#     renters.append(dict(user_id=renter_ids[i], username="renter" + str(i), role="renter", credit=50))
 #
-# print(bids)
+#
+# print(providers)
+# print(renters)
 
 offer0 = {'offer_id': '0ee67a67-f8e2-4db0-be81-fa9579f3ebd0', 'project_id': 'ab23f5d5-9718-4c8e-a499-0a79baac6484', 'status': 'available', 'resource_id': '67d9726d-96f3-4088-8371-aeea62da6795', 'start_time': datetime(2020, 2, 29, 10, 30), 'end_time': datetime(2020, 3, 1, 10, 30), 'config': {'memory_gb': 10240, 'cpu_arch': 'x86_64', 'cpu_physical_count': 4, 'cpu_core_count': 16, 'cpu_ghz': 3}, 'cost': 10}
 offer1 = {'offer_id': '08d727a9-485a-4bf8-82e0-ee5f724e2020', 'project_id': '8057476a-1f6e-4749-9ebc-1989f7106c74', 'status': 'available', 'resource_id': '82ea2350-ff60-43f0-881f-3b7b9fdbd7c6', 'start_time': datetime(2020, 3, 1, 10, 30), 'end_time': datetime(2020, 3, 2, 10, 30), 'config': {'memory_gb': 10240, 'cpu_arch': 'x86_64', 'cpu_physical_count': 4, 'cpu_core_count': 16, 'cpu_ghz': 3}, 'cost': 10}
@@ -87,3 +103,27 @@ bid8 = {'bid_id': 'fcf1b70f-3236-41a5-bf65-be26e3ed8d56', 'project_id': '1857ca7
 bid9 = {'bid_id': '0165c7d6-4e3d-4165-9c93-d423275a76bf', 'project_id': '45ab4988-8a5f-47e1-b3d1-7d86e984025f', 'quantity': 1, 'start_time': datetime(2020, 3, 9, 10, 30), 'end_time': datetime(2020, 3, 10, 10, 30), 'duration': 16400, 'status': 'available', 'config_query': {'memory_gb': 10240, 'cpu_arch': 'x86_64', 'cpu_physical_count': 4, 'cpu_core_count': 16, 'cpu_ghz': 3}, 'cost': 11}
 
 update_bid0 = {'bid_id': '24ea1cc1-811f-437e-a748-b8a0f00cd401', 'project_id': 'ba0ee0fe-ee77-474e-8588-cf6a023c6c05', 'quantity': 2, 'start_time': datetime(2020, 2, 29, 10, 30), 'end_time': datetime(2020, 3, 1, 10, 30), 'duration': 16400, 'status': 'available', 'config_query': {'memory_gb': 10240, 'cpu_arch': 'x86_64', 'cpu_physical_count': 4, 'cpu_core_count': 16, 'cpu_ghz': 3}, 'cost': 11}
+
+
+provider0 = {'user_id': 'daf46548-eb35-4321-934d-36ed4e415d4b', 'username': 'provider0', 'role': 'provider', 'credit': 100}
+provider1 = {'user_id': 'dd589ecb-ffbc-4a9c-a8d6-9db9cd3d7872', 'username': 'provider1', 'role': 'provider', 'credit': 100}
+provider2 = {'user_id': 'afefd762-d4ff-430c-a350-09631c6bd30f', 'username': 'provider2', 'role': 'provider', 'credit': 100}
+provider3 = {'user_id': '64587413-55d1-4b69-8560-fc2671599951', 'username': 'provider3', 'role': 'provider', 'credit': 100}
+provider4 = {'user_id': 'dd711673-884c-46b2-8be6-ffc550ad0135', 'username': 'provider4', 'role': 'provider', 'credit': 100}
+provider5 = {'user_id': 'd568eae2-a4f4-463a-a6d2-66effcdfb191', 'username': 'provider5', 'role': 'provider', 'credit': 100}
+provider6 = {'user_id': '1ce58906-21e7-4f38-97d8-d9e7498fd070', 'username': 'provider6', 'role': 'provider', 'credit': 100}
+provider7 = {'user_id': '16c4ef48-cd53-49b5-8b5f-3e98337f3023', 'username': 'provider7', 'role': 'provider', 'credit': 100}
+provider8 = {'user_id': '2e13c3aa-711d-4bfe-a6aa-6dc8c37ae03d', 'username': 'provider8', 'role': 'provider', 'credit': 100}
+provider9 = {'user_id': '4419671a-95e8-4544-93e1-ec7784fe9f75', 'username': 'provider9', 'role': 'provider', 'credit': 100}
+
+
+renter0 = {'user_id': 'e7de4e71-163d-4627-934c-1b5db1348c0b', 'username': 'renter0', 'role': 'renter', 'credit': 50}
+renter1 = {'user_id': 'cb3f37fc-d713-4728-98e7-4a2aeb398fab', 'username': 'renter1', 'role': 'renter', 'credit': 50}
+renter2 = {'user_id': '4aaf82de-bc63-4867-9a23-9de257930d50', 'username': 'renter2', 'role': 'renter', 'credit': 50}
+renter3 = {'user_id': 'f5bf81da-7cc7-44df-8484-a6eb2fa2d7e3', 'username': 'renter3', 'role': 'renter', 'credit': 50}
+renter4 = {'user_id': 'eb69e81f-f203-4bd0-800d-6b20358428d3', 'username': 'renter4', 'role': 'renter', 'credit': 50}
+renter5 = {'user_id': '64f4aab5-656a-4f87-9cc2-16f33a62b501', 'username': 'renter5', 'role': 'renter', 'credit': 50}
+renter6 = {'user_id': '658c9564-a312-4ccc-afa2-e6f68c5975e2', 'username': 'renter6', 'role': 'renter', 'credit': 50}
+renter7 = {'user_id': '92b73f4a-2228-499f-a19d-f14b45cd067b', 'username': 'renter7', 'role': 'renter', 'credit': 50}
+renter8 = {'user_id': 'a7f88083-6b76-42cb-9b1c-3537d6f951c8', 'username': 'renter8', 'role': 'renter', 'credit': 50}
+renter9 = {'user_id': 'b4156637-6b8d-47e8-b632-1c6838d2d663', 'username': 'renter9', 'role': 'renter', 'credit': 50}

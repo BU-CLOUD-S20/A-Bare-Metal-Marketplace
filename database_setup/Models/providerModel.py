@@ -36,8 +36,8 @@ class UORelation(Base):
     __tablename__ = 'uo_relation'
 
     pid = Column(BigInteger, primary_key=True)
-    user_id = Column(String(64), ForeignKey("Users.user_id"))
-    offer_id = Column(String(64), ForeignKey("Offers.offer_id"))
+    user_id = Column(String(64), ForeignKey("users.user_id"))
+    offer_id = Column(String(64), ForeignKey("offers.offer_id"))
 
 
 class Contracts(Base):
@@ -55,8 +55,8 @@ class UCRelation(Base):
     __tablename__ = 'uc_relation'
 
     pid = Column(BigInteger, primary_key=True)
-    user_id = Column(String(64), ForeignKey("Users.user_id"))
-    contract_id = Column(String(64), ForeignKey("Contracts.contract_id"))
+    user_id = Column(String(64), ForeignKey("users.user_id"))
+    contract_id = Column(String(64), ForeignKey("contracts.contract_id"))
 
 
 def init():

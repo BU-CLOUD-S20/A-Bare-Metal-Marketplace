@@ -4,7 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import statuses
 
-engine = create_engine("mysql+pymysql://user:pwd@localhost/account")
+engine = create_engine("mysql+pymysql://user:pwd@localhost/renter")
 Base = declarative_base()
 
 
@@ -38,8 +38,8 @@ class UBRelation(Base):
     __tablename__ = 'ub_relation'
 
     pid = Column(BigInteger, primary_key=True)
-    user_id = Column(String(64), ForeignKey("Users.user_id"))
-    bid_id = Column(String(64), ForeignKey("Bids.bid_id"))
+    user_id = Column(String(64), ForeignKey("users.user_id"))
+    bid_id = Column(String(64), ForeignKey("bids.bid_id"))
 
 
 class Contracts(Base):
@@ -57,8 +57,8 @@ class UCRelation(Base):
     __tablename__ = 'uc_relation'
 
     pid = Column(BigInteger, primary_key=True)
-    user_id = Column(String(64), ForeignKey("Users.user_id"))
-    contract_id = Column(String(64), ForeignKey("Contracts.contract_id"))
+    user_id = Column(String(64), ForeignKey("users.user_id"))
+    contract_id = Column(String(64), ForeignKey("contracts.contract_id"))
 
 
 def init():
