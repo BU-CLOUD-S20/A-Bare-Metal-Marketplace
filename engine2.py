@@ -10,16 +10,22 @@ class Offer:
         self.requirements = [memory, cpu_arch, cpu_physical_count, cpu_core_count, cpu_ghz]
         self.cost = cost
 
+class Contract:
+    def __init__(self, Offer, Bid, cost, ID):
+        self.bidID = Bid.bidID
+        self.offerID = Offer.offerID
+        self.cost = cost
+        self.ID = ID
 
 if __name__ == "__main__":
     bid1 = Bid("bid1",10240,"x86_64", 4, 16, 3, 10, 5)
-    bid2 = Bid("bid2",10240,"x86_64", 4, 16, 3, 20, 6)
+    bid2 = Bid("bid2",10240,"x86_64", 4, 16, 3, 11, 6)
     bid3 = Bid("bid3",10240,"x86_64", 4, 16, 3, 15, 15)
     bid4 = Bid("bid4",10240,"x86_64", 4, 16, 3, 12, 2)
-    bid5 = Bid("bid5",10240,"x86_64", 4, 16, 3, 15, 10)
-    bid6 = Bid("bid6",10240,"x86_64", 4, 16, 3, 17, 4)
+    bid5 = Bid("bid5",10240,"x86_64", 4, 16, 3, 18, 10)
+    bid6 = Bid("bid6",10240,"x86_64", 4, 16, 3, 11, 4)
     bid7 = Bid("bid7",10240,"x86_64", 4, 16, 3, 19, 3)
-    bid8 = Bid("bid8",10240,"x86_64", 4, 16, 3, 12, 6)
+    bid8 = Bid("bid8",10240,"x86_64", 4, 16, 3, 19, 6)
     bid9 = Bid("bid9",10240,"x86_64", 4, 16, 3, 15, 9)
     bid10 = Bid("bid10",10240,"x86_64", 4, 16, 3, 17, 11)
     bid11 = Bid("bid11",10240,"x86_64", 4, 16, 3, 9, 13)
@@ -30,7 +36,7 @@ if __name__ == "__main__":
     offer2 = Offer("offer2",10240,"x86_64", 4, 16, 3, 2)
     offer3 = Offer("offer3",10240,"x86_64", 4, 16, 3, 4)
     offer4 = Offer("offer4",10240,"x86_64", 4, 16, 3, 5)
-    offer5 = Offer("offer5",10240,"x86_64", 4, 16, 3, 7)
+    offer5 = Offer("offer5",10240,"x86_64", 4, 16, 3, 10)
     offer6 = Offer("offer6",10240,"x86_64", 4, 16, 3, 20)
     offer7 = Offer("offer7",10240,"x86_64", 4, 16, 3, 1)
     offer8 = Offer("offer8",10240,"x86_64", 4, 16, 3, 6)
@@ -38,7 +44,8 @@ if __name__ == "__main__":
     offers = [offer1, offer2, offer3, offer4, offer5, offer6, offer7, offer8]
 
 
-
+    contracts = []
+    b = 0
     while(   (len(bids)) > 0  and (len(offers)) > 0 ):
         current = [1000000000000000,0]
         lastPrice = bids[0].cost
@@ -59,10 +66,20 @@ if __name__ == "__main__":
                 if (offers[j].cost > ExpensiveOffer):
                     ExpensiveOffer = offers[j].cost
                     OfferIndex = j
-        print(bestBid.bidID)
-        print(offers[OfferIndex].offerID)
-        print(ExpensiveOffer)
+        contract = Contract(offers[OfferIndex],bestBid,lastPrice,b)
+        b+=1
+        contracts.append(contract)
         bids.remove(bids[bestBidIndex])
-        offers.remove(offers[j])
+        offers.remove(offers[OfferIndex])
+        temp = len(contracts)-1
+    for a in range(len(contracts)):
+        print("Contract number ", end = '')
+        print(contracts[a].ID, end = '')
+        print(" matched up ", end = '')
+        print(contracts[a].bidID, end = '')
+        print(" with ", end = '')
+        print(contracts[a].offerID, end = '')
+        print(" at a price of ", end = '')
+        print(contracts[a].cost)
 
 
