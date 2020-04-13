@@ -114,6 +114,12 @@ Global Architectural Structure Of the Project:
 
 ![Current System Overview](./images/overview-3.png)
 
+Microservices and Communication Structure:
+
+
+
+![Microservice Structure](./images/microservices.png)
+
 Overall, this project aims to be implemented in OpenStack with the use of Ironic for bare-metal provisioning.
 
 
