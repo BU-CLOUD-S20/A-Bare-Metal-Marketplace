@@ -142,24 +142,32 @@ Week 3 goals:
 * Create tests for base Ironic built in functionality
 
 Week 5 goals:
-* Implement Bare Metal transfers with simplified auction system
-* Create autobuy system structure
-* Set up databases
-* Create base CLI
+* Learn about TDD, pytest, microservice
+* Design auction system structure
+* Create user stories for auction system
+* Set up database with SQLAlchemy
+
 
 Week 7 goals:
-* Finishing Auction System
-* Implement UI 
-* Connected Databases
-* Improve CLI for current functionality
+* Design micro service structure
+* Write database queries using SQLAlchemy
+* Implement Flask Rest APIs
+* Connect handler to APIs
+
 
 Week 9 Goals:
-* Full OpenStack Implementation
-* Clean code/Refactor
-* CLI/UI updates
+* Implement MVP auction engine
+* Start working on account service
+* Connect auction service and account service with API calls
+* Start working on server deployment
+
 
 Week 11 Goals:
-* Autobuy and Content Filtering addition features
+* Integrate provider service with Ironic (Node provisioning) and publish as OpenStack service on MOC
+* Implement CLI for POST/GET
+* Robust Auction Engine Optimization
+* Finish implementing account service
+
 
 Week 13 Goals:
 * Analytics / UI additional features + Profile features
