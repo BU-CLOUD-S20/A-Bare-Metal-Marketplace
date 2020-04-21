@@ -1,9 +1,12 @@
+import sys
 from sqlalchemy import create_engine, Column, Integer, String, Float, DateTime, BigInteger
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+sys.path.append("/home/stardust/A-Bare-Metal-Marketplace/database_setup")
+sys.path.append("/home/stardust/A-Bare-Metal-Marketplace/database_setup/Models")
 import Models.accountModel as Account
 
-engine = create_engine("mysql+pymysql://root:pwd@localhost/account")
+engine = create_engine("mysql+pymysql://marketplace:123456@localhost/account")
 
 
 def user_insert(values):

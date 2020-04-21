@@ -1,12 +1,13 @@
-from datetime import datetime
-
+import sys
 from sqlalchemy import create_engine, Column, Integer, String, Float, DateTime, BigInteger
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+sys.path.append("/home/stardust/A-Bare-Metal-Marketplace/database_setup")
+sys.path.append("/home/stardust/A-Bare-Metal-Marketplace/database_setup/Models")
 import Models.marketModel as Market
 import data
 
-engine = create_engine("mysql+pymysql://remote:123456@206.189.232.188/market")
+engine = create_engine("mysql+pymysql://marketplace:123456@localhost/market")
 
 
 def bid_insert(values):
@@ -100,14 +101,6 @@ def offer_select_all():
     Session = sessionmaker(bind=engine)
     session = Session()
     result = session.query(Market.Offers).all()
-    session.close()
-    return result
-
-
-def contract_select_all():
-    Session = sessionmaker(bind=engine)
-    session = Session()
-    result = session.query(Market.Contracts).all()
     session.close()
     return result
 
