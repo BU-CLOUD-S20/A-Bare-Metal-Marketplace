@@ -1,6 +1,5 @@
 import uuid
 from datetime import datetime, timedelta
-from dateutil.tz import gettz
 import Models.marketModel as Market
 import statuses
 

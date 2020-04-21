@@ -1,9 +1,12 @@
+import sys
 import sqlalchemy_jsonfield
 from sqlalchemy import create_engine, Column, Integer, String, Float, DateTime, BigInteger, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
+sys.path.append("/home/stardust/A-Bare-Metal-Marketplace/database_setup")
 import statuses
 
-engine = create_engine("mysql+pymysql://user:pwd@localhost/provider")
+
+engine = create_engine("mysql+pymysql://marketplace:123456@localhost/provider")
 Base = declarative_base()
 
 
@@ -62,3 +65,6 @@ class UCRelation(Base):
 def init():
     Base.metadata.create_all(engine)
 
+
+if __name__ == "__main__":
+    init()

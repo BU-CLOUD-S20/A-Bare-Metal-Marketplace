@@ -1,9 +1,12 @@
+import sys
 from sqlalchemy import create_engine, Column, Integer, String, Float, DateTime, BigInteger, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 import sqlalchemy_jsonfield
+sys.path.append("/home/stardust/A-Bare-Metal-Marketplace/database_setup")
 import statuses
 
-engine = create_engine("mysql+pymysql://user:pwd@localhost/market")
+
+engine = create_engine("mysql+pymysql://marketplace:123456@localhost/market")
 Base = declarative_base()
 
 
@@ -65,3 +68,6 @@ class CBORelation(Base):
 def init():
     Base.metadata.create_all(engine)
 
+
+if __name__ == "__main__":
+    init()

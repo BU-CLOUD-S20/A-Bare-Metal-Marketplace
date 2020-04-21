@@ -1,3 +1,7 @@
+import sys
+sys.path.append("/home/stardust/A-Bare-Metal-Marketplace/database_setup")
+sys.path.append("/home/stardust/A-Bare-Metal-Marketplace/database_setup/APIs")
+sys.path.append("/home/stardust/A-Bare0Metal-Marketplace/database_setup/Models")
 import data
 import APIs.marketAPI as marketAPI
 import Models.marketModel as Market
