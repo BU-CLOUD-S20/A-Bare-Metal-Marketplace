@@ -1,10 +1,12 @@
+from datetime import datetime
+
 from sqlalchemy import create_engine, Column, Integer, String, Float, DateTime, BigInteger
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import Models.marketModel as Market
 import data
 
-engine = create_engine("mysql+pymysql://user:pwd@localhost/market")
+engine = create_engine("mysql+pymysql://remote:123456@206.189.232.188/market")
 
 
 def bid_insert(values):
@@ -165,3 +167,7 @@ def contract_update_by_id(contract_id, contract):
     session.query(Market.Contracts).filter(Market.Contracts.contract_id == contract_id).update(contract)
     session.commit()
 
+
+bids = bid_select_all()
+print(bids)
+# bid_insert({'bid_id': '24ea1cc1-811f-437e-a748-b8a0f00cd401', 'project_id': 'ba0ee0fe-ee77-474e-8588-cf6a023c6c05', 'quantity': 1, 'start_time': datetime(2020, 2, 29, 10, 30), 'end_time': datetime(2020, 3, 1, 10, 30), 'expire_time': datetime(2020, 3, 10, 10, 30), 'duration': 16400, 'status': 'available', 'config_query': {'memory_gb': 10240, 'cpu_arch': 'x86_64', 'cpu_physical_count': 4, 'cpu_core_count': 16, 'cpu_ghz': 3}, 'cost': 11})

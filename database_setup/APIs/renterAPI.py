@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 import Models.renterModel as Renter
 import data
 
-engine = create_engine("mysql+pymysql://user:pwd@localhost/market")
+engine = create_engine("mysql+pymysql://user:pwd@localhost/renter")
 
 
 def user_insert(values):

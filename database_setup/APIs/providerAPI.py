@@ -4,7 +4,7 @@ from sqlalchemy.orm import sessionmaker
 import Models.providerModel as Provider
 import data
 
-engine = create_engine("mysql+pymysql://user:pwd@localhost/market")
+engine = create_engine("mysql+pymysql://user:pwd@localhost/provider")
 
 
 def user_insert(values):
