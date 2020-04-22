@@ -31,5 +31,40 @@ def credit_transfer(renter, provider, contract):
     return renter, provider
 
 
-def transaction():
-    return True
+def transaction(renters, providers, contracts):
+    size = len(contracts)
+    invalid_contracts = []
+    result_renters = []
+    result_providers = []
+    result_contracts = []
+
+    for i in range(size):
+        renter = renters[i]
+        provider = providers[i]
+        contract = contracts[i]
+        if is_renter_valid(renter, contract):
+            new_renter, new_provider = credit_transfer(renter, provider, contract)
+            result_renters.append(new_renter)
+            result_providers.append(new_provider)
+            result_contracts.append(contract)
+        else:
+            invalid_contracts.append(contract)
+
+    return result_renters, result_providers, result_contracts, invalid_contracts
+
+
+if __name__ == "__main__":
+    renter0 = Renter(0, 10)
+    renter1 = Renter(1, 20)
+    provider0 = Provider(0, 5)
+    provider1 = Provider(1, 30)
+    contract0 = Contract(0, renter0, provider0, 15)
+    contract1 = Contract(1, renter1, provider1, 10)
+    renters = [renter0, renter1]
+    providers = [provider0, provider1]
+    contracts = [contract0, contract1]
+    r, p, c, ic = transaction(renters, providers, contracts)
+    print(r[0].credit)
+    print(p[0].credit)
+    print(c[0].cost)
+    print(ic[0].cost)
