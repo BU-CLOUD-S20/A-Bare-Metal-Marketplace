@@ -1,3 +1,5 @@
+import database_setup.APIs.accountAPI as AccountAPI
+
 class Provider:
     def __init__(self, id, credit):
         self.id = id
@@ -51,6 +53,24 @@ def transaction(renters, providers, contracts):
             invalid_contracts.append(contract)
 
     return result_renters, result_providers, result_contracts, invalid_contracts
+
+
+def get_data():
+    renters = []
+    providers = []
+    contracts = []
+    relations = AccountAPI.relation_select_all()
+    for relation in relations:
+        p = AccountAPI.user_select_by_id(relation.provider_id)
+        r = AccountAPI.user_select_by_id(relation.renter_id)
+        c = AccountAPI.contract_select_by_id(relation.contract_id)
+        renter = Renter(r.user_id, r.credit)
+        provider = Provider(p.user_id, p.credit)
+        contract = Contract(c.contract_id, renter, provider, c.cost)
+        renters.append(renter)
+        providers.append(provider)
+        contracts.append(contract)
+    return renters, providers, contracts
 
 
 if __name__ == "__main__":
