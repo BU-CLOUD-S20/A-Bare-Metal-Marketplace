@@ -124,28 +124,6 @@
               <item name="A-Bare-Metal-Marketplace" type="b2602c69:ProjectViewProjectNode" />
               <item name="A-Bare-Metal-Marketplace" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="A-Bare-Metal-Marketplace" type="b2602c69:ProjectViewProjectNode" />
-              <item name="A-Bare-Metal-Marketplace" type="462c0819:PsiDirectoryNode" />
-              <item name="Account" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="A-Bare-Metal-Marketplace" type="b2602c69:ProjectViewProjectNode" />
-              <item name="A-Bare-Metal-Marketplace" type="462c0819:PsiDirectoryNode" />
-              <item name="database_setup" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="A-Bare-Metal-Marketplace" type="b2602c69:ProjectViewProjectNode" />
-              <item name="A-Bare-Metal-Marketplace" type="462c0819:PsiDirectoryNode" />
-              <item name="database_setup" type="462c0819:PsiDirectoryNode" />
-              <item name="APIs" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="A-Bare-Metal-Marketplace" type="b2602c69:ProjectViewProjectNode" />
-              <item name="A-Bare-Metal-Marketplace" type="462c0819:PsiDirectoryNode" />
-              <item name="database_setup" type="462c0819:PsiDirectoryNode" />
-              <item name="Models" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -232,7 +210,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15333775" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
