@@ -6,6 +6,7 @@ sys.path.append("/home/stardust/A-Bare-Metal-Marketplace/database_setup")
 sys.path.append("/home/stardust/A-Bare-Metal-Marketplace/database_setup/Models")
 import Models.marketModel as Market
 import data
+import statuses
 
 engine = create_engine("mysql+pymysql://marketplace:123456@localhost/market")
 
@@ -105,6 +106,22 @@ def offer_select_all():
     return result
 
 
+def bid_select_all_available():
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    result = session.query(Market.Bids).filter(Market.Bids.status == statuses.AVAILABLE).all()
+    session.close()
+    return result
+
+
+def offer_select_all_available():
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    result = session.query(Market.Offers).filter(Market.Offers.status == statuses.AVAILABLE).all()
+    session.close()
+    return result
+
+
 def bid_delete_by_id(bid_id):
     Session = sessionmaker(bind=engine)
     session = Session()
@@ -158,6 +175,20 @@ def contract_update_by_id(contract_id, contract):
     Session = sessionmaker(bind=engine)
     session = Session()
     session.query(Market.Contracts).filter(Market.Contracts.contract_id == contract_id).update(contract)
+    session.commit()
+
+
+def bid_update_status_by_id(bid_id, status):
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    session.query(Market.Bids).filter(Market.Bids.bid_id == bid_id).update({"status": status})
+    session.commit()
+
+
+def offer_update_status_by_id(offer_id, status):
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    session.query(Market.Offers).filter(Market.Offers.offer_id == offer_id).update({"status": status})
     session.commit()
 
 

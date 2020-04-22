@@ -34,8 +34,9 @@ class UCRelation(Base):
     __tablename__ = 'uc_relation'
 
     pid = Column(BigInteger, primary_key=True)
-    user_id = Column(String(64), ForeignKey("users.user_id"))
     contract_id = Column(String(64), ForeignKey("contracts.contract_id"))
+    provider_id = Column(String(64), ForeignKey("users.user_id"))
+    renter_id = Column(String(64), ForeignKey("users.user_id"))
 
 
 def init():

@@ -59,10 +59,10 @@ def relation_select_by_pid(pid):
     return result
 
 
-def relation_select_by_user_id(user_id):
+def relation_select_by_contract_id(contract_id):
     Session = sessionmaker(bind=engine)
     session = Session()
-    result = session.query(Account.UCRelation).filter(Account.UCRelation.user_id == user_id).one()
+    result = session.query(Account.UCRelation).filter(Account.UCRelation.contract_id == contract_id).one()
     session.close()
     return result
 
@@ -105,10 +105,10 @@ def contract_delete_by_id(contract_id):
     session.commit()
 
 
-def relation_delete_by_user_id(user_id):
+def relation_delete_by_contract_id(contract_id):
     Session = sessionmaker(bind=engine)
     session = Session()
-    session.query(Account.UCRelation).filter(Account.UCRelation.user_id == user_id).delete()
+    session.query(Account.UCRelation).filter(Account.UCRelation.contract_id == contract_id).delete()
     session.commit()
 
 
@@ -126,10 +126,10 @@ def contract_update_by_id(contract_id, contract):
     session.commit()
 
 
-def relation_update_by_id(user_id, relation):
+def relation_update_by_id(contract_id, relation):
     Session = sessionmaker(bind=engine)
     session = Session()
-    session.query(Account.UCRelation).filter(Account.UCRelation.user_id == user_id).update(relation)
+    session.query(Account.UCRelation).filter(Account.UCRelation.contract_id == contract_id).update(relation)
     session.commit()
 
 
