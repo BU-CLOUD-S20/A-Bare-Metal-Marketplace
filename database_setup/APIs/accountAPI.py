@@ -4,7 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 sys.path.append("/home/stardust/A-Bare-Metal-Marketplace/database_setup")
 sys.path.append("/home/stardust/A-Bare-Metal-Marketplace/database_setup/Models")
-import Models.accountModel as Account
+import database_setup.Models.accountModel as Account
 
 engine = create_engine("mysql+pymysql://marketplace:123456@localhost/account")
 

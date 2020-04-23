@@ -74,17 +74,18 @@ def get_data():
 
 
 if __name__ == "__main__":
-    renter0 = Renter(0, 10)
-    renter1 = Renter(1, 20)
-    provider0 = Provider(0, 5)
-    provider1 = Provider(1, 30)
-    contract0 = Contract(0, renter0, provider0, 15)
-    contract1 = Contract(1, renter1, provider1, 10)
-    renters = [renter0, renter1]
-    providers = [provider0, provider1]
-    contracts = [contract0, contract1]
+    # renter0 = Renter(0, 10)
+    # renter1 = Renter(1, 20)
+    # provider0 = Provider(0, 5)
+    # provider1 = Provider(1, 30)
+    # contract0 = Contract(0, renter0, provider0, 15)
+    # contract1 = Contract(1, renter1, provider1, 10)
+    # renters = [renter0, renter1]
+    # providers = [provider0, provider1]
+    # contracts = [contract0, contract1]
+    renters, providers, contracts = get_data()
     r, p, c, ic = transaction(renters, providers, contracts)
-    print(r[0].credit)
-    print(p[0].credit)
-    print(c[0].cost)
-    print(ic[0].cost)
+    print(r[0].id)
+    print(p[0].id)
+    print(c[0].id)
+    print(ic[0].id)
