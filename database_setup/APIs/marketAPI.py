@@ -8,7 +8,7 @@ import Models.marketModel as Market
 import data
 import statuses
 
-engine = create_engine("mysql+pymysql://marketplace:123456@localhost/market")
+engine = create_engine("mysql+pymysql://remote:123456@206.189.232.188/market"
 
 
 def bid_insert(values):
