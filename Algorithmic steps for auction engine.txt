@@ -1,0 +1,16 @@
+Algorithmic steps for auction engine
+
+1. Import bids
+2. Import offers
+ 
+3. Select the bids with lowest expiry time and match with bids that have similar physical requirements
+4. Eliminate the ones that don't have overlap rental times, keep the ones which overlap
+5. Run the second price auction selector, select the highest bid with its actual price as high_price and price of (second highest bid+0.01) as second_price
+
+6. Select all offers which have offer time as part of the rental time of the selected bid. 
+7. Eliminate all of the ones more expensive than the high_price
+8. Match it with the most expensive one that comes under high_price for price of offer
+9. If the most expensive one comes under the second_price, match it for second_price
+10. Create a contract and if the entire bid time was not fulfilled, create another bid for the remaining time
+
+Rinse and repeat till all bids or all offers have expired. 

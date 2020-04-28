@@ -11,13 +11,13 @@ current_time = now.strftime("%Y%m%d%H%M")
 
 
 class Bid:
-    def __init__(self, id1, memory, cpu_arch, cpu_physical_count, cpu_core_count, cpu_ghz, cost, start_time, end_time):
+    def __init__(self, id1, memory, cpu_arch, cpu_physical_count, cpu_core_count, cpu_ghz, cost, start_time, end_time, expiry_time):
         self.bidID = id1
         self.requirements = [memory, cpu_arch, cpu_physical_count, cpu_core_count, cpu_ghz]
         self.cost = cost
         self.start_time = int(start_time.strftime("%Y%m%d%H%M"))
         self.end_time = int(end_time.strftime("%Y%m%d%H%M"))
-        self.expiry = self.start_time - int(current_time)
+        self.expiry = expiry_time - int(current_time)
 
 
 class Offer:
@@ -119,8 +119,8 @@ if __name__ == "__main__":
                     bestBidIndex = i
         for j in range(len(offers)):
             ExpensiveOffer = 0
-            if ((offers[j].requirements == bestBid.requirements) and (offers[j].cost <= price)):
-                if (offers[j].cost > ExpensiveOffer):
+            if (offers[j].requirements == bestBid.requirements) and (offers[j].cost <= price):
+                if offers[j].cost > ExpensiveOffer:
                     ExpensiveOffer = offers[j].cost
                     OfferIndex = j
         print(bestBid.bidID, end=" ")
