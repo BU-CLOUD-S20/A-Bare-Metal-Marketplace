@@ -125,8 +125,7 @@ while ((len(bids)) > 0 and (len(offers)) > 0):
                 current = [bids[i].expiry, i]
         for i in range(len(bids)):
             if (bids[i].requirements == bids[current[1]].requirements):
-                if bids[i.start_time] > bids[current[1].start_time and bids[i.start_time < bids[current[1].end_time]]]:
-                    if bids[i].cost > price:
+                if bids[i].cost > price:
                         lastPrice = price
                         price = bids[i].cost
                         bestBid = bids[i]
