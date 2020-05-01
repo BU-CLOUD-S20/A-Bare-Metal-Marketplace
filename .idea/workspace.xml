@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e6cbe51e-ec42-4556-9e1b-ab5c61a61fbe" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/Auction.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Engine.py" beforeDir="false" afterPath="$PROJECT_DIR$/Engine.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,11 +29,10 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$USER_HOME$/Desktop/hw10/hw10_helper.py" />
   </component>
-  <component name="RunManager" selected="Python.Engine">
-    <configuration name="Engine" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RunManager" selected="Python.Auction">
+    <configuration name="Auction" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="A-Bare-Metal-Marketplace" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -41,6 +42,27 @@
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Auction.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Engine" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="A-Bare-Metal-Marketplace" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\Manan\PycharmProjects\untitled\venv\Scripts\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Engine.py" />
@@ -75,6 +97,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.Auction" />
         <item itemvalue="Python.Engine" />
         <item itemvalue="Python.marketAPI" />
       </list>
@@ -94,29 +117,47 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
+    <state x="373" y="0" key="#Engine" timestamp="1588098031649">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="373" y="0" key="#Engine/0.0.1280.680/-1280.0.1280.984@0.0.1280.680" timestamp="1588098031649" />
     <state x="421" y="97" key="FileChooserDialogImpl" timestamp="1587951904002">
       <screen x="0" y="0" width="1280" height="680" />
     </state>
     <state x="421" y="97" key="FileChooserDialogImpl/0.0.1280.680/-1280.0.1280.984@0.0.1280.680" timestamp="1587951904002" />
-    <state width="1003" height="195" key="GridCell.Tab.0.bottom" timestamp="1587664901551">
-      <screen x="-1280" y="-121" width="1024" height="779" />
+    <state width="1259" height="194" key="GridCell.Tab.0.bottom" timestamp="1588314335446">
+      <screen x="-1280" y="0" width="1280" height="984" />
     </state>
     <state width="1003" height="195" key="GridCell.Tab.0.bottom/0.0.1280.680/-1280.-121.1024.779@-1280.-121.1024.779" timestamp="1587664901551" />
-    <state width="1003" height="195" key="GridCell.Tab.0.center" timestamp="1587664901551">
-      <screen x="-1280" y="-121" width="1024" height="779" />
+    <state width="1259" height="194" key="GridCell.Tab.0.bottom/0.0.1280.680/-1280.0.1280.984@-1280.0.1280.984" timestamp="1588314335446" />
+    <state width="1259" height="118" key="GridCell.Tab.0.bottom/0.0.1280.680/-1280.0.1280.984@0.0.1280.680" timestamp="1588184737458" />
+    <state width="1259" height="194" key="GridCell.Tab.0.center" timestamp="1588314335446">
+      <screen x="-1280" y="0" width="1280" height="984" />
     </state>
     <state width="1003" height="195" key="GridCell.Tab.0.center/0.0.1280.680/-1280.-121.1024.779@-1280.-121.1024.779" timestamp="1587664901551" />
-    <state width="1003" height="195" key="GridCell.Tab.0.left" timestamp="1587664901551">
-      <screen x="-1280" y="-121" width="1024" height="779" />
+    <state width="1259" height="194" key="GridCell.Tab.0.center/0.0.1280.680/-1280.0.1280.984@-1280.0.1280.984" timestamp="1588314335446" />
+    <state width="1259" height="118" key="GridCell.Tab.0.center/0.0.1280.680/-1280.0.1280.984@0.0.1280.680" timestamp="1588184737458" />
+    <state width="1259" height="194" key="GridCell.Tab.0.left" timestamp="1588314335446">
+      <screen x="-1280" y="0" width="1280" height="984" />
     </state>
     <state width="1003" height="195" key="GridCell.Tab.0.left/0.0.1280.680/-1280.-121.1024.779@-1280.-121.1024.779" timestamp="1587664901551" />
-    <state width="1003" height="195" key="GridCell.Tab.0.right" timestamp="1587664901551">
-      <screen x="-1280" y="-121" width="1024" height="779" />
+    <state width="1259" height="194" key="GridCell.Tab.0.left/0.0.1280.680/-1280.0.1280.984@-1280.0.1280.984" timestamp="1588314335446" />
+    <state width="1259" height="118" key="GridCell.Tab.0.left/0.0.1280.680/-1280.0.1280.984@0.0.1280.680" timestamp="1588184737457" />
+    <state width="1259" height="194" key="GridCell.Tab.0.right" timestamp="1588314335446">
+      <screen x="-1280" y="0" width="1280" height="984" />
     </state>
     <state width="1003" height="195" key="GridCell.Tab.0.right/0.0.1280.680/-1280.-121.1024.779@-1280.-121.1024.779" timestamp="1587664901551" />
-    <state x="-1071" y="95" key="com.intellij.ide.util.TipDialog" timestamp="1587664523927">
-      <screen x="-1280" y="-121" width="1024" height="779" />
+    <state width="1259" height="194" key="GridCell.Tab.0.right/0.0.1280.680/-1280.0.1280.984@-1280.0.1280.984" timestamp="1588314335446" />
+    <state width="1259" height="118" key="GridCell.Tab.0.right/0.0.1280.680/-1280.0.1280.984@0.0.1280.680" timestamp="1588184737458" />
+    <state x="-1019" y="273" key="com.intellij.ide.util.TipDialog" timestamp="1588314471412">
+      <screen x="-1280" y="0" width="1280" height="984" />
     </state>
     <state x="-1071" y="95" key="com.intellij.ide.util.TipDialog/0.0.1280.680/-1280.-121.1024.779@-1280.-121.1024.779" timestamp="1587664523927" />
+    <state x="-1019" y="273" key="com.intellij.ide.util.TipDialog/0.0.1280.680/-1280.0.1280.984@-1280.0.1280.984" timestamp="1588314471412" />
+    <state x="261" y="189" key="com.intellij.ide.util.TipDialog/0.0.1280.680/-1280.0.1280.984@0.0.1280.680" timestamp="1588310938862" />
+    <state x="303" y="1" width="672" height="678" key="search.everywhere.popup" timestamp="1588311158827">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="303" y="1" width="672" height="678" key="search.everywhere.popup/0.0.1280.680/-1280.0.1280.984@0.0.1280.680" timestamp="1588311158827" />
   </component>
 </project>

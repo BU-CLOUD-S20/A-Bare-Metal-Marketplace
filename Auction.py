@@ -30,40 +30,93 @@ class Offer:
         self.expiry = int(expiry_time.strftime("%Y%m%d%H%M")) - int(current_time)
 
 
+
+
+
+def lowest_exp_bids(bids):
+    exp = bids[0].expiry_time
+    for i in range(len(bids)):
+        if bids[i].expiry_time < exp:
+            exp = bids[i].expiry_time
+            current_bid = bids[i]
+    return [current_bid]
+
+
+def matching_requirements(current_bid, bids):
+    current_bids = [current_bid]
+    for i in range(len(bids)):
+        if current_bid.bidID != bids[i].bidID:
+            if current_bid.requirements == bids[i].requirements:
+                current_bids.append(bids[i])
+    return current_bids
+
+
+def time_clash(bids):
+    clash_bids = [bids[0]]
+    start_time = bids[0].start_time
+    end_time = bids[0].end_time
+    for i in range(len(bids)):
+        if bids[i].start_time >= start_time:
+            if bids[i].start_time <= end_time:
+                clash_bids.append(bids[i])
+    return clash_bids
+
+
+def second_price_auction(bids):
+    high_price = bids[0].cost
+    second_price = 0
+    for i in range(len(bids)):
+        if bids[i].cost >= high_price:
+            expensiveBid = bids[i]
+            second_price = high_price
+            print(second_price,high_price)
+            high_price = expensiveBid.cost
+        elif second_price <bids[i].cost:
+            second_price = bids[i].cost
+    if second_price == high_price:
+        second_price = 0
+        for i in range(len(bids)):
+            if bids[i].cost < high_price:
+                if bids[i].cost > second_price:
+                    second_price = bids[i].cost
+
+    return expensiveBid.bidID, second_price+0.01
+
+
 if __name__ == "__main__":
     d1 = datetime(2020, 5, 2, 8, 00)
     e1 = datetime(2020, 5, 2, 12, 00)
     exp1 = datetime(2020, 5, 1, 1, 00)
-    bid1 = Bid("bid1", 10240, "x86_64", 4, 16, 3, 10, d1, e1, exp1)
+    bid1 = Bid("bid1", 10240, "x86_64", 4, 16, 3, 20, d1, e1, exp1)
     print(bid1.start_time, bid1.end_time, bid1.expiry)
     d2 = datetime(2020, 5, 2, 10, 00)
     e2 = datetime(2020, 5, 2, 12, 00)
     exp2 = datetime(2020, 5, 1, 2, 00)
-    bid2 = Bid("bid2", 10240, "x86_64", 4, 16, 3, 10, d2, e2, exp2)
+    bid2 = Bid("bid2", 10240, "x86_64", 4, 16, 3, 11, d2, e2, exp2)
     d3 = datetime(2020, 5, 2, 12, 00)
     e3 = datetime(2020, 5, 2, 14, 00)
     exp3 = datetime(2020, 5, 1, 3, 00)
-    bid3 = Bid("bid3", 10240, "x86_64", 4, 16, 3, 10, d3, e3, exp3)
+    bid3 = Bid("bid3", 10240, "x86_64", 4, 16, 3, 12, d3, e3, exp3)
     d4 = datetime(2020, 5, 2, 12, 00)
     e4 = datetime(2020, 5, 2, 16, 00)
     exp4 = datetime(2020, 5, 1, 4, 00)
-    bid4 = Bid("bid4", 10240, "x86_64", 4, 16, 3, 10, d4, e4, exp4)
+    bid4 = Bid("bid4", 10240, "x86_64", 4, 16, 3, 13, d4, e4, exp4)
     d5 = datetime(2020, 5, 2, 12, 00)
     e5 = datetime(2020, 5, 2, 18, 00)
     exp5 = datetime(2020, 5, 1, 5, 00)
-    bid5 = Bid("bid5", 10240, "x86_64", 4, 16, 3, 10, d5, e5, exp5)
+    bid5 = Bid("bid5", 10240, "x86_64", 4, 16, 3, 14, d5, e5, exp5)
     d6 = datetime(2020, 5, 2, 14, 00)
     e6 = datetime(2020, 5, 2, 16, 00)
     exp6 = datetime(2020, 5, 1, 6, 00)
-    bid6 = Bid("bid6", 10240, "x86_64", 4, 16, 3, 10, d6, e6, exp6)
+    bid6 = Bid("bid6", 10240, "x86_64", 4, 16, 3, 15, d6, e6, exp6)
     d7 = datetime(2020, 5, 2, 12, 00)
     e7 = datetime(2020, 5, 2, 16, 00)
     exp7 = datetime(2020, 5, 1, 7, 00)
-    bid7 = Bid("bid7", 10240, "x86_64", 4, 16, 3, 10, d7, e7, exp7)
+    bid7 = Bid("bid7", 10240, "x86_64", 4, 16, 3, 15, d7, e7, exp7)
     d8 = datetime(2020, 5, 2, 16, 00)
     e8 = datetime(2020, 5, 2, 20, 00)
     exp8 = datetime(2020, 5, 1, 8, 00)
-    bid8 = Bid("bid8", 10240, "x86_64", 4, 16, 3, 10, d8, e8, exp8)
+    bid8 = Bid("bid8", 10240, "x86_64", 4, 16, 3, 17, d8, e8, exp8)
     d9 = datetime(2020, 5, 2, 20, 00)
     e9 = datetime(2020, 5, 2, 23, 00)
     exp9 = datetime(2020, 5, 1, 9, 00)
@@ -118,34 +171,4 @@ if __name__ == "__main__":
     offer10 = Offer("offer10", 10240, "x86_64", 4, 16, 3, 17, d10, e10, exp10)
     offers = [offer1, offer2, offer3, offer4, offer5, offer6, offer7, offer8, offer9, offer10]
 
-while ((len(bids)) > 0 and (len(offers)) > 0):
-    current = [1000000000000000, 0]
-    lastPrice = bids[0].cost
-    price = bids[0].cost
-    for i in range(len(bids)):
-        if (bids[i].expiry < current[0]):
-            current = [bids[i].expiry, i]
-            currentBid = bids[i]
-
-    # for i in range(len(bids)):
-
-    for i in range(len(bids)):
-
-        if bids[i].requirements == bids[current[1]].requirements:
-            if bids[i].cost > price:
-                lastPrice = price
-                price = bids[i].cost
-                bestBid = bids[i]
-                print(bids[i].bidID)
-                bestBidIndex = i
-    for j in range(len(offers)):
-        ExpensiveOffer = 0
-        if (offers[j].requirements == bestBid.requirements) and (offers[j].cost <= price):
-            if offers[j].cost > ExpensiveOffer:
-                ExpensiveOffer = offers[j].cost
-                OfferIndex = j
-    print(bestBid.bidID, end=" ")
-    print(offers[OfferIndex].offerID, end=" ")
-    print(ExpensiveOffer)
-    bids.remove(bids[bestBidIndex])
-    offers.remove(offers[j])
+print(second_price_auction(bids))
