@@ -6,8 +6,7 @@ sys.path.append("/home/stardust/A-Bare-Metal-Marketplace/database_setup")
 import database_setup.statuses as statuses
 
 
-# engine = create_engine("mysql+pymysql://marketplace:123456@localhost/account")
-engine = create_engine("mysql+pymysql://root:220110605@localhost/account")
+engine = create_engine("mysql+pymysql://marketplace:123456@localhost/account")
 Base = declarative_base()
 
 
