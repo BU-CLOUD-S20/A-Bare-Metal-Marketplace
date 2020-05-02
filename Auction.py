@@ -33,55 +33,52 @@ class Offer:
 
 
 class Contract:
-    def __init__(self, bid, offer, cost, start_time, end_time):
-        self.bidID = bid.bidID
-        self.offerID = offer.offerID
-        self.start_time = start_time
+    def __init__(self, Offer, Bid, cost, start_time, end_time):
+        self.bidID = Bid.bidID
+        self.offerID = Offer.offerID
+        self.start_time =start_time
         self.end_time = end_time
-        self.contractID = uuid.uuid4()
-        # self.allocation_time = offer.allocation_time
+        self.contractID
+        self.allocation_time = Offer.allocation_time
         self.cost = cost
 
 
 def lowest_exp_bids(bids):
     exp = bids[0].expiry_time
-    current_bid = bids[0]
     for i in range(len(bids)):
         if bids[i].expiry_time < exp:
             exp = bids[i].expiry_time
             current_bid = bids[i]
     return current_bid
 
-
 def matching_requirements(current_bid, bids):
     current_bids = [current_bid]
     for i in range(len(bids)):
-        if current_bids[0].bidID != bids[i].bidID:
-            if current_bids[0].requirements == bids[i].requirements:
+        if current_bid.bidID != bids[i].bidID:
+            if current_bid.requirements == bids[i].requirements:
                 current_bids.append(bids[i])
     return current_bids
 
 
-def time_clash(current_bids):
-    clash_bids = [current_bids[0]]
-    start_time = current_bids[0].start_time
-    end_time = current_bids[0].end_time
-    for i in range(len(current_bids)):
-        if current_bids[i].start_time >= start_time:
-            if current_bids[i].start_time <= end_time:
-                clash_bids.append(current_bids[i])
+def time_clash(bids):
+    clash_bids = [bids[0]]
+    start_time = bids[0].start_time
+    end_time = bids[0].end_time
+    for i in range(len(bids)):
+        if bids[i].start_time >= start_time:
+            if bids[i].start_time <= end_time:
+                clash_bids.append(bids[i])
     return clash_bids
 
 
 def second_price_auction(bids):
     high_price = bids[0].cost
     second_price = 0
-    print(bids)
     for i in range(len(bids)):
         if bids[i].cost >= high_price:
             expensiveBid = bids[i]
             second_price = high_price
-            print(second_price, high_price)
+            #print(second_price, high_price)
             high_price = expensiveBid.cost
         elif second_price < bids[i].cost:
             second_price = bids[i].cost
@@ -135,7 +132,7 @@ def expensive_offer(offers):
 
 
 def create_contract(bid, offer, price):
-    new_contract = Contract(bid, offer, price, bid.start_time, bid.end_time)
+    new_contract = Contract(bid, offer)
     if bid.start_time == offer.start_time:
         if bid.end_time == offer.end_time:
             new_contract = Contract(bid, offer, price, bid.start_time, bid.end_time)
@@ -164,24 +161,25 @@ def create_contract(bid, offer, price):
             #from start time of offer to start time of bid
     return new_contract
 
-
-def Bare_Metal_Auction(offers, bids):
+def Bare_Metal_Auction(bids, offers):
+    i = 0
     contracts = []
-    # while len(bids) > 0:
-    lowestExpBids = lowest_exp_bids(bids)
-    matchingBids = matching_requirements(lowestExpBids, bids)
-    clashBids = time_clash(matchingBids)
-    current_bid, price = second_price_auction(clashBids)
+    while i < 5:
+        lowestExpBid = lowest_exp_bids(bids)
+        matchingBids = matching_requirements(lowestExpBid, bids)
+        clashBids = time_clash(matchingBids)
+        current_bid = second_price_auction(clashBids)
 
-    currentOffers = check_offers_price(current_bid, offers)
-    matchingOffers = check_time_overlap(current_bid, currentOffers)
-    current_offer = expensive_offer(matchingOffers)
-    if current_offer.cost > price:
-        current_contract = create_contract(current_bid, current_offer, current_bid.cost)
-    else:
-        current_contract = create_contract(current_bid, current_offer, price)
-    contracts.append(current_contract)
-    return contracts
+        currentOffers = check_offers_price(current_bid[0],offers)
+        matchingOffers = check_time_overlap(current_bid[0],currentOffers)
+        current_offer = expensive_offer(matchingOffers)
+        #if current_offer.cost > current_bid[1]:
+        #    current_contract = create_contract(current_bid[0], current_offer,current_bid[0].cost)
+        #else:
+        #    current_contract = create_contract(current_bid[0], current_offer, current_bid[1])
+        #contracts.append(current_contract)
+        #i = i +1
+        print(current_bid[0].bidID,current_offer.offerID)
 
 def get_bids():
     result = []
@@ -208,108 +206,107 @@ def get_offers():
 
 
 if __name__ == "__main__":
-    d1 = datetime(2020, 5, 2, 8, 00)
-    e1 = datetime(2020, 5, 2, 12, 00)
-    exp1 = datetime(2020, 5, 1, 1, 00)
+    d1 = datetime(2020, 6, 2, 8, 00)
+    e1 = datetime(2020, 6, 2, 12, 00)
+    exp1 = datetime(2020, 6, 1, 1, 00)
     bid1 = Bid("bid1", 10240, "x86_64", 4, 16, 3, 20, d1, e1, exp1)
-    print(bid1.start_time, bid1.end_time, bid1.expiry_time)
-    d2 = datetime(2020, 5, 2, 10, 00)
-    e2 = datetime(2020, 5, 2, 12, 00)
-    exp2 = datetime(2020, 5, 1, 2, 00)
+    d2 = datetime(2020, 6, 2, 10, 00)
+    e2 = datetime(2020, 6, 2, 12, 00)
+    exp2 = datetime(2020, 6, 1, 2, 00)
     bid2 = Bid("bid2", 10240, "x86_64", 4, 16, 3, 11, d2, e2, exp2)
-    d3 = datetime(2020, 5, 2, 12, 00)
-    e3 = datetime(2020, 5, 2, 14, 00)
-    exp3 = datetime(2020, 5, 1, 3, 00)
+    d3 = datetime(2020, 6, 2, 12, 00)
+    e3 = datetime(2020, 6, 2, 14, 00)
+    exp3 = datetime(2020, 6, 1, 3, 00)
     bid3 = Bid("bid3", 10240, "x86_64", 4, 16, 3, 12, d3, e3, exp3)
-    d4 = datetime(2020, 5, 2, 12, 00)
-    e4 = datetime(2020, 5, 2, 16, 00)
+    d4 = datetime(2020, 6, 2, 12, 00)
+    e4 = datetime(2020, 6, 2, 16, 00)
     exp4 = datetime(2020, 5, 1, 4, 00)
     bid4 = Bid("bid4", 10240, "x86_64", 4, 16, 3, 13, d4, e4, exp4)
-    d5 = datetime(2020, 5, 2, 12, 00)
-    e5 = datetime(2020, 5, 2, 18, 00)
-    exp5 = datetime(2020, 5, 1, 5, 00)
+    d5 = datetime(2020, 6, 2, 12, 00)
+    e5 = datetime(2020, 6, 2, 18, 00)
+    exp5 = datetime(2020, 6, 1, 5, 00)
     bid5 = Bid("bid5", 10240, "x86_64", 4, 16, 3, 14, d5, e5, exp5)
-    d6 = datetime(2020, 5, 2, 14, 00)
-    e6 = datetime(2020, 5, 2, 16, 00)
+    d6 = datetime(2020, 6, 2, 14, 00)
+    e6 = datetime(2020, 6, 2, 16, 00)
     exp6 = datetime(2020, 5, 1, 6, 00)
     bid6 = Bid("bid6", 10240, "x86_64", 4, 16, 3, 15, d6, e6, exp6)
-    d7 = datetime(2020, 5, 2, 12, 00)
-    e7 = datetime(2020, 5, 2, 16, 00)
-    exp7 = datetime(2020, 5, 1, 7, 00)
+    d7 = datetime(2020, 6, 2, 12, 00)
+    e7 = datetime(2020, 6, 2, 16, 00)
+    exp7 = datetime(2020, 6, 1, 7, 00)
     bid7 = Bid("bid7", 10240, "x86_64", 4, 16, 3, 15, d7, e7, exp7)
-    d8 = datetime(2020, 5, 2, 16, 00)
-    e8 = datetime(2020, 5, 2, 20, 00)
-    exp8 = datetime(2020, 5, 1, 8, 00)
+    d8 = datetime(2020, 6, 2, 16, 00)
+    e8 = datetime(2020, 6, 2, 20, 00)
+    exp8 = datetime(2020, 6, 1, 8, 00)
     bid8 = Bid("bid8", 10240, "x86_64", 4, 16, 3, 17, d8, e8, exp8)
-    d9 = datetime(2020, 5, 2, 20, 00)
-    e9 = datetime(2020, 5, 2, 23, 00)
-    exp9 = datetime(2020, 5, 1, 9, 00)
+    d9 = datetime(2020, 6, 2, 20, 00)
+    e9 = datetime(2020, 6, 2, 23, 00)
+    exp9 = datetime(2020, 6, 1, 9, 00)
     bid9 = Bid("bid9", 10240, "x86_64", 4, 16, 3, 10, d9, e9, exp9)
-    d10 = datetime(2020, 5, 2, 20, 00)
-    e10 = datetime(2020, 5, 2, 22, 00)
-    exp10 = datetime(2020, 5, 1, 10, 00)
+    d10 = datetime(2020, 6, 2, 20, 00)
+    e10 = datetime(2020, 6, 2, 22, 00)
+    exp10 = datetime(2020, 6, 1, 10, 00)
     bid10 = Bid("bid10", 10240, "x86_64", 4, 16, 3, 10, d10, e10, exp10)
 
-    bids = [bid1, bid2, bid3, bid4, bid5, bid6, bid7, bid8, bid9, bid10]
+    bids = [bid1, bid2, bid3, bid4, bid5, bid6, bid7, bid8, bid9, bid10, ]
 
-    d1 = datetime(2020, 5, 2, 8, 00)
-    e1 = datetime(2020, 5, 2, 12, 00)
-    exp1 = datetime(2020, 5, 1, 8, 00)
+    d1 = datetime(2020, 6, 2, 8, 00)
+    e1 = datetime(2020, 6, 2, 12, 00)
+    exp1 = datetime(2020, 6, 1, 8, 00)
     offer1 = Offer("offer1", 10240, "x86_64", 4, 16, 3, 10, d1, e1, exp1)
     # print(offer1.start_time, offer1.end_time, offer1.expiry)
-    d2 = datetime(2020, 5, 2, 10, 00)
-    e2 = datetime(2020, 5, 2, 12, 00)
-    exp2 = datetime(2020, 5, 1, 8, 00)
+    d2 = datetime(2020, 6, 2, 10, 00)
+    e2 = datetime(2020, 6, 2, 12, 00)
+    exp2 = datetime(2020, 6, 1, 8, 00)
     offer2 = Offer("offer2", 10240, "x86_64", 4, 16, 3, 20, d2, e2, exp2)
-    d3 = datetime(2020, 5, 2, 12, 00)
-    e3 = datetime(2020, 5, 2, 14, 00)
-    exp3 = datetime(2020, 5, 1, 8, 00)
+    d3 = datetime(2020, 6, 2, 12, 00)
+    e3 = datetime(2020, 6, 2, 14, 00)
+    exp3 = datetime(2020, 6, 1, 8, 00)
     offer3 = Offer("offer3", 10240, "x86_64", 4, 16, 3, 15, d3, e3, exp3)
-    d4 = datetime(2020, 5, 2, 12, 00)
-    e4 = datetime(2020, 5, 2, 16, 00)
-    exp4 = datetime(2020, 5, 1, 8, 00)
+    d4 = datetime(2020, 6, 2, 12, 00)
+    e4 = datetime(2020, 6, 2, 16, 00)
+    exp4 = datetime(2020, 6, 1, 8, 00)
     offer4 = Offer("offer4", 10240, "x86_64", 4, 16, 3, 12, d4, e4, exp4)
-    d5 = datetime(2020, 5, 2, 12, 00)
-    e5 = datetime(2020, 5, 2, 18, 00)
-    exp5 = datetime(2020, 5, 1, 8, 00)
+    d5 = datetime(2020, 6, 2, 12, 00)
+    e5 = datetime(2020, 6, 2, 18, 00)
+    exp5 = datetime(2020, 6, 1, 8, 00)
     offer5 = Offer("offer5", 10240, "x86_64", 4, 16, 3, 15, d5, e5, exp5)
-    d6 = datetime(2020, 5, 2, 14, 00)
-    e6 = datetime(2020, 5, 2, 16, 00)
-    exp6 = datetime(2020, 5, 1, 8, 00)
+    d6 = datetime(2020, 6, 2, 14, 00)
+    e6 = datetime(2020, 6, 2, 16, 00)
+    exp6 = datetime(2020, 6, 1, 8, 00)
     offer6 = Offer("offer6", 10240, "x86_64", 4, 16, 3, 17, d6, e6, exp6)
-    d7 = datetime(2020, 5, 2, 12, 00)
-    e7 = datetime(2020, 5, 2, 16, 00)
-    exp7 = datetime(2020, 5, 1, 8, 00)
+    d7 = datetime(2020, 6, 2, 12, 00)
+    e7 = datetime(2020, 6, 2, 16, 00)
+    exp7 = datetime(2020, 6, 1, 8, 00)
     offer7 = Offer("offer7", 10240, "x86_64", 4, 16, 3, 19, d7, e7, exp7)
-    d8 = datetime(2020, 5, 2, 16, 00)
-    e8 = datetime(2020, 5, 2, 20, 00)
-    exp8 = datetime(2020, 5, 1, 8, 00)
+    d8 = datetime(2020, 6, 2, 16, 00)
+    e8 = datetime(2020, 6, 2, 20, 00)
+    exp8 = datetime(2020, 6, 1, 8, 00)
     offer8 = Offer("offer8", 10240, "x86_64", 4, 16, 3, 12, d8, e8, exp8)
-    d9 = datetime(2020, 5, 2, 20, 00)
-    e9 = datetime(2020, 5, 2, 23, 00)
-    exp9 = datetime(2020, 5, 1, 8, 00)
+    d9 = datetime(2020, 6, 2, 20, 00)
+    e9 = datetime(2020, 6, 2, 23, 00)
+    exp9 = datetime(2020, 6, 1, 8, 00)
     offer9 = Offer("offer9", 10240, "x86_64", 4, 16, 3, 15, d9, e9, exp9)
-    d10 = datetime(2020, 5, 2, 20, 00)
-    e10 = datetime(2020, 5, 2, 22, 00)
-    exp10 = datetime(2020, 5, 1, 8, 00)
+    d10 = datetime(2020, 6, 2, 20, 00)
+    e10 = datetime(2020, 6, 2, 22, 00)
+    exp10 = datetime(2020, 6, 1, 8, 00)
     offer10 = Offer("offer10", 10240, "x86_64", 4, 16, 3, 17, d10, e10, exp10)
     offers = [offer1, offer2, offer3, offer4, offer5, offer6, offer7, offer8, offer9, offer10]
+print("This the selected bid with second price")
+print(second_price_auction(bids))
 
-    bids = get_bids()
-    offers = get_offers()
+print("these are the offers that overlap with bid3")
+overlap_offers = check_time_overlap(bid3, offers)  # should print 3,4,5,7
+for i in range(len(overlap_offers)):
+    print(overlap_offers[i].offerID)
 
-    for b in bids:
-        print(b.cost)
-    print("#######")
-    for o in offers:
-        print(o.cost)
+print("these are the offers that overlap with bid4")
+overlap_offers = check_time_overlap(bid4, offers)  # should print 4,5,7
+for i in range(len(overlap_offers)):
+    print(overlap_offers[i].offerID)
 
-    # contracts = Bare_Metal_Auction(offers, bids)
-    # for i in contracts:
-    #     print(i.bidID)
-    #print(second_price_auction(bids))
-# overlap_bids = check_time_overlap(bid3, offers)  # should print 3,4,5,7
-# for i in range(len(overlap_bids)):
-#     print(overlap_bids[i].offerID)
-
-
+print("these are the offers that overlap with bid5")
+overlap_offers = check_time_overlap(bid5, offers)  # should print 5,8
+for i in range(len(overlap_offers)):
+    print(overlap_offers[i].offerID)
+# print(lowest_exp_bids(bids))
+test = Bare_Metal_Auction(bids, offers)
