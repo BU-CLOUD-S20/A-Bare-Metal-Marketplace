@@ -1,13 +1,13 @@
 from datetime import datetime
+from hashlib import blake2s
 
 now = datetime.now()
 # print(now)
 current_time = now.strftime("%Y%m%d%H%M")
 
-
-# print(current_time)
-
-
+bid_count = 10
+offer_count = 10
+contract_count = 0
 class Bid:
     def __init__(self, id1, memory, cpu_arch, cpu_physical_count, cpu_core_count, cpu_ghz, cost, start_time, end_time,
                  expiry_time):
@@ -30,7 +30,15 @@ class Offer:
         self.expiry = int(expiry_time.strftime("%Y%m%d%H%M")) - int(current_time)
 
 
-
+class Contract:
+    def __init__(self, Offer, Bid, cost, start_time, end_time):
+        self.bidID = Bid.bidID
+        self.offerID = Offer.offerID
+        self.start_time =start_time
+        self.end_time = end_time
+        self.contractID
+        self.allocation_time = Offer.allocation_time
+        self.cost = cost
 
 
 def lowest_exp_bids(bids):
@@ -69,9 +77,9 @@ def second_price_auction(bids):
         if bids[i].cost >= high_price:
             expensiveBid = bids[i]
             second_price = high_price
-            print(second_price,high_price)
+            print(second_price, high_price)
             high_price = expensiveBid.cost
-        elif second_price <bids[i].cost:
+        elif second_price < bids[i].cost:
             second_price = bids[i].cost
     if second_price == high_price:
         second_price = 0
@@ -80,7 +88,96 @@ def second_price_auction(bids):
                 if bids[i].cost > second_price:
                     second_price = bids[i].cost
 
-    return expensiveBid.bidID, second_price+0.01
+    return expensiveBid, second_price + 0.01
+
+
+def check_offers_price(bid, offers):
+    cheap_offers = []
+    for i in range(len(offers)):
+        if offers[i].cost <= bid.cost:
+            cheap_offers.append(offers[i])
+    return cheap_offers
+
+
+def check_time_overlap(bid, offers):
+    overlap_offers = []
+    for i in range(len(offers)):
+        if offers[i].start_time <= bid.start_time:
+            if offers[i].end_time >= bid.end_time:
+                overlap_offers.append(offers[i])
+
+        elif offers[i].start_time < bid.end_time:
+            if offers[i].end_time > bid.end_time:
+                overlap_offers.append(offers[i])
+
+        elif offers[i].start_time < bid.start_time:
+            if offers[i].end_time > bid.start_time:
+                overlap_offers.append(offers[i])
+
+        elif offers[i].start_time < bid.end_time:
+            if offers[i].end_time > bid.start_time:
+                overlap_offers.append(offers[i])
+
+    return overlap_offers
+
+
+def expensive_offer(offers):
+    price = 0
+    for i in range(len(offers)):
+        if offers[i].cost > price:
+            price = offers[i].cost
+            offer = offers[i]
+    return offer
+
+
+def create_contract(bid, offer, price):
+    new_contract = Contract(bid, offer)
+    if bid.start_time == offer.start_time:
+        if bid.end_time == offer.end_time:
+            new_contract = Contract(bid, offer, price, bid.start_time, bid.end_time)
+
+    elif bid.start_time < offer.start_time:
+        if bid.end_time > offer.end_time:
+            new_contract = Contract(bid, offer, price, offer.start_time, offer.end_time)
+            #create bids from start time of bid to start time of offer and
+            #end time of offer to end time of bid
+    elif bid.start_time < offer.start_time:
+        if bid.end_time <= offer.end_time:
+            new_contract = Contract(bid, offer, price, offer.start_time, bid.end_time)
+            #create bid from start time of bid to start time of offer and
+            #create offer from end time of bid to to end time of offer
+
+    elif bid.start_time >= offer.start_time:
+        if bid.end_time > offer.end_time:
+            new_contract = Contract(bid, offer, price, bid.start_time, offer.end_time)
+            #create bid from end time of offer to end time of bid and
+            #create offer from start time of offer to start time of bid
+
+    elif bid.start_time > offer.start_time:
+        if bid.end_time < offer.end_time:
+            new_contract = Contract(bid, offer, price, bid.start_time, bid.end_time)
+            # create offers from end time of bid to end time of offer and
+            #from start time of offer to start time of bid
+    return new_contract
+
+def Bare_Metal_Auction(offers ,bids):
+    contracts = []
+    while len(bids) > 0:
+        lowestExpBids = lowest_exp_bids(bids)
+        matchingBids = matching_requirements(lowestExpBids)
+        clashBids = time_clash(matchingBids)
+        current_bid = second_price_auction(clashBids)
+
+        currentOffers = check_offers_price(current_bid,offers)
+        matchingOffers = check_time_overlap(current_bid,currentOffers)
+        current_offer = expensive_offer(matchingOffers)
+        if current_offer.cost > current_bid[1]:
+            current_contract = create_contract(current_bid[0], current_offer,current_bid[0].cost)
+        else:
+            current_contract = create_contract(current_bid[0], current_offer, current_bid[1])
+        contracts.append(current_contract)
+
+
 
 
 if __name__ == "__main__":
@@ -171,4 +268,9 @@ if __name__ == "__main__":
     offer10 = Offer("offer10", 10240, "x86_64", 4, 16, 3, 17, d10, e10, exp10)
     offers = [offer1, offer2, offer3, offer4, offer5, offer6, offer7, offer8, offer9, offer10]
 
-print(second_price_auction(bids))
+# print(second_price_auction(bids))
+overlap_bids = check_time_overlap(bid3, offers)  # should print 3,4,5,7
+for i in range(len(overlap_bids)):
+    print(overlap_bids[i].offerID)
+
+
