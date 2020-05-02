@@ -128,4 +128,3 @@ if __name__ == "__main__":
         print(ExpensiveOffer)
         bids.remove(bids[bestBidIndex])
         offers.remove(offers[j])
-

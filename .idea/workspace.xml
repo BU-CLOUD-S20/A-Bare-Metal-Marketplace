@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
 <<<<<<< HEAD
+<<<<<<< HEAD
     <list default="true" id="e6cbe51e-ec42-4556-9e1b-ab5c61a61fbe" name="Default Changelist" comment="" />
 =======
     <list default="true" id="e6cbe51e-ec42-4556-9e1b-ab5c61a61fbe" name="Default Changelist" comment="">
@@ -11,11 +12,18 @@
     </list>
 >>>>>>> 013faacb9db4cbc1891369570fe774f364724477
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+=======
+    <list default="true" id="e6cbe51e-ec42-4556-9e1b-ab5c61a61fbe" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Auction.py" beforeDir="false" afterPath="$PROJECT_DIR$/Auction.py" afterDir="false" />
+    </list>
+>>>>>>> 3b04cdda69f8116b39072e35faa5b8088164f3ef
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+<<<<<<< HEAD
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
 <<<<<<< HEAD
@@ -162,6 +170,8 @@
       </file>
     </leaf>
   </component>
+=======
+>>>>>>> 3b04cdda69f8116b39072e35faa5b8088164f3ef
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -172,6 +182,7 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+<<<<<<< HEAD
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
@@ -262,6 +273,20 @@
   <component name="RunManager" selected="Python.marketAPI">
 >>>>>>> 013faacb9db4cbc1891369570fe774f364724477
     <configuration name="Engine" type="PythonConfigurationType" factoryName="Python" temporary="true">
+=======
+  <component name="ProjectId" id="1ax2EiG9UqXKD4tdJAn51bs1c3u" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/hw10/hw10_helper.py" />
+  </component>
+  <component name="RunManager" selected="Python.Auction">
+    <configuration name="Auction" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+>>>>>>> 3b04cdda69f8116b39072e35faa5b8088164f3ef
       <module name="A-Bare-Metal-Marketplace" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -273,6 +298,30 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+<<<<<<< HEAD
+=======
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Auction.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Engine" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="A-Bare-Metal-Marketplace" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\Manan\PycharmProjects\untitled\venv\Scripts\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+>>>>>>> 3b04cdda69f8116b39072e35faa5b8088164f3ef
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Engine.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
@@ -283,10 +332,14 @@
       <method v="2" />
     </configuration>
 <<<<<<< HEAD
+<<<<<<< HEAD
     <configuration name="account" type="PythonConfigurationType" factoryName="Python" temporary="true">
 =======
     <configuration name="marketAPI" type="PythonConfigurationType" factoryName="Python" temporary="true">
 >>>>>>> 013faacb9db4cbc1891369570fe774f364724477
+=======
+    <configuration name="marketAPI" type="PythonConfigurationType" factoryName="Python" temporary="true">
+>>>>>>> 3b04cdda69f8116b39072e35faa5b8088164f3ef
       <module name="A-Bare-Metal-Marketplace" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -295,18 +348,24 @@
       </envs>
       <option name="SDK_HOME" value="" />
 <<<<<<< HEAD
+<<<<<<< HEAD
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Account" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Account/account.py" />
 =======
+=======
+>>>>>>> 3b04cdda69f8116b39072e35faa5b8088164f3ef
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/database_setup/APIs" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/database_setup/APIs/marketAPI.py" />
+<<<<<<< HEAD
 >>>>>>> 013faacb9db4cbc1891369570fe774f364724477
+=======
+>>>>>>> 3b04cdda69f8116b39072e35faa5b8088164f3ef
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -318,6 +377,7 @@
     <recent_temporary>
       <list>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <item itemvalue="Python.account" />
 =======
         <item itemvalue="Python.marketAPI" />
@@ -326,6 +386,17 @@
       </list>
     </recent_temporary>
   </component>
+=======
+        <item itemvalue="Python.Auction" />
+        <item itemvalue="Python.Engine" />
+        <item itemvalue="Python.marketAPI" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="showServicesTree" value="false" />
+  </component>
+>>>>>>> 3b04cdda69f8116b39072e35faa5b8088164f3ef
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -339,6 +410,7 @@
     </task>
     <servers />
   </component>
+<<<<<<< HEAD
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
 <<<<<<< HEAD
@@ -534,5 +606,59 @@
         </state>
       </provider>
     </entry>
+=======
+  <component name="WindowStateProjectService">
+    <state x="373" y="0" key="#Engine" timestamp="1588098031649">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="373" y="0" key="#Engine/0.0.1280.680/-1280.0.1280.984@0.0.1280.680" timestamp="1588098031649" />
+    <state x="-997" y="87" key="CommitChangelistDialog2" timestamp="1588314513921">
+      <screen x="-1280" y="0" width="1280" height="984" />
+    </state>
+    <state x="-997" y="87" key="CommitChangelistDialog2/0.0.1280.680/-1280.0.1280.984@-1280.0.1280.984" timestamp="1588314513921" />
+    <state x="421" y="97" key="FileChooserDialogImpl" timestamp="1587951904002">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="421" y="97" key="FileChooserDialogImpl/0.0.1280.680/-1280.0.1280.984@0.0.1280.680" timestamp="1587951904002" />
+    <state width="1259" height="194" key="GridCell.Tab.0.bottom" timestamp="1588394112771">
+      <screen x="-1280" y="0" width="1280" height="984" />
+    </state>
+    <state width="1003" height="195" key="GridCell.Tab.0.bottom/0.0.1280.680/-1280.-121.1024.779@-1280.-121.1024.779" timestamp="1587664901551" />
+    <state width="1259" height="194" key="GridCell.Tab.0.bottom/0.0.1280.680/-1280.0.1280.984@-1280.0.1280.984" timestamp="1588394112771" />
+    <state width="1259" height="118" key="GridCell.Tab.0.bottom/0.0.1280.680/-1280.0.1280.984@0.0.1280.680" timestamp="1588184737458" />
+    <state width="1259" height="194" key="GridCell.Tab.0.center" timestamp="1588394112771">
+      <screen x="-1280" y="0" width="1280" height="984" />
+    </state>
+    <state width="1003" height="195" key="GridCell.Tab.0.center/0.0.1280.680/-1280.-121.1024.779@-1280.-121.1024.779" timestamp="1587664901551" />
+    <state width="1259" height="194" key="GridCell.Tab.0.center/0.0.1280.680/-1280.0.1280.984@-1280.0.1280.984" timestamp="1588394112771" />
+    <state width="1259" height="118" key="GridCell.Tab.0.center/0.0.1280.680/-1280.0.1280.984@0.0.1280.680" timestamp="1588184737458" />
+    <state width="1259" height="194" key="GridCell.Tab.0.left" timestamp="1588394112770">
+      <screen x="-1280" y="0" width="1280" height="984" />
+    </state>
+    <state width="1003" height="195" key="GridCell.Tab.0.left/0.0.1280.680/-1280.-121.1024.779@-1280.-121.1024.779" timestamp="1587664901551" />
+    <state width="1259" height="194" key="GridCell.Tab.0.left/0.0.1280.680/-1280.0.1280.984@-1280.0.1280.984" timestamp="1588394112770" />
+    <state width="1259" height="118" key="GridCell.Tab.0.left/0.0.1280.680/-1280.0.1280.984@0.0.1280.680" timestamp="1588184737457" />
+    <state width="1259" height="194" key="GridCell.Tab.0.right" timestamp="1588394112771">
+      <screen x="-1280" y="0" width="1280" height="984" />
+    </state>
+    <state width="1003" height="195" key="GridCell.Tab.0.right/0.0.1280.680/-1280.-121.1024.779@-1280.-121.1024.779" timestamp="1587664901551" />
+    <state width="1259" height="194" key="GridCell.Tab.0.right/0.0.1280.680/-1280.0.1280.984@-1280.0.1280.984" timestamp="1588394112771" />
+    <state width="1259" height="118" key="GridCell.Tab.0.right/0.0.1280.680/-1280.0.1280.984@0.0.1280.680" timestamp="1588184737458" />
+    <state x="-1048" y="214" key="Vcs.Push.Dialog.v2" timestamp="1588314521354">
+      <screen x="-1280" y="0" width="1280" height="984" />
+    </state>
+    <state x="-1048" y="214" key="Vcs.Push.Dialog.v2/0.0.1280.680/-1280.0.1280.984@-1280.0.1280.984" timestamp="1588314521354" />
+    <state x="-1019" y="273" key="com.intellij.ide.util.TipDialog" timestamp="1588371487180">
+      <screen x="-1280" y="0" width="1280" height="984" />
+    </state>
+    <state x="-1071" y="95" key="com.intellij.ide.util.TipDialog/0.0.1280.680/-1280.-121.1024.779@-1280.-121.1024.779" timestamp="1587664523927" />
+    <state x="-1019" y="273" key="com.intellij.ide.util.TipDialog/0.0.1280.680/-1280.0.1280.984@-1280.0.1280.984" timestamp="1588371487180" />
+    <state x="261" y="189" key="com.intellij.ide.util.TipDialog/0.0.1280.680/-1280.0.1280.984@0.0.1280.680" timestamp="1588310938862" />
+    <state x="-977" y="1" width="672" height="982" key="search.everywhere.popup" timestamp="1588372644682">
+      <screen x="-1280" y="0" width="1280" height="984" />
+    </state>
+    <state x="-977" y="1" width="672" height="982" key="search.everywhere.popup/0.0.1280.680/-1280.0.1280.984@-1280.0.1280.984" timestamp="1588372644682" />
+    <state x="303" y="1" width="672" height="678" key="search.everywhere.popup/0.0.1280.680/-1280.0.1280.984@0.0.1280.680" timestamp="1588311158827" />
+>>>>>>> 3b04cdda69f8116b39072e35faa5b8088164f3ef
   </component>
 </project>

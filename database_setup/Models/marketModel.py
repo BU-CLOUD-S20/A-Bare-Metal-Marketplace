@@ -3,7 +3,7 @@ from sqlalchemy import create_engine, Column, Integer, String, Float, DateTime, 
 from sqlalchemy.ext.declarative import declarative_base
 import sqlalchemy_jsonfield
 sys.path.append("/home/stardust/A-Bare-Metal-Marketplace/database_setup")
-import statuses
+import database_setup.statuses as statuses
 
 
 engine = create_engine("mysql+pymysql://marketplace:123456@localhost/market")

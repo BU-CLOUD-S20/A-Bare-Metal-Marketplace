@@ -4,11 +4,10 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 sys.path.append("/home/stardust/A-Bare-Metal-Marketplace/database_setup")
 sys.path.append("/home/stardust/A-Bare-Metal-Marketplace/database_setup/Models")
-import Models.marketModel as Market
-import data
-import statuses
+import database_setup.Models.marketModel as Market
+import database_setup.statuses
 
-engine = create_engine("mysql+pymysql://marketplace:123456@localhost/market")
+engine = create_engine("mysql+pymysql://market:123456@localhost/market")
 
 
 def bid_insert(values):
