@@ -167,20 +167,22 @@ def create_contract(bid, offer, price):
 
 def Bare_Metal_Auction(offers, bids):
     contracts = []
-    # while len(bids) > 0:
-    lowestExpBids = lowest_exp_bids(bids)
-    matchingBids = matching_requirements(lowestExpBids, bids)
-    clashBids = time_clash(matchingBids)
-    current_bid, price = second_price_auction(clashBids)
+    i = 0
+    while i < 10:
+        lowestExpBids = lowest_exp_bids(bids)
+        matchingBids = matching_requirements(lowestExpBids, bids)
+        clashBids = time_clash(matchingBids)
+        current_bid, price = second_price_auction(clashBids)
 
-    currentOffers = check_offers_price(current_bid, offers)
-    matchingOffers = check_time_overlap(current_bid, currentOffers)
-    current_offer = expensive_offer(matchingOffers)
-    if current_offer.cost > price:
-        current_contract = create_contract(current_bid, current_offer, current_bid.cost)
-    else:
-        current_contract = create_contract(current_bid, current_offer, price)
-    contracts.append(current_contract)
+        currentOffers = check_offers_price(current_bid, offers)
+        matchingOffers = check_time_overlap(current_bid, currentOffers)
+        current_offer = expensive_offer(matchingOffers)
+        if current_offer.cost > price:
+            current_contract = create_contract(current_bid, current_offer, current_bid.cost)
+        else:
+            current_contract = create_contract(current_bid, current_offer, price)
+        contracts.append(current_contract)
+        i = i + 1
     return contracts
 
 def get_bids():
@@ -295,18 +297,19 @@ if __name__ == "__main__":
     offer10 = Offer("offer10", 10240, "x86_64", 4, 16, 3, 17, d10, e10, exp10)
     offers = [offer1, offer2, offer3, offer4, offer5, offer6, offer7, offer8, offer9, offer10]
 
-    bids = get_bids()
-    offers = get_offers()
+    # bids = get_bids()
+    # offers = get_offers()
 
-    for b in bids:
-        print(b.cost)
-    print("#######")
-    for o in offers:
-        print(o.cost)
+    # for b in bids:
+    #     print(b.cost)
+    # print("#######")
+    # for o in offers:
+    #     print(o.cost)
 
-    # contracts = Bare_Metal_Auction(offers, bids)
-    # for i in contracts:
-    #     print(i.bidID)
+    contracts = Bare_Metal_Auction(offers, bids)
+    print(len(contracts))
+    for i in contracts:
+        print(i.bidID, i.offerID)
     #print(second_price_auction(bids))
 # overlap_bids = check_time_overlap(bid3, offers)  # should print 3,4,5,7
 # for i in range(len(overlap_bids)):
