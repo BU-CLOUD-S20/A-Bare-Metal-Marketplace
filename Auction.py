@@ -11,6 +11,8 @@ current_time = now.strftime("%Y%m%d%H%M")
 bid_count = 10
 offer_count = 10
 contract_count = 0
+
+
 class Bid:
     def __init__(self, id1, memory, cpu_arch, cpu_physical_count, cpu_core_count, cpu_ghz, cost, start_time, end_time,
                  expiry_time):
@@ -51,6 +53,7 @@ def lowest_exp_bids(bids):
             exp = bids[i].expiry_time
             current_bid = bids[i]
     return current_bid
+
 
 def matching_requirements(current_bid, bids):
     current_bids = [current_bid]
