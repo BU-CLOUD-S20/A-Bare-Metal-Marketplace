@@ -4,6 +4,23 @@
 
 #### Mentored by Sahil Tikale and Jonathan Chamberlain
 
+Presentations:
+
+-Bolted Paper Presentation 
+https://docs.google.com/presentation/d/1I2IVUlbipttOq9JroxmVZ2BtYHUy6iadvFhX7GVvFZI/edit?usp=sharing
+
+-Sprint 4
+https://docs.google.com/presentation/d/1FfAsXFmRbjcQh_8ObwwD5Mmz-GOpC9f5Iq1T69fxsO0/edit?usp=sharing
+
+-Sprint 3
+https://docs.google.com/presentation/d/15wrRBRzJkTVKug-aKJ7ESHm5jCBQKkHdeGBn9Ujc0kY/edit?usp=sharing
+
+-Sprint 2
+https://docs.google.com/presentation/d/1Es-8C4n9V-fOHEZmo0kG868NgTe7vPsfINWeYcmxHRg/edit?usp=sharing
+
+-Sprint 1
+https://docs.google.com/presentation/d/19kACETfZ-FhiFkoOMcIhrVeHBjpvXL-2O-pMGKSBFQE/edit?usp=sharing
+
 ### Context: 
 * Many hosts do not use cloud servers due to multiple constraints including security, privacy, or a need for specific hardware. Hosts often rent space in a data center for their servers.
 
@@ -95,21 +112,26 @@ Global Architectural Structure Of the Project:
 
 
 
-![Current System Overview](./images/overview-2.png)
+![Current System Overview](./images/overview-3.png)
+
+Microservices and Communication Structure:
+
+
+
+![Microservice Structure](./images/microservices.png)
 
 Overall, this project aims to be implemented in OpenStack with the use of Ironic for bare-metal provisioning.
 
 
 ### Design Implications and Discussion:
 
-* Tenant & Renter UI
-    * React/Bootstrap for reusable components and pre-written CSS
-* MySQL- Relational Database Management System
-* Credential System- Reusing credentials in OpenStack and Ironic
-* Nodes- Requiring BareMetal Hypervisor to be rented
-* OpenStack-The desired service to make use of Ironic
-* Ironic Plugins-Any necessary plugins such as the python agent
-* Paypal- An easy external system to implement for payment transfer
+* CLI/UIs- Terminal and Web Clients for interacting with the system
+* Multi-Tenant Ironic- Allows cross-organization bare metal node transfers
+* OpenStack- Red Hat Cloud Computing Environment
+* Keystone- Organization OpenStack based authentication
+* Service Databases- Databases for administration and matching that are operator-owned
+* Administration API- Connects to user control system to return administrative features
+* Matching API- Connects to auction system to serve matches
 
 The microservice itself needs to be light to run as to not consume unnecessary resources.
 
@@ -126,24 +148,32 @@ Week 3 goals:
 * Create tests for base Ironic built in functionality
 
 Week 5 goals:
-* Implement Bare Metal transfers with simplified auction system
-* Create autobuy system structure
-* Set up databases
-* Create base CLI
+* Learn about TDD, pytest, microservice
+* Design auction system structure
+* Create user stories for auction system
+* Set up database with SQLAlchemy
+
 
 Week 7 goals:
-* Finishing Auction System
-* Implement UI 
-* Connected Databases
-* Improve CLI for current functionality
+* Design micro service structure
+* Write database queries using SQLAlchemy
+* Implement Flask Rest APIs
+* Connect handler to APIs
+
 
 Week 9 Goals:
-* Full OpenStack Implementation
-* Clean code/Refactor
-* CLI/UI updates
+* Implement MVP auction engine
+* Start working on account service
+* Connect auction service and account service with API calls
+* Start working on server deployment
+
 
 Week 11 Goals:
-* Autobuy and Content Filtering addition features
+* Integrate provider service with Ironic (Node provisioning) and publish as OpenStack service on MOC
+* Implement CLI for POST/GET
+* Robust Auction Engine Optimization
+* Finish implementing account service
+
 
 Week 13 Goals:
 * Analytics / UI additional features + Profile features

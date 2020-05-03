@@ -12,6 +12,10 @@ import os
 import sys
 import statuses
 
+now = datetime.now()
+# print(now)
+current_time = now.strftime("%Y%m%d%H%M")
+
 # Init App
 app = Flask(__name__)
 
@@ -264,9 +268,55 @@ def get_cbos():
     result = cbo_relation_schema.dump(all_cbos)
     return jsonify(result)
 
+
+####################################################################################### ALGORITHMICS ###############################################
+
+class Bid:
+    def __init__(self, id1, memory, cpu_arch, cpu_physical_count, cpu_core_count, cpu_ghz, cost, start_time, end_time, expiry_time):
+        self.bidID = id1
+        self.requirements = [memory, cpu_arch, cpu_physical_count, cpu_core_count, cpu_ghz]
+        self.cost = cost
+        self.start_time = int(start_time.strftime("%Y%m%d%H%M"))
+        self.end_time = int(end_time.strftime("%Y%m%d%H%M"))
+        self.expiry = expiry_time - int(current_time)
+
+
+class Offer:
+    def __init__(self, id1, memory, cpu_arch, cpu_physical_count, cpu_core_count, cpu_ghz, cost, start_time, end_time):
+        self.offerID = id1
+        self.requirements = [memory, cpu_arch, cpu_physical_count, cpu_core_count, cpu_ghz]
+        self.cost = cost
+        self.start_time = int(start_time.strftime("%Y%m%d%H%M"))
+        self.end_time = int(end_time.strftime("%Y%m%d%H%M"))
+        self.expiry = self.start_time - int(current_time)
+
+# Database Pulls
+def list_bids():
+    result = []
+    db_result = Bids.query.all()
+    for db_bid in db_result:
+        config = db_bid.config_query
+        result.append(Bid(db_bid.bid_id, config.get('memory_gb'), config.get('cpu_arch'),
+                          config.get('cpu_physical_count'), config.get('cpu_core_count'), config.get('cpu_ghz'),
+                          db_bid.cost, db_bid.start_time, db_bid.end_time))
+    return result
+
+def list_offers():
+    result = []
+    db_result = Offers.query.all()
+    for db_offer in db_result:
+        config = db_offer.config
+        result.append(Offer(db_offer.offer_id, config.get('memory_gb'), config.get('cpu_arch'),
+                            config.get('cpu_physical_count'), config.get('cpu_core_count'), config.get('cpu_ghz'),
+                            db_offer.cost, db_offer.start_time, db_offer.end_time))
+    return result
+
+
+
+
 @app.route('/run_matcher', methods=['GET'])
 def run_matcher():
-    pass
+    return render_template("matcher.html")
 
 @app.route('/update_status', methods=['GET'])
 def update_status():
