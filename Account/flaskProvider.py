@@ -210,6 +210,13 @@ def get_offers():
     return jsonify(result)
 
 
+@app.route('/get_available_offers', methods=['GET'])
+def get_available_offers():
+    all_offers = Offers.query.filter(Offers.status == statuses.AVAILABLE).all()
+    result = offers_schema.dump(all_offers)
+    return jsonify(result)
+
+
 @app.route("/add_contract", methods=['POST'])
 def add_contract():
     contract_id = request.json['contract_id']

@@ -194,21 +194,45 @@ def add_bid():
     config_query = request.json['config_query']
     cost = request.json['cost']
 
+    user_id = request.json['user_id']
+
     start_time = datetime(start_time_l[0], start_time_l[1], start_time_l[2], start_time_l[3], start_time_l[4])
     end_time = datetime(end_time_l[0], end_time_l[1], end_time_l[2], end_time_l[3], end_time_l[4])
     expire_time = datetime(expire_time_l[0], expire_time_l[1], expire_time_l[2], expire_time_l[3], expire_time_l[4])
 
-    new_bid = Bids(bid_id, project_id, quantity, start_time, end_time, expire_time, duration, status, config_query, cost)
+    if credit_valid(user_id, cost):
+        new_bid = Bids(bid_id, project_id, quantity, start_time, end_time, expire_time, duration, status, config_query, cost)
+        db.session.add(new_bid)
+        db.session.commit()
+        return bid_schema.jsonify(new_bid)
+    else:
+        return jsonify("you don't have enough credit to place this bid")
 
-    db.session.add(new_bid)
-    db.session.commit()
 
-    return bid_schema.jsonify(new_bid)
+def credit_valid(user_id, cost):
+    current_user = Users.query.filter(Users.user_id == user_id).one()
+    ubs = ub_relation.query.filter(ub_relation.user_id == user_id).all()
+    previous_costs = 0
+    for ub in ubs:
+        bid = Bids.query.filter(Bids.bid_id == ub.bid_id).one()
+        previous_costs = previous_costs + bid.cost
+
+    if cost + previous_costs <= current_user.credit:
+        return True
+    else:
+        return False
 
 
 @app.route('/get_bids', methods=['GET'])
 def get_bids():
     all_bids = Bids.query.all()
+    result = bids_schema.dump(all_bids)
+    return jsonify(result)
+
+
+@app.route('/get_available_bids', methods=['GET'])
+def get_available_bids():
+    all_bids = Bids.query.filter(Bids.status == statuses.AVAILABLE).all()
     result = bids_schema.dump(all_bids)
     return jsonify(result)
 
