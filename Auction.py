@@ -212,7 +212,6 @@ def add_contract(contracts):
                           'cost': contract.cost}
         MarketAPI.contract_insert(contract_value)
         MarketAPI.relation_insert(contract.contractID, contract.offerID, contract.bidID)
-        # MarketAPI.insert(contract_value, contract.contractID, contract.bidID, contract.offerID)
         MarketAPI.bid_update_status_by_id(contract.bidID, statuses.MATCHED)
         MarketAPI.offer_update_status_by_id(contract.offerID, statuses.MATCHED)
 
@@ -226,14 +225,14 @@ if __name__ == "__main__":
     # for offer in offers:
     #     print(offer.cost)
     #
-    # b = Bid("0165c7d6-4e3d-4165-9c93-d423275a76bf", 10240, "x86_64", 4, 16, 3, 10, datetime(2020, 5, 2, 20, 00),
-    #         datetime(2020, 5, 2, 22, 00), datetime(2020, 5, 1, 10, 00))
-    # o = Offer("08d727a9-485a-4bf8-82e0-ee5f724e2020", 10240, "x86_64", 4, 16, 3, 20, datetime(2020, 5, 2, 10, 00),
-    #           datetime(2020, 5, 2, 12, 00), datetime(2020, 5, 1, 8, 00))
-    # c = Contract(o, b, 10, datetime(2020, 5, 2, 20, 00), datetime(2020, 5, 2, 22, 00))
-    # contracts = [c]
-    # add_contract(contracts)
-    # print("added contract")
+    b = Bid("0165c7d6-4e3d-4165-9c93-d423275a76bf", 10240, "x86_64", 4, 16, 3, 10, datetime(2020, 5, 2, 20, 00),
+            datetime(2020, 5, 2, 22, 00), datetime(2020, 5, 1, 10, 00))
+    o = Offer("08d727a9-485a-4bf8-82e0-ee5f724e2020", 10240, "x86_64", 4, 16, 3, 20, datetime(2020, 5, 2, 10, 00),
+              datetime(2020, 5, 2, 12, 00), datetime(2020, 5, 1, 8, 00))
+    c = Contract(o, b, 10, datetime(2020, 5, 2, 20, 00), datetime(2020, 5, 2, 22, 00))
+    contracts = [c]
+    add_contract(contracts)
+    print("added contract")
 
     d1 = datetime(2020, 6, 2, 8, 00)
     e1 = datetime(2020, 6, 2, 12, 00)
