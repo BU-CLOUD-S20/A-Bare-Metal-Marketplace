@@ -1,79 +1,130 @@
-from _ctypes import sizeof
+from datetime import datetime
+import database_setup.Models.marketModel as Market
+import database_setup.APIs.marketAPI as MarketAPI
+
+now = datetime.now()
+# print(now)
+current_time = now.strftime("%Y%m%d%H%M")
 
 
-class Requirements:
-    def __init__(self):
-        pass
-    pass
+# print(current_time)
 
 
 class Bid:
-    def __init__(self, id, requirements, allocation_time, expiry_time, cost ):
-        self.id = id
-        self.requirements = requirements
-        self.allocation_time = allocation_time
-        self.expiry_time = expiry_time
+    def __init__(self, id1, memory, cpu_arch, cpu_physical_count, cpu_core_count, cpu_ghz, cost, start_time, end_time):
+        self.bidID = id1
+        self.requirements = [memory, cpu_arch, cpu_physical_count, cpu_core_count, cpu_ghz]
         self.cost = cost
+        self.start_time = int(start_time.strftime("%Y%m%d%H%M"))
+        self.end_time = int(end_time.strftime("%Y%m%d%H%M"))
+        self.expiry = self.start_time - int(current_time)
+
 
 class Offer:
-    def __init__(self, id, requirements, allocation_time, expiry_time, cost):
-        self.id = id
-        self.requirements = requirements
-        self.allocation_time = allocation_time
-        self.expiry_time = expiry_time
+    def __init__(self, id1, memory, cpu_arch, cpu_physical_count, cpu_core_count, cpu_ghz, cost, start_time, end_time):
+        self.offerID = id1
+        self.requirements = [memory, cpu_arch, cpu_physical_count, cpu_core_count, cpu_ghz]
         self.cost = cost
-
-class Contract:
-    def __init__(self, Offer, Bid, cost):
-        self.bid_id = Bid.id
-        self.offer_id =  Offer.id
-        #figure out how to make a non-repeating contract id self.id =
-        self.allocation_time = Offer.allocation_time
-        self.cost = cost
-        
-class Engine:
-    def __init__(self, bids , offers , ):
-        self.bids = bids
-        self.offers = offers
-
-    bids = Bid(123,456,700,5,1)
-
-    def get_bid(self, bids):
-        list_bids = ''
-        # bids is the list of bids from database
-        lowest_expiry_time = bids[0].expiry_time
-        for i in range (sizeof(bids)):
-            if bids[i].expiry_time < lowest_expiry_time:
-                lowest_expiry_time = bids[i].expiry_time
-                current_bid = bids[i]
-        list_bids.append(current_bid)
-        for i in range (sizeof(bids)):
-            if (bids[i].requirements == current_bid.requiremnts):
-                list_bids.append(bids[i])
-        for i in range (sizeof(list_bids)):
-            if list_bids[i].cost > current_bid.cost:
-                current_bid = list_bids[i]
-                current_bid.cost = current_bid.cost + 0.01
-        return current_bid
+        self.start_time = int(start_time.strftime("%Y%m%d%H%M"))
+        self.end_time = int(end_time.strftime("%Y%m%d%H%M"))
+        self.expiry = self.start_time - int(current_time)
 
 
-    def get_offer(self, offers , current_bid):
-        list_offers = ''
-        for i in range(sizeof(offers)):
-            if offers[i].requirements == current_bid.requiremnts & offers[i].cost < current_bid.cost:
-                list_offers.append(offers[i])
-        highest_price = list_offers[0].cost
-        current_offer = list_offers[0]
-        for i in range(sizeof(list_offers)):
-            if list_offers[i].cost > highest_price:
-                highest_price = list_offers[i].cost
-                current_offer = list_offers[i]
-        return current_offer
-    def create_contract(self, current_offer, current_bid):
-        contract = Contract(current_offer,current_bid, current_bid.cost)
-        return contract
+def get_bids():
+    result = []
+    db_result = MarketAPI.bid_select_all()
+    for db_bid in db_result:
+        config = db_bid.config_query
+        result.append(Bid(db_bid.bid_id, config.get('memory_gb'), config.get('cpu_arch'),
+                          config.get('cpu_physical_count'), config.get('cpu_core_count'), config.get('cpu_ghz'),
+                          db_bid.cost, db_bid.start_time, db_bid.end_time))
+    return result
 
 
+def get_offers():
+    result = []
+    db_result = MarketAPI.offer_select_all()
+    for db_offer in db_result:
+        config = db_offer.config
+        result.append(Offer(db_offer.offer_id, config.get('memory_gb'), config.get('cpu_arch'),
+                            config.get('cpu_physical_count'), config.get('cpu_core_count'), config.get('cpu_ghz'),
+                            db_offer.cost, db_offer.start_time, db_offer.end_time))
+    return result
 
-if  __name__ == "__main__":
-    x =  Engine.get_bid()
+
+if __name__ == "__main__":
+    # d1 = datetime(2020, 7, 14, 10, 30)
+    # e1 = datetime(2020, 7, 14, 22, 30)
+    # bid1 = Bid("bid1", 10240, "x86_64", 4, 16, 3, 10, d1, e1)
+    # # print(bid1.start_time,bid1.end_time,bid1.expiry)
+    # d2 = datetime(2020, 7, 14, 10, 30)
+    # e2 = datetime(2020, 7, 14, 22, 30)
+    # bid2 = Bid("bid2", 10240, "x86_64", 4, 16, 3, 20, d2, e2)
+    # d3 = datetime(2020, 7, 14, 10, 30)
+    # e3 = datetime(2020, 7, 14, 22, 30)
+    # bid3 = Bid("bid3", 10240, "x86_64", 4, 16, 3, 15, d3, e3)
+    # d4 = datetime(2020, 7, 14, 10, 30)
+    # e4 = datetime(2020, 7, 14, 22, 30)
+    # bid4 = Bid("bid4", 10240, "x86_64", 4, 16, 3, 12, d4, e4)
+    # d5 = datetime(2020, 7, 14, 10, 30)
+    # e5 = datetime(2020, 7, 14, 22, 30)
+    # bid5 = Bid("bid5", 10240, "x86_64", 4, 16, 3, 15, d4, e4)
+    # d6 = datetime(2020, 7, 14, 10, 30)
+    # e6 = datetime(2020, 7, 14, 22, 30)
+    # bid6 = Bid("bid6", 10240, "x86_64", 4, 16, 3, 17, d4, e4)
+    # d7 = datetime(2020, 7, 14, 10, 30)
+    # e7 = datetime(2020, 7, 14, 22, 30)
+    # bid7 = Bid("bid7", 10240, "x86_64", 4, 16, 3, 19, d4, e4)
+    # d8 = datetime(2020, 7, 14, 10, 30)
+    # e8 = datetime(2020, 7, 14, 22, 30)
+    # bid8 = Bid("bid8", 10240, "x86_64", 4, 16, 3, 12, d4, e4)
+    # d9 = datetime(2020, 7, 14, 10, 30)
+    # e9 = datetime(2020, 7, 14, 22, 30)
+    # bid9 = Bid("bid9", 10240, "x86_64", 4, 16, 3, 15, d4, e4)
+    # d10 = datetime(2020, 7, 14, 10, 30)
+    # e10 = datetime(2020, 7, 14, 22, 30)
+    # bid10 = Bid("bid10", 10240, "x86_64", 4, 16, 3, 17, d4, e4)
+    # d11 = datetime(2020, 7, 14, 10, 30)
+    # e11 = datetime(2020, 7, 14, 22, 30)
+    # bid11 = Bid("bid11", 10240, "x86_64", 4, 16, 3, 9, d4, e4)
+    #
+    # bids = [bid1, bid2, bid3, bid4, bid5, bid6, bid7, bid8, bid9, bid10, bid11]
+    #
+    # offer1 = Offer("offer1", 10240, "x86_64", 4, 16, 3, 5, d4, e4)
+    # offer2 = Offer("offer2", 10240, "x86_64", 4, 16, 3, 2, d4, e4)
+    # offer3 = Offer("offer3", 10240, "x86_64", 4, 16, 3, 4, d4, e4)
+    # offer4 = Offer("offer4", 10240, "x86_64", 4, 16, 3, 5, d4, e4)
+    # offer5 = Offer("offer5", 10240, "x86_64", 4, 16, 3, 7, d4, e4)
+    # offer6 = Offer("offer6", 10240, "x86_64", 4, 16, 3, 20, d4, e4)
+    # offer7 = Offer("offer7", 10240, "x86_64", 4, 16, 3, 1, d4, e4)
+    # offer8 = Offer("offer8", 10240, "x86_64", 4, 16, 3, 6, d4, e4)
+    #
+    # offers = [offer1, offer2, offer3, offer4, offer5, offer6, offer7, offer8]
+    bids = get_bids()
+    offers = get_offers()
+
+    while ((len(bids)) > 0 and (len(offers)) > 0):
+        current = [1000000000000000, 0]
+        lastPrice = bids[0].cost
+        price = bids[0].cost
+        for i in range(len(bids)):
+            if (bids[i].expiry < current[0]):
+                current = [bids[i].expiry, i]
+        for i in range(len(bids)):
+            if (bids[i].requirements == bids[current[1]].requirements):
+                if bids[i].cost > price:
+                    lastPrice = price
+                    price = bids[i].cost
+                    bestBid = bids[i]
+                    bestBidIndex = i
+        for j in range(len(offers)):
+            ExpensiveOffer = 0
+            if ((offers[j].requirements == bestBid.requirements) and (offers[j].cost <= price)):
+                if (offers[j].cost > ExpensiveOffer):
+                    ExpensiveOffer = offers[j].cost
+                    OfferIndex = j
+        # print(bestBid.bidID, end="")
+        # print(offers[OfferIndex].offerID, end="")
+        print(ExpensiveOffer)
+        bids.remove(bids[bestBidIndex])
+        offers.remove(offers[j])
