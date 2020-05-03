@@ -10,6 +10,7 @@ import sqlalchemy_jsonfield
 from datetime import datetime
 import os
 import sys
+
 import statuses
 
 now = datetime.now()
@@ -99,20 +100,20 @@ class Contracts(db.Model):
     start_time = db.Column(db.DateTime(timezone=True), nullable=False)
     end_time = db.Column(db.DateTime(timezone=True), nullable=False)
     cost = db.Column(db.Float, nullable=False)
-    project_id = db.Column(db.String(64), nullable=False)
+#    project_id = db.Column(db.String(64), nullable=False)
 
-    def __init__(self, contract_id, status, start_time, end_time, cost, project_id):
+    def __init__(self, contract_id, status, start_time, end_time, cost):
         self.contract_id =     contract_id
         self.status =     status
         self.start_time =     start_time
         self.end_time =     end_time
         self.cost =      cost
-        self.project_id  =     project_id 
+#        self.project_id  =     project_id 
 
 # Contracts Schema
 class ContractSchema(ma.Schema):
     class Meta:
-        fields = ('contract_id', 'status', 'start_time', 'end_time', 'cost', 'project_id')
+        fields = ('contract_id', 'status', 'start_time', 'end_time', 'cost')
 
 # cbo_relation
 class cbo_relation(db.Model):
@@ -223,7 +224,7 @@ def get_offers():
 def add_contract():
 
     contract_id = request.json['contract_id']
-    project_id = request.json['project_id']
+#    project_id = request.json['project_id']
     start_time_l = request.json['start_time']
     end_time_l = request.json['end_time']
     status = request.json['status']
@@ -232,7 +233,7 @@ def add_contract():
     start_time = datetime(start_time_l[0], start_time_l[1], start_time_l[2], start_time_l[3], start_time_l[4])
     end_time = datetime(end_time_l[0], end_time_l[1], end_time_l[2], end_time_l[3], end_time_l[4])
 
-    new_contract = Contracts(contract_id, status, start_time, end_time, cost, project_id)
+    new_contract = Contracts(contract_id, status, start_time, end_time, cost)
 
     db.session.add(new_contract)
     db.session.commit()
@@ -312,6 +313,18 @@ def list_offers():
     return result
 
 
+def insert_contract(contracts):
+    for contract in contracts:
+        new_contract = Contracts(contract.contractID, statuses.AVAILABLE, contract.start_time, contract.end_time,
+                                 contract.cost)
+        db.session.add(new_contract)
+        new_cbo = cbo_relation(contract.contractID, contract.offerID, contract.bidID)
+        db.session.commit()
+        db.session.add(new_cbo)
+        db.session.commit()
+        Bids.query.filter(Bids.bid_id == contract.bidID).update({"status": statuses.MATCHED})
+        Offers.query.filter(Offers.offer_id == contract.offerID).update({"status": statuses.MATCHED})
+        db.session.commit()
 
 
 @app.route('/run_matcher', methods=['GET'])
