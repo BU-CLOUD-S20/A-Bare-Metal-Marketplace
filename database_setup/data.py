@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime, timedelta
-import Models.marketModel as Market
-import statuses
+import database_setup.Models.marketModel as Market
+import database_setup.statuses as statuses
 
 
 # bid_ids = []
@@ -88,7 +88,7 @@ offer6 = {'offer_id': '89b5de49-12c3-439b-be09-4e75454b94f4', 'project_id': 'cad
 offer7 = {'offer_id': 'e185a350-5078-48fa-8488-584caa8e23fb', 'project_id': 'e8438d40-8a65-406d-8f9e-3812d6eadf12', 'status': 'available', 'resource_id': '59b397a0-f863-44a3-8ee7-59e4e3473c8a', 'start_time': datetime(2020, 5, 2, 16, 00), 'end_time': datetime(2020, 5, 2, 20, 00), 'expire_time': datetime(2020, 5, 1, 8, 00), 'config': {'memory_gb': 10240, 'cpu_arch': 'x86_64', 'cpu_physical_count': 4, 'cpu_core_count': 16, 'cpu_ghz': 3}, 'cost': 12}
 offer8 = {'offer_id': 'b235f398-368e-4059-b556-2bfbf15cf01f', 'project_id': '39ad89cc-ade2-40c4-a1ed-1375afdba763', 'status': 'available', 'resource_id': 'a2798b5d-8ec2-43a2-9e6f-297b8f9ed3ef', 'start_time': datetime(2020, 5, 2, 20, 00), 'end_time': datetime(2020, 5, 2, 23, 00), 'expire_time': datetime(2020, 5, 1, 8, 00), 'config': {'memory_gb': 10240, 'cpu_arch': 'x86_64', 'cpu_physical_count': 4, 'cpu_core_count': 16, 'cpu_ghz': 3}, 'cost': 15}
 offer9 = {'offer_id': '0921d243-3088-4662-9e9f-75087e4c18e7', 'project_id': '7e222bad-151d-41ce-a6ed-2138b047aa22', 'status': 'available', 'resource_id': 'e17d37c8-385a-47c3-9dd6-fbd168b81728', 'start_time': datetime(2020, 5, 2, 20, 00), 'end_time': datetime(2020, 5, 2, 22, 00), 'expire_time': datetime(2020, 5, 1, 8, 00), 'config': {'memory_gb': 10240, 'cpu_arch': 'x86_64', 'cpu_physical_count': 4, 'cpu_core_count': 16, 'cpu_ghz': 3}, 'cost': 17}
-
+offers = [offer0, offer1, offer2, offer3, offer4, offer5, offer6, offer7, offer8, offer9]
 
 bid0 = {'bid_id': '24ea1cc1-811f-437e-a748-b8a0f00cd401', 'project_id': 'ba0ee0fe-ee77-474e-8588-cf6a023c6c05', 'quantity': 1, 'start_time': datetime(2020, 5, 2, 8, 00), 'end_time': datetime(2020, 5, 2, 12, 00), 'expire_time': datetime(2020, 5, 1, 1, 00), 'duration': 16400, 'status': 'available', 'config_query': {'memory_gb': 10240, 'cpu_arch': 'x86_64', 'cpu_physical_count': 4, 'cpu_core_count': 16, 'cpu_ghz': 3}, 'cost': 20}
 bid1 = {'bid_id': '6ee19822-d16e-4372-9f3d-5ae430237d30', 'project_id': '3b16fe2e-c59d-4cc5-a588-10a0603dc978', 'quantity': 1, 'start_time': datetime(2020, 5, 2, 10, 00), 'end_time': datetime(2020, 5, 2, 12, 00), 'expire_time': datetime(2020, 5, 1, 2, 00), 'duration': 16400, 'status': 'available', 'config_query': {'memory_gb': 10240, 'cpu_arch': 'x86_64', 'cpu_physical_count': 4, 'cpu_core_count': 16, 'cpu_ghz': 3}, 'cost': 11}
@@ -100,6 +100,8 @@ bid6 = {'bid_id': '4cccbeaf-3e60-4dcc-8a3d-eba41e91c5a9', 'project_id': 'f1d7571
 bid7 = {'bid_id': '9ae99e29-092d-492c-8f58-e804f1f21685', 'project_id': '9bdeeeb5-290a-48ed-a269-381ee3232f94', 'quantity': 1, 'start_time': datetime(2020, 5, 2, 16, 00), 'end_time': datetime(2020, 5, 2, 20, 00), 'expire_time': datetime(2020, 5, 1, 8, 00), 'duration': 16400, 'status': 'available', 'config_query': {'memory_gb': 10240, 'cpu_arch': 'x86_64', 'cpu_physical_count': 4, 'cpu_core_count': 16, 'cpu_ghz': 3}, 'cost': 17}
 bid8 = {'bid_id': 'fcf1b70f-3236-41a5-bf65-be26e3ed8d56', 'project_id': '1857ca74-3690-4a5a-abf5-82ba5cd336a0', 'quantity': 1, 'start_time': datetime(2020, 5, 2, 20, 00), 'end_time': datetime(2020, 5, 2, 23, 00), 'expire_time': datetime(2020, 5, 1, 9, 00), 'duration': 16400, 'status': 'available', 'config_query': {'memory_gb': 10240, 'cpu_arch': 'x86_64', 'cpu_physical_count': 4, 'cpu_core_count': 16, 'cpu_ghz': 3}, 'cost': 10}
 bid9 = {'bid_id': '0165c7d6-4e3d-4165-9c93-d423275a76bf', 'project_id': '45ab4988-8a5f-47e1-b3d1-7d86e984025f', 'quantity': 1, 'start_time': datetime(2020, 5, 2, 20, 00), 'end_time': datetime(2020, 5, 2, 22, 00), 'expire_time': datetime(2020, 5, 1, 10, 00), 'duration': 16400, 'status': 'available', 'config_query': {'memory_gb': 10240, 'cpu_arch': 'x86_64', 'cpu_physical_count': 4, 'cpu_core_count': 16, 'cpu_ghz': 3}, 'cost': 10}
+
+bids = [bid0, bid1, bid2, bid3, bid4, bid5, bid6, bid7, bid8, bid9]
 
 update_bid0 = {'bid_id': '24ea1cc1-811f-437e-a748-b8a0f00cd401', 'project_id': 'ba0ee0fe-ee77-474e-8588-cf6a023c6c05', 'quantity': 2, 'start_time': datetime(2020, 2, 29, 10, 30), 'end_time': datetime(2020, 3, 1, 10, 30), 'duration': 16400, 'status': 'available', 'config_query': {'memory_gb': 10240, 'cpu_arch': 'x86_64', 'cpu_physical_count': 4, 'cpu_core_count': 16, 'cpu_ghz': 3}, 'cost': 11}
 

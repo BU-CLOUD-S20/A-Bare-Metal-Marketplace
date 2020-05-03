@@ -39,8 +39,8 @@ class Contract:
         self.offerID = Offer.offerID
         self.start_time =start_time
         self.end_time = end_time
-        self.contractID
-        self.allocation_time = Offer.allocation_time
+        self.contractID = "e7de4e71-163d-4627-934c-1b5db1348c0b"
+        # self.allocation_time = Offer.allocation_time
         self.cost = cost
 
 
@@ -185,7 +185,7 @@ def Bare_Metal_Auction(bids, offers):
 
 def get_bids():
     result = []
-    db_result = MarketAPI.bid_select_all()
+    db_result = MarketAPI.bid_select_all_available()
     for db_bid in db_result:
         config = db_bid.config_query
         result.append(Bid(db_bid.bid_id, config.get('memory_gb'), config.get('cpu_arch'),
@@ -196,7 +196,7 @@ def get_bids():
 
 def get_offers():
     result = []
-    db_result = MarketAPI.offer_select_all()
+    db_result = MarketAPI.offer_select_all_available()
     for db_offer in db_result:
         config = db_offer.config
         result.append(Offer(db_offer.offer_id, config.get('memory_gb'), config.get('cpu_arch'),
@@ -207,14 +207,34 @@ def get_offers():
 
 def add_contract(contracts):
     for contract in contracts:
-        contract_value = {"contract_id": contract.contractID, "status": statuses}
-        contract = Market.Contracts(contract_id=values['contract_id'], status=values['status'],
-                                    start_time=values['start_time'], end_time=values['end_time'], cost=values['cost'],
-                                    project_id=values['project_id'])
-
+        contract_value = {'contract_id': contract.contractID, 'status': statuses.AVAILABLE,
+                          'start_time': contract.start_time, 'end_time': contract.end_time,
+                          'cost': contract.cost}
+        MarketAPI.contract_insert(contract_value)
+        MarketAPI.relation_insert(contract.contractID, contract.offerID, contract.bidID)
+        # MarketAPI.insert(contract_value, contract.contractID, contract.bidID, contract.offerID)
+        MarketAPI.bid_update_status_by_id(contract.bidID, statuses.MATCHED)
+        MarketAPI.offer_update_status_by_id(contract.offerID, statuses.MATCHED)
 
 
 if __name__ == "__main__":
+    # bids = get_bids()
+    # offers = get_offers()
+    # for bid in bids:
+    #     print(bid.cost)
+    # print("######")
+    # for offer in offers:
+    #     print(offer.cost)
+    #
+    # b = Bid("0165c7d6-4e3d-4165-9c93-d423275a76bf", 10240, "x86_64", 4, 16, 3, 10, datetime(2020, 5, 2, 20, 00),
+    #         datetime(2020, 5, 2, 22, 00), datetime(2020, 5, 1, 10, 00))
+    # o = Offer("08d727a9-485a-4bf8-82e0-ee5f724e2020", 10240, "x86_64", 4, 16, 3, 20, datetime(2020, 5, 2, 10, 00),
+    #           datetime(2020, 5, 2, 12, 00), datetime(2020, 5, 1, 8, 00))
+    # c = Contract(o, b, 10, datetime(2020, 5, 2, 20, 00), datetime(2020, 5, 2, 22, 00))
+    # contracts = [c]
+    # add_contract(contracts)
+    # print("added contract")
+
     d1 = datetime(2020, 6, 2, 8, 00)
     e1 = datetime(2020, 6, 2, 12, 00)
     exp1 = datetime(2020, 6, 1, 1, 00)
@@ -301,24 +321,24 @@ if __name__ == "__main__":
     offer10 = Offer("offer10", 10240, "x86_64", 4, 16, 3, 17, d10, e10, exp10)
     offers = [offer1, offer2, offer3, offer4, offer5, offer6, offer7, offer8, offer9, offer10]
 
-print("This the selected bid with second price")
-print(second_price_auction(bids))
+    print("This the selected bid with second price")
+    print(second_price_auction(bids))
 
-print("these are the offers that overlap with bid3")
-overlap_offers = check_time_overlap(bid3, offers)  # should print 3,4,5,7
-for i in range(len(overlap_offers)):
-    print(overlap_offers[i].offerID)
+    print("these are the offers that overlap with bid3")
+    overlap_offers = check_time_overlap(bid3, offers)  # should print 3,4,5,7
+    for i in range(len(overlap_offers)):
+        print(overlap_offers[i].offerID)
 
-print("these are the offers that overlap with bid4")
-overlap_offers = check_time_overlap(bid4, offers)  # should print 4,5,7
-for i in range(len(overlap_offers)):
-    print(overlap_offers[i].offerID)
+    print("these are the offers that overlap with bid4")
+    overlap_offers = check_time_overlap(bid4, offers)  # should print 4,5,7
+    for i in range(len(overlap_offers)):
+        print(overlap_offers[i].offerID)
 
-print("these are the offers that overlap with bid5")
-overlap_offers = check_time_overlap(bid5, offers)  # should print 5,8
-for i in range(len(overlap_offers)):
-    print(overlap_offers[i].offerID)
+    print("these are the offers that overlap with bid5")
+    overlap_offers = check_time_overlap(bid5, offers)  # should print 5,8
+    for i in range(len(overlap_offers)):
+        print(overlap_offers[i].offerID)
 # print(lowest_exp_bids(bids))
 
-test = Bare_Metal_Auction(bids, offers)
+    test = Bare_Metal_Auction(bids, offers)
 

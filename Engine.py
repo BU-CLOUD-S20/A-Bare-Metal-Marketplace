@@ -123,8 +123,8 @@ if __name__ == "__main__":
                 if (offers[j].cost > ExpensiveOffer):
                     ExpensiveOffer = offers[j].cost
                     OfferIndex = j
-        print(bestBid.bidID, end=" ")
-        print(offers[OfferIndex].offerID, end=" ")
+        # print(bestBid.bidID, end="")
+        # print(offers[OfferIndex].offerID, end="")
         print(ExpensiveOffer)
         bids.remove(bids[bestBidIndex])
         offers.remove(offers[j])

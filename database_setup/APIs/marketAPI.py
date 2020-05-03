@@ -5,7 +5,8 @@ from sqlalchemy.orm import sessionmaker
 sys.path.append("/home/stardust/A-Bare-Metal-Marketplace/database_setup")
 sys.path.append("/home/stardust/A-Bare-Metal-Marketplace/database_setup/Models")
 import database_setup.Models.marketModel as Market
-import database_setup.statuses
+import database_setup.statuses as statuses
+import database_setup.data as data
 
 engine = create_engine("mysql+pymysql://market:123456@localhost/market")
 
@@ -31,12 +32,21 @@ def offer_insert(values):
     session.commit()
 
 
+def insert(values, contract_id, offer_id, bid_id):
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    contract = Market.Contracts(contract_id=values['contract_id'], status=values['status'],
+                                start_time=values['start_time'], end_time=values['end_time'], cost=values['cost'])
+    relation = Market.CBORelation(contract_id=contract_id, offer_id=offer_id, bid_id=bid_id)
+    session.add_all([contract, relation])
+    session.commit()
+
+
 def contract_insert(values):
     Session = sessionmaker(bind=engine)
     session = Session()
     contract = Market.Contracts(contract_id=values['contract_id'], status=values['status'],
-                                start_time=values['start_time'], end_time=values['end_time'], cost=values['cost'],
-                                project_id=values['project_id'])
+                                start_time=values['start_time'], end_time=values['end_time'], cost=values['cost'])
     session.add(contract)
     session.commit()
 
@@ -191,6 +201,8 @@ def offer_update_status_by_id(offer_id, status):
     session.commit()
 
 
-bids = bid_select_all()
-print(bids)
+# for bid in data.bids:
+#     bid_insert(bid)
+# for offer in data.offers:
+#     offer_insert(offer)
 # bid_insert({'bid_id': '24ea1cc1-811f-437e-a748-b8a0f00cd401', 'project_id': 'ba0ee0fe-ee77-474e-8588-cf6a023c6c05', 'quantity': 1, 'start_time': datetime(2020, 2, 29, 10, 30), 'end_time': datetime(2020, 3, 1, 10, 30), 'expire_time': datetime(2020, 3, 10, 10, 30), 'duration': 16400, 'status': 'available', 'config_query': {'memory_gb': 10240, 'cpu_arch': 'x86_64', 'cpu_physical_count': 4, 'cpu_core_count': 16, 'cpu_ghz': 3}, 'cost': 11})
