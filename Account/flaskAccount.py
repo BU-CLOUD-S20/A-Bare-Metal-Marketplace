@@ -79,8 +79,7 @@ class uc_relation(db.Model):
     provider_id = db.Column(db.String(64), db.ForeignKey("users.user_id"))
     renter_id = db.Column(db.String(64), db.ForeignKey("users.user_id"))
 
-    def __init__(self, pid, contract_id, provider_id, renter_id):
-        self.pid = pid
+    def __init__(self, contract_id, provider_id, renter_id):
         self.contract_id = contract_id
         self.provider_id = provider_id
         self.renter_id = renter_id
@@ -152,12 +151,12 @@ def get_contracts():
 
 @app.route("/add_uc", methods=['POST'])
 def add_uc():
-    pid = request.json['pid']
+
     contract_id = request.json['contract_id']
     provider_id = request.json['provider_id']
     renter_id = request.json['renter_id']
 
-    new_uc = uc_relation(pid, contract_id, provider_id, renter_id)
+    new_uc = uc_relation(contract_id, provider_id, renter_id)
 
     db.session.add(new_uc)
     db.session.commit()
@@ -244,10 +243,13 @@ def transaction(contract, provider, renter):
 
     if is_renter_valid(renter, contract):
         new_renter, new_provider = credit_transfer(renter, provider, contract)
-        Users.query.filter(Users.user_id == new_renter.id).update({"credit": new_renter.credit})
-        Users.query.filter(Users.user_id == new_provider.id).update({"credit": new_provider.credit})
+        Users.query.filter(Users.user_id == new_renter.user_id).update({"credit": new_renter.credit})
+        Users.query.filter(Users.user_id == new_provider.user_id).update({"credit": new_provider.credit})
         contract.status = statuses.CONFIRMED
         db.session.add(contract)
+        db.session.commit()
+        relation = uc_relation(contract.contract_id, new_provider.user_id, new_renter.user_id)
+        db.session.add(relation)
         db.session.commit()
         return Response(True, contract, new_provider, new_renter)
     else:
@@ -285,6 +287,14 @@ def run_transaction():
     start_time = datetime(start_time_l[0], start_time_l[1], start_time_l[2], start_time_l[3], start_time_l[4])
     end_time = datetime(end_time_l[0], end_time_l[1], end_time_l[2], end_time_l[3], end_time_l[4])
 
+    # contract_id = "abc"
+    # start_time = datetime(2020, 6, 1, 10, 00)
+    # end_time = datetime(2020, 6, 2, 12, 00)
+    # status = "available"
+    # cost = 7
+    # provider_id = "p1"
+    # renter_id = "r1"
+
     contract = Contracts(contract_id, status, start_time, end_time, cost)
     provider = Users.query.filter(Users.user_id == provider_id).one()
     renter = Users.query.filter(Users.user_id == renter_id).one()
@@ -292,8 +302,7 @@ def run_transaction():
     response = transaction(contract, provider, renter)
 
     data = {'flag': response.flag}
-    return json.dumps(data)
-
+    return jsonify(data)
 
 
     # renters_list, providers_list, contracts_list = get_data()
@@ -306,5 +315,4 @@ def run_transaction():
 
 # Run Server
 if __name__ == "__main__":
-    # app.run(host='0.0.0.0')
-    app.run()
+    app.run(host='0.0.0.0', port=5001)
