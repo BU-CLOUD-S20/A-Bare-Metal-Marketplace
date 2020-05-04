@@ -226,8 +226,8 @@ def add_contract(contracts):
 def generate_id():
     return ''.join(random.choice('0123456789abcdef') for i in range(36))
 
-if __name__ == "__main__":
-    status = 0
+
+def main():
     de_bid = ""
     de_offer = ""
     new_bids = {}
@@ -249,7 +249,7 @@ if __name__ == "__main__":
 
     while(1):
         if current_offer != []:
-
+            status = 1
             if current_bid.start_time > current_offer.start_time:
             # bid starts later than offer
             # create new offer in beginning
@@ -313,6 +313,7 @@ if __name__ == "__main__":
                     current_offer = expensive_offer(matchingOffers)
                 else:
                     print("All viable bids and offers have been matched.")
+                    status = 0
                     break
             else:     
                 clashBids.pop(0)
@@ -347,5 +348,8 @@ if __name__ == "__main__":
     matcher_output["new_offers"] = new_offers
     matcher_output["new_contract"] = new_contract    
     matcher_output["new_cbo"] = new_cbo
-    print(matcher_output)
+    return matcher_output
 
+
+if __name__ == "__main__":
+    matcher_output = main()
