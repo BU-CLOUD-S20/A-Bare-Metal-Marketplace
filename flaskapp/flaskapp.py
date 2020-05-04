@@ -604,7 +604,38 @@ def handle_matcher():
             db.session.commit()
 
             ### ACCT SERVICE STUFF
+            contract_id = matcher_output["new_contract"].contract_id
+            start_time = matcher_output["new_contract"].start_time
+            end_time = matcher_output["new_contract"].end_time
+            contract_status = matcher_output["new_contract"].status
+            cost = matcher_output["new_contract"].cost
+            provider_id = matcher_output["offer_deactivate"].project_id
+            renter_id = matcher_output["bid_deactivate"].project_id
 
+            data = {'contract_id': contract_id, 'start_time': start_time, 'end_time': end_time,
+                    'status': contract_status, 'cost': cost, 'provider_id': provider_id, 'renter_id': renter_id}
+
+            res = request.post("http://0.0.0.0:5001/run_transaction", data=json.dumps(data),
+                               headers={'Content-Type': 'application/json'})
+            flag = res.json['flag']
+            if flag:
+                Bids.query.filter(Bids.bid_id == matcher_output["bid_deactivate"].bid_id).update\
+                    ({"status": statuses.MATCHED})
+                Offers.query.filter(Offers.offer_id == matcher_output["offer_deactivate"].offer_id).update\
+                    ({"status": statuses.MATCHED})
+                Contracts.query.filter(Contracts.contract_id == matcher_output["new_contract"].contract_id).update\
+                    ({"status": statuses.CONFIRMED})
+                db.session.add(contract)
+                db.session.commit()
+            else:
+                Bids.query.filter(Bids.bid_id == matcher_output["bid_deactivate"].bid_id).update \
+                    ({"status": statuses.CANCELLED})
+                Offers.query.filter(Offers.offer_id == matcher_output["offer_deactivate"].offer_id).update \
+                    ({"status": statuses.AVAILABLE})
+                Contracts.query.filter(Contracts.contract_id == matcher_output["new_contract"].contract_id).update \
+                    ({"status": statuses.CANCELLED})
+                db.session.add(contract)
+                db.session.commit()
 
     return
 
