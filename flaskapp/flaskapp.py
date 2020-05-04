@@ -648,13 +648,24 @@ def handle_matcher():
             db.session.add(matcher_output["new_cbo"])
             db.session.commit()
 
-
-
             ### ACCT SERVICE POST REQUEST
+### ACCT SERVICE STUFF
+            contract_id = matcher_output["new_contract"].contract_id
+            start_time = matcher_output["new_contract"].start_time
+            end_time = matcher_output["new_contract"].end_time
+            contract_status = matcher_output["new_contract"].status
+            cost = matcher_output["new_contract"].cost
+            provider_id = matcher_output["offer_deactivate"].project_id
+            renter_id = matcher_output["bid_deactivate"].project_id
 
-            contract_approved = True
+            data = {'contract_id': contract_id, 'start_time': start_time, 'end_time': end_time,
+                    'status': contract_status, 'cost': cost, 'provider_id': provider_id, 'renter_id': renter_id}
 
-            if (contract_approved):
+            res = request.post("http://0.0.0.0:5001/run_transaction", data=json.dumps(data),
+                               headers={'Content-Type': 'application/json'})
+            contract_approved = res.json['flag']
+
+            if contract_approved:
                 if "before_bid" in matcher_output["new_bids"]:
                     db.session.add(matcher_output["new_bids"]["before_bid"])
                     db.session.commit()
@@ -675,7 +686,6 @@ def handle_matcher():
                 offer_de = Offers.query.filter_by(offer_id=matcher_output["offer_deactivate"]).first()
                 offer_de.status = statuses.MATCHED
                 db.session.commit()
-
 
     return
 

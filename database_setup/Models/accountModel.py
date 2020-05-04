@@ -6,7 +6,7 @@ sys.path.append("/home/stardust/A-Bare-Metal-Marketplace/database_setup")
 import database_setup.statuses as statuses
 
 
-engine = create_engine("mysql+pymysql://marketplace:123456@localhost/account")
+engine = create_engine("mysql+pymysql://market:123456@localhost/account")
 Base = declarative_base()
 
 
@@ -27,7 +27,6 @@ class Contracts(Base):
     start_time = Column(DateTime(timezone=True), nullable=False)
     end_time = Column(DateTime(timezone=True), nullable=False)
     cost = Column(Float, nullable=False)
-    project_id = Column(String(64), nullable=False)
 
 
 class UCRelation(Base):
@@ -43,5 +42,5 @@ def init():
     Base.metadata.create_all(engine)
 
 
-if  __name__ == "__main__":
+if __name__ == "__main__":
     init()

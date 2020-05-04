@@ -57,21 +57,19 @@ class Contracts(db.Model):
     start_time = db.Column(db.DateTime(timezone=True), nullable=False)
     end_time = db.Column(db.DateTime(timezone=True), nullable=False)
     cost = db.Column(db.Float, nullable=False)
-    project_id = db.Column(db.String(64), nullable=False)
 
-    def __init__(self, contract_id, status, start_time, end_time, cost, project_id):
+    def __init__(self, contract_id, status, start_time, end_time, cost):
         self.contract_id = contract_id
         self.status = status
         self.start_time = start_time
         self.end_time = end_time
         self.cost = cost
-        self.project_id = project_id
 
 
 # Contracts Schema
 class ContractSchema(ma.Schema):
     class Meta:
-        fields = ('contract_id', 'status', 'start_time', 'end_time', 'cost', 'project_id')
+        fields = ('contract_id', 'status', 'start_time', 'end_time', 'cost')
 
 
 # uc_relation
@@ -81,8 +79,7 @@ class uc_relation(db.Model):
     provider_id = db.Column(db.String(64), db.ForeignKey("users.user_id"))
     renter_id = db.Column(db.String(64), db.ForeignKey("users.user_id"))
 
-    def __init__(self, pid, contract_id, provider_id, renter_id):
-        self.pid = pid
+    def __init__(self, contract_id, provider_id, renter_id):
         self.contract_id = contract_id
         self.provider_id = provider_id
         self.renter_id = renter_id
@@ -129,7 +126,6 @@ def get_users():
 @app.route("/add_contract", methods=['POST'])
 def add_contract():
     contract_id = request.json['contract_id']
-    project_id = request.json['project_id']
     start_time_l = request.json['start_time']
     end_time_l = request.json['end_time']
     status = request.json['status']
@@ -138,7 +134,7 @@ def add_contract():
     start_time = datetime(start_time_l[0], start_time_l[1], start_time_l[2], start_time_l[3], start_time_l[4])
     end_time = datetime(end_time_l[0], end_time_l[1], end_time_l[2], end_time_l[3], end_time_l[4])
 
-    new_contract = Contracts(contract_id, status, start_time, end_time, cost, project_id)
+    new_contract = Contracts(contract_id, status, start_time, end_time, cost)
 
     db.session.add(new_contract)
     db.session.commit()
@@ -155,12 +151,12 @@ def get_contracts():
 
 @app.route("/add_uc", methods=['POST'])
 def add_uc():
-    pid = request.json['pid']
+
     contract_id = request.json['contract_id']
     provider_id = request.json['provider_id']
     renter_id = request.json['renter_id']
 
-    new_uc = uc_relation(pid, contract_id, provider_id, renter_id)
+    new_uc = uc_relation(contract_id, provider_id, renter_id)
 
     db.session.add(new_uc)
     db.session.commit()
@@ -198,26 +194,6 @@ def update_credit(user_id, credit):
 ####################################################################################### ALGORITHMICS ###############################################
 
 
-class Provider:
-    def __init__(self, id, credit):
-        self.id = id
-        self.credit = credit
-
-
-class Renter:
-    def __init__(self, id, credit):
-        self.id = id
-        self.credit = credit
-
-
-class Contract:
-    def __init__(self, id, Provider, Renter, cost):
-        self.id = id
-        self.provider_id = Provider.id
-        self.renter_id = Renter.id
-        self.cost = cost
-
-
 def is_renter_valid(renter, contract):
     if renter.credit >= contract.cost:
         return True
@@ -231,60 +207,112 @@ def credit_transfer(renter, provider, contract):
     return renter, provider
 
 
-def transaction(renters, providers, contracts):
-    size = len(contracts)
-    invalid_contracts = []
-    result_renters = []
-    result_providers = []
-    result_contracts = []
+# def transaction(renters, providers, contracts):
+#     size = len(contracts)
+#     invalid_contracts = []
+#     result_renters = []
+#     result_providers = []
+#     result_contracts = []
+#
+#     for i in range(size):
+#         renter = renters[i]
+#         provider = providers[i]
+#         contract = contracts[i]
+#         if is_renter_valid(renter, contract):
+#             new_renter, new_provider = credit_transfer(renter, provider, contract)
+#             result_renters.append(new_renter)
+#             result_providers.append(new_provider)
+#             result_contracts.append(contract)
+#             update_credit(new_renter.id, new_renter.credit)
+#             update_credit(new_provider.id, new_provider.credit)
+#             update_status(contract.id, statuses.CONFIRMED)
+#         else:
+#             invalid_contracts.append(contract)
+#
+#     return result_renters, result_providers, result_contracts, invalid_contracts
 
-    for i in range(size):
-        renter = renters[i]
-        provider = providers[i]
-        contract = contracts[i]
-        if is_renter_valid(renter, contract):
-            new_renter, new_provider = credit_transfer(renter, provider, contract)
-            result_renters.append(new_renter)
-            result_providers.append(new_provider)
-            result_contracts.append(contract)
-            update_credit(new_renter.id, new_renter.credit)
-            update_credit(new_provider.id, new_provider.credit)
-            update_status(contract.id, statuses.CONFIRMED)
-        else:
-            invalid_contracts.append(contract)
-
-    return result_renters, result_providers, result_contracts, invalid_contracts
-
-
-def get_data():
-    renters = []
-    providers = []
-    contracts = []
-    relations = uc_relation.query.join(Contracts).filter(Contracts.status == statuses.AVAILABLE).all()
-    for relation in relations:
-        p = get_user_by_id(relation.provider_id)
-        r = get_user_by_id(relation.renter_id)
-        c = get_contract_by_id(relation.contract_id)
-        renter = Renter(r.user_id, r.credit)
-        provider = Provider(p.user_id, p.credit)
-        contract = Contract(c.contract_id, renter, provider, c.cost)
-        renters.append(renter)
-        providers.append(provider)
-        contracts.append(contract)
-    return renters, providers, contracts
+class Response:
+    def __init__(self, flag, contract, provider, renter):
+        self.flag = flag
+        self.contract = contract
+        self.provider = provider
+        self.renter = renter
 
 
-@app.route('/run_transaction', methods=['GET'])
+def transaction(contract, provider, renter):
+
+    if is_renter_valid(renter, contract):
+        new_renter, new_provider = credit_transfer(renter, provider, contract)
+        Users.query.filter(Users.user_id == new_renter.user_id).update({"credit": new_renter.credit})
+        Users.query.filter(Users.user_id == new_provider.user_id).update({"credit": new_provider.credit})
+        contract.status = statuses.CONFIRMED
+        db.session.add(contract)
+        db.session.commit()
+        relation = uc_relation(contract.contract_id, new_provider.user_id, new_renter.user_id)
+        db.session.add(relation)
+        db.session.commit()
+        return Response(True, contract, new_provider, new_renter)
+    else:
+        return Response(False, contract, provider, provider)
+
+
+# def get_data():
+#     renters = []
+#     providers = []
+#     contracts = []
+#     relations = uc_relation.query.join(Contracts).filter(Contracts.status == statuses.AVAILABLE).all()
+#     for relation in relations:
+#         p = get_user_by_id(relation.provider_id)
+#         r = get_user_by_id(relation.renter_id)
+#         c = get_contract_by_id(relation.contract_id)
+#         renter = Renter(r.user_id, r.credit)
+#         provider = Provider(p.user_id, p.credit)
+#         contract = Contract(c.contract_id, renter, provider, c.cost)
+#         renters.append(renter)
+#         providers.append(provider)
+#         contracts.append(contract)
+#     return renters, providers, contracts
+
+
+@app.route('/run_transaction', methods=['POST'])
 def run_transaction():
-    renters_list, providers_list, contracts_list = get_data()
-    result_renters, result_providers, result_contracts, invalid_contracts = transaction(renters_list, providers_list,
-                                                                                        contracts_list)
+    contract_id = request.json['contract_id']
+    start_time_l = request.json['start_time']
+    end_time_l = request.json['end_time']
+    status = request.json['status']
+    cost = request.json['cost']
+    provider_id = request.json['provider_id']
+    renter_id = request.json['renter_id']
 
-    return jsonify(users_schema.dump(result_renters), users_schema.dump(result_providers),
-                   contracts_schema.dump(result_contracts), contracts_schema.dump(invalid_contracts))
+    start_time = datetime(start_time_l[0], start_time_l[1], start_time_l[2], start_time_l[3], start_time_l[4])
+    end_time = datetime(end_time_l[0], end_time_l[1], end_time_l[2], end_time_l[3], end_time_l[4])
+
+    # contract_id = "abc"
+    # start_time = datetime(2020, 6, 1, 10, 00)
+    # end_time = datetime(2020, 6, 2, 12, 00)
+    # status = "available"
+    # cost = 7
+    # provider_id = "p1"
+    # renter_id = "r1"
+
+    contract = Contracts(contract_id, status, start_time, end_time, cost)
+    provider = Users.query.filter(Users.user_id == provider_id).one()
+    renter = Users.query.filter(Users.user_id == renter_id).one()
+
+    response = transaction(contract, provider, renter)
+
+    data = {'flag': response.flag}
+    return jsonify(data)
+
+
+    # renters_list, providers_list, contracts_list = get_data()
+    # result_renters, result_providers, result_contracts, invalid_contracts = transaction(renters_list, providers_list,
+    #                                                                                     contracts_list)
+    #
+    # return jsonify(users_schema.dump(result_renters), users_schema.dump(result_providers),
+    #                contracts_schema.dump(result_contracts), contracts_schema.dump(invalid_contracts))
 
 
 # Run Server
 if __name__ == "__main__":
-    # app.run(host='0.0.0.0')
-    app.run()
+    app.run(host='0.0.0.0', port=5001)
