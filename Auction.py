@@ -124,7 +124,7 @@ def check_time_overlap(bid, offers):
                 overlap_offers.append(offers[i])
 
         elif offerStart < bidEnd:
-            if offerEnd > bid.end_time:
+            if offerEnd > bidEnd:
                 overlap_offers.append(offers[i])
 
         elif offerStart < bidStart:
@@ -147,9 +147,7 @@ def expensive_offer(offers):
     return offer
 
 
-def generate_id():
 
-    return ''.join(random.choice('0123456789abcdef') for i in range(36))
 def list_offers():
     # result = []
     db_result = MarketAPI.offer_select_all_available()
@@ -236,7 +234,7 @@ def main():
                 c_start = current_bid.start_time
                 c_end = current_bid.end_time
             if current_offer.cost > s_price:
-                new_contract = Contracts(cid,"matched", c_start, c_end, current_bid.cost)
+                new_contract = Contracts(cid,"matched"", c_start, c_end, current_bid.cost)
             else:
                 new_contract = Contracts(cid,"matched",c_start, c_end, s_price)
             new_cbo = cbo_relation(cid, current_offer.offer_id, current_bid.bid_id)
@@ -300,7 +298,8 @@ if __name__ == "__main__":
     matcher_output = main()
 
 
-
+def generate_id():
+    return ''.join(random.choice('0123456789abcdef') for i in range(36))
 # def add_contract(contracts):
 #     for contract in contracts:
 #         contract_value = {'contract_id': contract.contractID, 'status': statuses.AVAILABLE,
