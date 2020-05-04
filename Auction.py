@@ -3,15 +3,10 @@ from datetime import datetime
 from hashlib import blake2s
 import database_setup.APIs.marketAPI as MarketAPI
 import database_setup.statuses as statuses
+import random
 
 now = datetime.now()
-# print(now)
 current_time = now.strftime("%Y%m%d%H%M")
-
-bid_count = 10
-offer_count = 10
-contract_count = 0
-contract_id = 0000000
 
 
 class Bid:
@@ -42,7 +37,7 @@ class Contract:
         self.offerID = Offer.offerID
         self.start_time =start_time
         self.end_time = end_time
-        self.contractID = "abcd2"
+        self.contractID = "abcd3"
         # self.allocation_time = Offer.allocation_time
         self.cost = cost
 
@@ -166,7 +161,7 @@ def create_contract(bid, offer, price):
             #from start time of offer to start time of bid
     return new_contract
 
-def Bare_Metal_Auction(bids, offers):
+def Bare_Metal_Auction(bids, offers): 
     i = 0
     contracts = []
     while i < 5:
@@ -178,16 +173,15 @@ def Bare_Metal_Auction(bids, offers):
         currentOffers = check_offers_price(current_bid[0],offers)
         matchingOffers = check_time_overlap(current_bid[0],currentOffers)
         current_offer = expensive_offer(matchingOffers)
-        #if current_offer.cost > current_bid[1]:
-        #    current_contract = create_contract(current_bid[0], current_offer,current_bid[0].cost)
-        #else:
-        #    current_contract = create_contract(current_bid[0], current_offer, current_bid[1])
-        #contracts.append(current_contract)
-        #i = i +1
+        if current_offer.cost > current_bid[1]:
+            current_contract = create_contract(current_bid[0], current_offer,current_bid[0].cost)
+        else:
+            current_contract = create_contract(current_bid[0], current_offer, current_bid[1])
+        contracts.append(current_contract)
+        i = i +1
         print(current_bid[0].bidID, current_offer.offerID)
 
-
-def get_bids():
+def list_bids():
     result = []
     db_result = MarketAPI.bid_select_all_available()
     for db_bid in db_result:
@@ -198,7 +192,7 @@ def get_bids():
     return result
 
 
-def get_offers():
+def list_offers():
     result = []
     db_result = MarketAPI.offer_select_all_available()
     for db_offer in db_result:
@@ -220,9 +214,18 @@ def add_contract(contracts):
         MarketAPI.offer_update_status_by_id(contract.offerID, statuses.MATCHED)
 
 
+def generate_id():
+    return ''.join(random.choice('0123456789abcdef') for i in range(36))
+
 if __name__ == "__main__":
-    bids = get_bids()
-    offers = get_offers()
+    status = 0
+    de_bid = ""
+    de_offer = ""
+    cr_bid = {}
+    cr_offer = {}
+    bids = list_bids()
+    offers = list_offers()
+    #Bare_Metal_Auction(bids,offers)
     for bid in bids:
         print(bid.__dict__)
     print("######")
@@ -230,11 +233,22 @@ if __name__ == "__main__":
         print(offer.__dict__)
     print('#####')
     
-    b = Bid("0165c7d6-4e3d-4165-9c93-d423275a76bf", 10240, "x86_64", 4, 16, 3, 10, datetime(2020, 5, 2, 20, 00),
+    de_bid = Bid("0165c7d6-4e3d-4165-9c93-d423275a76bf", 10240, "x86_64", 4, 16, 3, 10, datetime(2020, 5, 2, 20, 00),
             datetime(2020, 5, 2, 22, 00), datetime(2020, 5, 1, 10, 00))
-    o = Offer("08d727a9-485a-4bf8-82e0-ee5f724e2020", 10240, "x86_64", 4, 16, 3, 20, datetime(2020, 5, 2, 10, 00),
+    de_offer = Offer("08d727a9-485a-4bf8-82e0-ee5f724e2020", 10240, "x86_64", 4, 16, 3, 20, datetime(2020, 5, 2, 10, 00),
               datetime(2020, 5, 2, 12, 00), datetime(2020, 5, 1, 8, 00))
-    c = Contract(o, b, 10, datetime(2020, 5, 2, 20, 00), datetime(2020, 5, 2, 22, 00))
-    contracts = [c]
-    add_contract(contracts)
-    print("added contract")
+    cr_contract = Contract(de_offer, de_bid, 10, datetime(2020, 5, 2, 20, 00), datetime(2020, 5, 2, 22, 00))
+    #contracts = [c]
+    #add_contract(contracts)
+    #print("added contract")
+
+    # Output variables
+    matcher_output = {}
+    matcher_output["status"] = status
+    matcher_output["bid_deactivate"] = de_bid
+    matcher_output["offer_deactivate"] = de_offer
+    matcher_output["new_bids"] = cr_bid
+    matcher_output["new_offers"] = cr_offer
+    matcher_output["new_contract"] = cr_contract    
+
+
