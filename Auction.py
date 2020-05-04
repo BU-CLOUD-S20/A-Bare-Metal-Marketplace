@@ -247,57 +247,79 @@ if __name__ == "__main__":
     matchingOffers = check_time_overlap(current_bid,currentOffers)
     current_offer = expensive_offer(matchingOffers)
 
-    if current_offer != []:
+    while(1):
+        if current_offer != []:
 
-        if current_bid.start_time > current_offer.start_time:
-        # bid starts later than offer
-        # create new offer in beginning
-            id2 = generate_id()
-            reqs = current_offer.requirements
-            new_offers["before_offer"] = Offer(id2, reqs[0], reqs[1], reqs[2], reqs[3], reqs[4], current_offer.cost, current_offer.start_format, current_bid.start_format, current_offer.expiry_format)
-            c_start = current_bid.start_format
+            if current_bid.start_time > current_offer.start_time:
+            # bid starts later than offer
+            # create new offer in beginning
+                id2 = generate_id()
+                reqs = current_offer.requirements
+                new_offers["before_offer"] = Offer(id2, reqs[0], reqs[1], reqs[2], reqs[3], reqs[4], current_offer.cost, current_offer.start_format, current_bid.start_format, current_offer.expiry_format)
+                c_start = current_bid.start_format
 
-        elif current_bid.start_time < current_offer.start_time:
-        # bid starts earlier than offer
-        # create new bid in beginning
-            id2 = generate_id()
-            reqs = current_bid.requirements
-            new_bids["before_bid"] = Bid(id2, reqs[0], reqs[1], reqs[2], reqs[3], reqs[4], current_bid.cost, current_bid.start_format, current_offer.start_format, current_bid.expiry_format)
-            c_start = current_offer.start_format
+            elif current_bid.start_time < current_offer.start_time:
+            # bid starts earlier than offer
+            # create new bid in beginning
+                id2 = generate_id()
+                reqs = current_bid.requirements
+                new_bids["before_bid"] = Bid(id2, reqs[0], reqs[1], reqs[2], reqs[3], reqs[4], current_bid.cost, current_bid.start_format, current_offer.start_format, current_bid.expiry_format)
+                c_start = current_offer.start_format
+            else:
+                timeMatch = timeMatch+1
+
+            if current_bid.end_time > current_offer.end_time:
+            # bid ends later than offer
+            # create new bid in end
+                id2 = generate_id()
+                reqs = current_bid.requirements
+                new_bids["after_bid"] = Bid(id2, reqs[0], reqs[1], reqs[2], reqs[3], reqs[4], current_bid.cost, current_offer.end_format, current_bid.end_format, current_bid.expiry_format)
+                c_end = current_offer.end_format
+
+            elif current_bid.end_time < current_offer.end_time:
+            # bid ends earlier than offer
+            # create new offer in end
+                id2 = generate_id()
+                reqs = current_offer.requirements
+                new_bids["after_offer"] = Offer(id2, reqs[0], reqs[1], reqs[2], reqs[3], reqs[4], current_offer.cost, current_bid.end_format, current_offer.end_format, current_offer.expiry_format)
+                c_end = current_bid.end_format
+            else:
+                timeMatch = timeMatch + 1
+
+            cid = generate_id()
+            if timeMatch == 2:
+                c_start = current_bid.start_format
+                c_end = current_bid.end_format
+            if current_offer.cost > s_price:
+                new_contract = Contracts(cid,"matched", c_start, c_end, current_bid.cost)
+            else:
+                new_contract = Contracts(cid,"matched",c_start, c_end, s_price)
+            new_cbo = cbo_relation(cid, current_offer.offerID, current_bid.bidID)
+            break
         else:
-            timeMatch = timeMatch+1
-
-        if current_bid.end_time > current_offer.end_time:
-        # bid ends later than offer
-        # create new bid in end
-            id2 = generate_id()
-            reqs = current_bid.requirements
-            new_bids["after_bid"] = Bid(id2, reqs[0], reqs[1], reqs[2], reqs[3], reqs[4], current_bid.cost, current_offer.end_format, current_bid.end_format, current_bid.expiry_format)
-            c_end = current_offer.end_format
-
-        elif current_bid.end_time < current_offer.end_time:
-        # bid ends earlier than offer
-        # create new offer in end
-            id2 = generate_id()
-            reqs = current_offer.requirements
-            new_bids["after_offer"] = Offer(id2, reqs[0], reqs[1], reqs[2], reqs[3], reqs[4], current_offer.cost, current_bid.end_format, current_offer.end_format, current_offer.expiry_format)
-            c_end = current_bid.end_format
-        else:
-            timeMatch = timeMatch + 1
-
-        cid = generate_id()
-        if timeMatch == 2:
-            c_start = current_bid.start_format
-            c_end = current_bid.end_format
-        if current_offer.cost > s_price:
-            new_contract = Contracts(cid,"Matched", c_start, c_end, current_bid.cost)
-        else:
-            new_contract = Contracts(cid,"Matched",c_start, c_end, s_price)
-        new_cbo = cbo_relation(cid, current_offer.offerID, current_bid.bidID)
-
-    else:
-        #Need to write what happens if no offer matches the bid
-        print("placeholder")
+            #no offer matches the bid
+            #remove the highest priced bid and go to the next one.
+            if (len(clashBids) == 0):
+                # if there are no more bids that match / fit the same requirements as the lowest expiry bid, move on to the next expiry time
+                idx = bids.index(lowestExpBid)
+                bids.pop(idx)
+                if (len(bids) > 0):
+                    lowestExpBid = lowest_exp_bids(bids)
+                    matchingBids = matching_requirements(lowestExpBid, bids)
+                    clashBids = time_clash(matchingBids)
+                    [current_bid,s_price] = second_price_auction(clashBids)
+                    currentOffers = check_offers_price(current_bid,offers)
+                    matchingOffers = check_time_overlap(current_bid,currentOffers)
+                    current_offer = expensive_offer(matchingOffers)
+                else:
+                    print("All viable bids and offers have been matched.")
+                    break
+            else:     
+                clashBids.pop(0)
+                [current_bid,s_price] = second_price_auction(clashBids)
+                currentOffers = check_offers_price(current_bid,offers)
+                matchingOffers = check_time_overlap(current_bid,currentOffers)
+                current_offer = expensive_offer(matchingOffers)
 
 
         
