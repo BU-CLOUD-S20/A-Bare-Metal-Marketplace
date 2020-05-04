@@ -320,7 +320,7 @@ def list_bids():
         config = db_bid.config_query
         result.append(Bid(db_bid.bid_id, config.get('memory_gb'), config.get('cpu_arch'),
                           config.get('cpu_physical_count'), config.get('cpu_core_count'), config.get('cpu_ghz'),
-                          db_bid.cost, db_bid.start_time, db_bid.end_time , db_offer.expiry_time))
+                          db_bid.cost, db_bid.start_time, db_bid.end_time , db_bid.expiry_time))
     return result
 
 def list_offers():
