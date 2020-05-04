@@ -10,31 +10,30 @@ now = datetime.now()
 current_time = now.strftime("%Y%m%d%H%M")
 
 
-class Bid:
-    def __init__(self, id1, memory, cpu_arch, cpu_physical_count, cpu_core_count, cpu_ghz, cost, start_time, end_time,
-                 expiry_time):
-        self.bidID = id1
-        self.requirements = [memory, cpu_arch, cpu_physical_count, cpu_core_count, cpu_ghz]
+class Bids():
+    def init(self, bid_id, project_id, quantity, start_time, end_time, expire_time, duration, status, config_query, cost):
+        self.bid_id = bid_id
+        self.project_id = project_id
+        self.quantity = quantity
+        self.start_time = start_time
+        self.end_time = end_time
+        self.expire_time = expire_time
+        self.duration = duration
+        self.status = status
+        self.config_query = config_query
         self.cost = cost
-        self.start_format = start_time
-        self.start_time = int(start_time.strftime("%Y%m%d%H%M"))
-        self.end_time = int(end_time.strftime("%Y%m%d%H%M"))
-        self.end_format = end_time
-        self.expiry_time = int(expiry_time.strftime("%Y%m%d%H%M")) - int(current_time)
-        self.expiry_format = expiry_time
 
-class Offer:
-    def __init__(self, id1, memory, cpu_arch, cpu_physical_count, cpu_core_count, cpu_ghz, cost, start_time, end_time,
-                 expiry_time):
-        self.offerID = id1
-        self.requirements = [memory, cpu_arch, cpu_physical_count, cpu_core_count, cpu_ghz]
+class Offers:
+    def init(self, offer_id, project_id, start_time, end_time, expire_time, status, resource_id, config, cost):
+        self.offer_id = offer_id
+        self.project_id = project_id
+        self.status = status
+        self.resource_id = resource_id
+        self.start_time = start_time
+        self.end_time = end_time
+        self.expire_time = expire_time
+        self.config = config
         self.cost = cost
-        self.start_time = int(start_time.strftime("%Y%m%d%H%M"))
-        self.end_time = int(end_time.strftime("%Y%m%d%H%M"))
-        self.expiry_time = int(expiry_time.strftime("%Y%m%d%H%M")) - int(current_time)
-        self.start_format = start_time
-        self.end_format = end_time
-        self.expiry_format = expiry_time
 
 
 class Contracts:
@@ -53,10 +52,11 @@ class cbo_relation:
 
 # #
 def lowest_exp_bids(bids):
-    exp = bids[0].expiry_time
+    exp = int(bids[0].expiry_time.strftime("%Y%m%d%H%M")) - int(current_time)
     for i in range(len(bids)):
-        if bids[i].expiry_time < exp:
-            exp = bids[i].expiry_time
+        exp2 = int(bids[i].expiry_time.strftime("%Y%m%d%H%M")) - int(current_time)
+        if exp2 < exp:
+            exp = exp2
             current_bid = bids[i]
     return current_bid
 
@@ -64,19 +64,20 @@ def lowest_exp_bids(bids):
 def matching_requirements(current_bid, bids):
     current_bids = [current_bid]
     for i in range(len(bids)):
-        if current_bid.bidID != bids[i].bidID:
-            if current_bid.requirements == bids[i].requirements:
+        if current_bid.bid_id != bids[i].bid_id:
+            if current_bid.config_query == bids[i].config_query:
                 current_bids.append(bids[i])
     return current_bids
 
 # #
 def time_clash(bids):
     clash_bids = [bids[0]]
-    start_time = bids[0].start_time
-    end_time = bids[0].end_time
+    start_time = int(bids[0].start_time.strftime("%Y%m%d%H%M"))
+    end_time = int(bids[0].end_time.strftime("%Y%m%d%H%M"))
     for i in range(len(bids)):
-        if bids[i].start_time >= start_time:
-            if bids[i].start_time <= end_time:
+        startIt = int(bids[i].start_time.strftime("%Y%m%d%H%M"))
+        if startIt >= start_time:
+            if startIt <= end_time:
                 clash_bids.append(bids[i])
     return clash_bids
 
@@ -113,20 +114,25 @@ def check_offers_price(bid, offers):
 def check_time_overlap(bid, offers):
     overlap_offers = []
     for i in range(len(offers)):
-        if offers[i].start_time <= bid.start_time:
-            if offers[i].end_time >= bid.end_time:
+        bidStart = int(bid.start_time.strftime("%Y%m%d%H%M"))
+        bidEnd = int(bid.end_time.strftime("%Y%m%d%H%M"))
+        offerStart = int(offers[i].start_time.strftime("%Y%m%d%H%M"))
+        offerEnd = int(offers[i].end_time.strftime("%Y%m%d%H%M"))
+        
+        if offerStart <= bidStart:
+            if offerEnd >= bidEnd:
                 overlap_offers.append(offers[i])
 
-        elif offers[i].start_time < bid.end_time:
-            if offers[i].end_time > bid.end_time:
+        elif offerStart < bidEnd:
+            if offerEnd > bid.end_time:
                 overlap_offers.append(offers[i])
 
-        elif offers[i].start_time < bid.start_time:
-            if offers[i].end_time > bid.start_time:
+        elif offerStart < bidStart:
+            if offerEnd > bidStart:
                 overlap_offers.append(offers[i])
 
-        elif offers[i].start_time < bid.end_time:
-            if offers[i].end_time > bid.start_time:
+        elif offerStart < bidEnd:
+            if offerEnd > bidStart:
                 overlap_offers.append(offers[i])
 
     return overlap_offers
@@ -139,88 +145,6 @@ def expensive_offer(offers):
             price = offers[i].cost
             offer = offers[i]
     return offer
-
-# #
-def create_contract(bid, offer, price):
-    new_contract = Contract(bid, offer)
-    if bid.start_time == offer.start_time:
-        if bid.end_time == offer.end_time:
-            new_contract = Contract(bid, offer, price, bid.start_time, bid.end_time)
-
-    elif bid.start_time < offer.start_time:
-        if bid.end_time > offer.end_time:
-            new_contract = Contract(bid, offer, price, offer.start_time, offer.end_time)
-            #create bids from start time of bid to start time of offer and
-            #end time of offer to end time of bid
-    elif bid.start_time < offer.start_time:
-        if bid.end_time <= offer.end_time:
-            new_contract = Contract(bid, offer, price, offer.start_time, bid.end_time)
-            #create bid from start time of bid to start time of offer and
-            #create offer from end time of bid to to end time of offer
-
-    elif bid.start_time >= offer.start_time:
-        if bid.end_time > offer.end_time:
-            new_contract = Contract(bid, offer, price, bid.start_time, offer.end_time)
-            #create bid from end time of offer to end time of bid and
-            #create offer from start time of offer to start time of bid
-
-    elif bid.start_time > offer.start_time:
-        if bid.end_time < offer.end_time:
-            new_contract = Contract(bid, offer, price, bid.start_time, bid.end_time)
-            # create offers from end time of bid to end time of offer and
-            #from start time of offer to start time of bid
-    return new_contract
-
-def Bare_Metal_Auction(bids, offers): 
-    i = 0
-    contracts = []
-    while i < 5:
-        lowestExpBid = lowest_exp_bids(bids)
-        matchingBids = matching_requirements(lowestExpBid, bids)
-        clashBids = time_clash(matchingBids)
-        [current_bid,s_price] = second_price_auction(clashBids)
-        currentOffers = check_offers_price(current_bid[0],offers)
-        matchingOffers = check_time_overlap(current_bid[0],currentOffers)
-        current_offer = expensive_offer(matchingOffers)
-        if current_offer.cost > current_bid[1]:
-            current_contract = create_contract(current_bid[0], current_offer,current_bid[0].cost)
-        else:
-            current_contract = create_contract(current_bid[0], current_offer, current_bid[1])
-        contracts.append(current_contract)
-        i = i +1
-        print(current_bid[0].bidID, current_offer.offerID)
-
-def list_bids():
-    result = []
-    db_result = MarketAPI.bid_select_all_available()
-    for db_bid in db_result:
-        config = db_bid.config_query
-        result.append(Bid(db_bid.bid_id, config.get('memory_gb'), config.get('cpu_arch'),
-                          config.get('cpu_physical_count'), config.get('cpu_core_count'), config.get('cpu_ghz'),
-                          db_bid.cost, db_bid.start_time, db_bid.end_time, db_bid.expire_time))
-    return result
-
-
-def list_offers():
-    result = []
-    db_result = MarketAPI.offer_select_all_available()
-    for db_offer in db_result:
-        config = db_offer.config
-        result.append(Offer(db_offer.offer_id, config.get('memory_gb'), config.get('cpu_arch'),
-                            config.get('cpu_physical_count'), config.get('cpu_core_count'), config.get('cpu_ghz'),
-                            db_offer.cost, db_offer.start_time, db_offer.end_time, db_offer.expire_time))
-    return result
-
-
-def add_contract(contracts):
-    for contract in contracts:
-        contract_value = {'contract_id': contract.contractID, 'status': statuses.AVAILABLE,
-                          'start_time': contract.start_time, 'end_time': contract.end_time,
-                          'cost': contract.cost}
-        MarketAPI.contract_insert(contract_value)
-        MarketAPI.relation_insert(contract.contractID, contract.offerID, contract.bidID)
-        MarketAPI.bid_update_status_by_id(contract.bidID, statuses.MATCHED)
-        MarketAPI.offer_update_status_by_id(contract.offerID, statuses.MATCHED)
 
 
 def generate_id():
@@ -249,47 +173,47 @@ def main():
 
     while(1):
         if current_offer != []:
+            bidStart = int(current_bid.start_time.strftime("%Y%m%d%H%M"))
+            bidEnd = int(current_bid.end_time.strftime("%Y%m%d%H%M"))
+            offerStart = int(current_offer.start_time.strftime("%Y%m%d%H%M"))
+            offerEnd = int(current_offer.end_time.strftime("%Y%m%d%H%M"))
             status = 1
-            if current_bid.start_time > current_offer.start_time:
+            if bidStart > offerStart:
             # bid starts later than offer
             # create new offer in beginning
                 id2 = generate_id()
-                reqs = current_offer.requirements
-                new_offers["before_offer"] = Offer(id2, reqs[0], reqs[1], reqs[2], reqs[3], reqs[4], current_offer.cost, current_offer.start_format, current_bid.start_format, current_offer.expiry_format)
-                c_start = current_bid.start_format
+                new_offers["before_offer"] = Offers(id2,current_offer.project_id, current_offer.status, current_offer.resource_id, current_offer.start_time, current_bid.start_time, current_offer.expire_time, current_offer.config, current_offer.cost)
+                c_start = current_bid.start_time
 
-            elif current_bid.start_time < current_offer.start_time:
+            elif bidStart < offerStart:
             # bid starts earlier than offer
             # create new bid in beginning
                 id2 = generate_id()
-                reqs = current_bid.requirements
-                new_bids["before_bid"] = Bid(id2, reqs[0], reqs[1], reqs[2], reqs[3], reqs[4], current_bid.cost, current_bid.start_format, current_offer.start_format, current_bid.expiry_format)
-                c_start = current_offer.start_format
+                new_bids["before_bid"] = Bids(id2, current_bid.project_id, current_bid.quantity, current_bid.start_time, current_offer.start_time, current_bid.expire_time, current_bid.duration, current_bid.status, current_bid.config_query, current_bid.cost)
+                c_start = current_offer.start_time
             else:
                 timeMatch = timeMatch+1
 
-            if current_bid.end_time > current_offer.end_time:
+            if bidEnd > offerEnd:
             # bid ends later than offer
             # create new bid in end
                 id2 = generate_id()
-                reqs = current_bid.requirements
-                new_bids["after_bid"] = Bid(id2, reqs[0], reqs[1], reqs[2], reqs[3], reqs[4], current_bid.cost, current_offer.end_format, current_bid.end_format, current_bid.expiry_format)
-                c_end = current_offer.end_format
+                new_bids["after_bid"] = Bids(id2, current_bid.project_id, current_bid.quantity, current_offer.end_time, current_bid.end_time, current_bid.expire_time, current_bid.duration, current_bid.status, current_bid.config_query, current_bid.cost)
+                c_end = current_offer.end_time
 
-            elif current_bid.end_time < current_offer.end_time:
+            elif bidEnd < offerEnd:
             # bid ends earlier than offer
             # create new offer in end
                 id2 = generate_id()
-                reqs = current_offer.requirements
-                new_bids["after_offer"] = Offer(id2, reqs[0], reqs[1], reqs[2], reqs[3], reqs[4], current_offer.cost, current_bid.end_format, current_offer.end_format, current_offer.expiry_format)
-                c_end = current_bid.end_format
+                new_bids["after_offer"] = Offers(id2,current_offer.project_id, current_offer.status, current_offer.resource_id, current_bid.end_time, current_offer.end_time, current_offer.expire_time, current_offer.config, current_offer.cost)
+                c_end = current_bid.end_time
             else:
                 timeMatch = timeMatch + 1
 
             cid = generate_id()
             if timeMatch == 2:
-                c_start = current_bid.start_format
-                c_end = current_bid.end_format
+                c_start = current_bid.start_time
+                c_end = current_bid.end_time
             if current_offer.cost > s_price:
                 new_contract = Contracts(cid,"matched", c_start, c_end, current_bid.cost)
             else:
@@ -353,3 +277,88 @@ def main():
 
 if __name__ == "__main__":
     matcher_output = main()
+
+
+
+# def add_contract(contracts):
+#     for contract in contracts:
+#         contract_value = {'contract_id': contract.contractID, 'status': statuses.AVAILABLE,
+#                           'start_time': contract.start_time, 'end_time': contract.end_time,
+#                           'cost': contract.cost}
+#         MarketAPI.contract_insert(contract_value)
+#         MarketAPI.relation_insert(contract.contractID, contract.offerID, contract.bidID)
+#         MarketAPI.bid_update_status_by_id(contract.bidID, statuses.MATCHED)
+#         MarketAPI.offer_update_status_by_id(contract.offerID, statuses.MATCHED)
+
+
+def list_offers():
+    result = []
+    db_result = MarketAPI.offer_select_all_available()
+    for db_offer in db_result:
+        config = db_offer.config
+        result.append(Offer(db_offer.offer_id, config.get('memory_gb'), config.get('cpu_arch'),
+                            config.get('cpu_physical_count'), config.get('cpu_core_count'), config.get('cpu_ghz'),
+                            db_offer.cost, db_offer.start_time, db_offer.end_time, db_offer.expire_time))
+    return result
+
+
+def list_bids():
+    result = []
+    db_result = MarketAPI.bid_select_all_available()
+    for db_bid in db_result:
+        config = db_bid.config_query
+        result.append(Bid(db_bid.bid_id, config.get('memory_gb'), config.get('cpu_arch'),
+                          config.get('cpu_physical_count'), config.get('cpu_core_count'), config.get('cpu_ghz'),
+                          db_bid.cost, db_bid.start_time, db_bid.end_time, db_bid.expire_time))
+    return result
+
+
+# def Bare_Metal_Auction(bids, offers): 
+#     i = 0
+#     contracts = []
+#     while i < 5:
+#         lowestExpBid = lowest_exp_bids(bids)
+#         matchingBids = matching_requirements(lowestExpBid, bids)
+#         clashBids = time_clash(matchingBids)
+#         [current_bid,s_price] = second_price_auction(clashBids)
+#         currentOffers = check_offers_price(current_bid[0],offers)
+#         matchingOffers = check_time_overlap(current_bid[0],currentOffers)
+#         current_offer = expensive_offer(matchingOffers)
+#         if current_offer.cost > current_bid[1]:
+#             current_contract = create_contract(current_bid[0], current_offer,current_bid[0].cost)
+#         else:
+#             current_contract = create_contract(current_bid[0], current_offer, current_bid[1])
+#         contracts.append(current_contract)
+#         i = i +1
+#         print(current_bid[0].bidID, current_offer.offerID)
+
+
+# def create_contract(bid, offer, price):
+#     new_contract = Contract(bid, offer)
+#     if bid.start_time == offer.start_time:
+#         if bid.end_time == offer.end_time:
+#             new_contract = Contract(bid, offer, price, bid.start_time, bid.end_time)
+
+#     elif bid.start_time < offer.start_time:
+#         if bid.end_time > offer.end_time:
+#             new_contract = Contract(bid, offer, price, offer.start_time, offer.end_time)
+#             #create bids from start time of bid to start time of offer and
+#             #end time of offer to end time of bid
+#     elif bid.start_time < offer.start_time:
+#         if bid.end_time <= offer.end_time:
+#             new_contract = Contract(bid, offer, price, offer.start_time, bid.end_time)
+#             #create bid from start time of bid to start time of offer and
+#             #create offer from end time of bid to to end time of offer
+
+#     elif bid.start_time >= offer.start_time:
+#         if bid.end_time > offer.end_time:
+#             new_contract = Contract(bid, offer, price, bid.start_time, offer.end_time)
+#             #create bid from end time of offer to end time of bid and
+#             #create offer from start time of offer to start time of bid
+
+#     elif bid.start_time > offer.start_time:
+#         if bid.end_time < offer.end_time:
+#             new_contract = Contract(bid, offer, price, bid.start_time, bid.end_time)
+#             # create offers from end time of bid to end time of offer and
+#             #from start time of offer to start time of bid
+#     return new_contract
