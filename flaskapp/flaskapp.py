@@ -271,98 +271,98 @@ def get_cbos():
 
 ####################################################################################### ALGORITHMICS ###############################################
 
-class Bid:
-    def __init__(self, id1, memory, cpu_arch, cpu_physical_count, cpu_core_count, cpu_ghz, cost, start_time, end_time,
-                 expiry_time):
-        self.bidID = id1
-        self.requirements = [memory, cpu_arch, cpu_physical_count, cpu_core_count, cpu_ghz]
-        self.cost = cost
-        self.start_time = int(start_time.strftime("%Y%m%d%H%M"))
-        self.end_time = int(end_time.strftime("%Y%m%d%H%M"))
-        self.expiry_time = int(expiry_time.strftime("%Y%m%d%H%M")) - int(current_time)
+# class Bid:
+#     def __init__(self, id1, memory, cpu_arch, cpu_physical_count, cpu_core_count, cpu_ghz, cost, start_time, end_time,
+#                  expiry_time):
+#         self.bidID = id1
+#         self.requirements = [memory, cpu_arch, cpu_physical_count, cpu_core_count, cpu_ghz]
+#         self.cost = cost
+#         self.start_time = int(start_time.strftime("%Y%m%d%H%M"))
+#         self.end_time = int(end_time.strftime("%Y%m%d%H%M"))
+#         self.expiry_time = int(expiry_time.strftime("%Y%m%d%H%M")) - int(current_time)
 
 
-class Offer:
-    def __init__(self, id1, memory, cpu_arch, cpu_physical_count, cpu_core_count, cpu_ghz, cost, start_time, end_time,
-                 expiry_time):
-        self.offerID = id1
-        self.requirements = [memory, cpu_arch, cpu_physical_count, cpu_core_count, cpu_ghz]
-        self.cost = cost
-        self.start_time = int(start_time.strftime("%Y%m%d%H%M"))
-        self.end_time = int(end_time.strftime("%Y%m%d%H%M"))
-        self.expiry_time = int(expiry_time.strftime("%Y%m%d%H%M")) - int(current_time)
+# class Offer:
+#     def __init__(self, id1, memory, cpu_arch, cpu_physical_count, cpu_core_count, cpu_ghz, cost, start_time, end_time,
+#                  expiry_time):
+#         self.offerID = id1
+#         self.requirements = [memory, cpu_arch, cpu_physical_count, cpu_core_count, cpu_ghz]
+#         self.cost = cost
+#         self.start_time = int(start_time.strftime("%Y%m%d%H%M"))
+#         self.end_time = int(end_time.strftime("%Y%m%d%H%M"))
+#         self.expiry_time = int(expiry_time.strftime("%Y%m%d%H%M")) - int(current_time)
 
 
-class Contract:
-    def __init__(self, Offer, Bid, cost, start_time, end_time):
-        self.bidID = Bid.bidID
-        self.offerID = Offer.offerID
-        self.start_time =start_time
-        self.end_time = end_time
-        self.contractID = "e7de4e71-163d-4627-934c-1b5db1348c0b"
-        # self.allocation_time = Offer.allocation_time
-        self.cost = cost
+# class Contract:
+#     def __init__(self, Offer, Bid, cost, start_time, end_time):
+#         self.bidID = Bid.bidID
+#         self.offerID = Offer.offerID
+#         self.start_time =start_time
+#         self.end_time = end_time
+#         self.contractID = "e7de4e71-163d-4627-934c-1b5db1348c0b"
+#         # self.allocation_time = Offer.allocation_time
+#         self.cost = cost
 
 
-# Database Pulls
-def list_bids():
-    result = []
-    db_result = Bids.query.all()
-    for db_bid in db_result:
-        config = db_bid.config_query
-        result.append(Bid(db_bid.bid_id, config.get('memory_gb'), config.get('cpu_arch'),
-                          config.get('cpu_physical_count'), config.get('cpu_core_count'), config.get('cpu_ghz'),
-                          db_bid.cost, db_bid.start_time, db_bid.end_time))
-    return result
+# # Database Pulls
+# def list_bids():
+#     result = []
+#     db_result = Bids.query.all()
+#     for db_bid in db_result:
+#         config = db_bid.config_query
+#         result.append(Bid(db_bid.bid_id, config.get('memory_gb'), config.get('cpu_arch'),
+#                           config.get('cpu_physical_count'), config.get('cpu_core_count'), config.get('cpu_ghz'),
+#                           db_bid.cost, db_bid.start_time, db_bid.end_time , db_offer.expiry_time))
+#     return result
 
-def list_offers():
-    result = []
-    db_result = Offers.query.all()
-    for db_offer in db_result:
-        config = db_offer.config
-        result.append(Offer(db_offer.offer_id, config.get('memory_gb'), config.get('cpu_arch'),
-                            config.get('cpu_physical_count'), config.get('cpu_core_count'), config.get('cpu_ghz'),
-                            db_offer.cost, db_offer.start_time, db_offer.end_time))
-    return result
-
-
-def insert_contract(contracts):
-    for contract in contracts:
-        new_contract = Contracts(contract.contractID, statuses.AVAILABLE, contract.start_time, contract.end_time,
-                                 contract.cost)
-        db.session.add(new_contract)
-        new_cbo = cbo_relation(contract.contractID, contract.offerID, contract.bidID)
-        db.session.commit()
-        db.session.add(new_cbo)
-        db.session.commit()
-        Bids.query.filter(Bids.bid_id == contract.bidID).update({"status": statuses.MATCHED})
-        Offers.query.filter(Offers.offer_id == contract.offerID).update({"status": statuses.MATCHED})
-        db.session.commit()
+# def list_offers():
+#     result = []
+#     db_result = Offers.query.all()
+#     for db_offer in db_result:
+#         config = db_offer.config
+#         result.append(Offer(db_offer.offer_id, config.get('memory_gb'), config.get('cpu_arch'),
+#                             config.get('cpu_physical_count'), config.get('cpu_core_count'), config.get('cpu_ghz'),
+#                             db_offer.cost, db_offer.start_time, db_offer.end_time, db_offer.expiry_time))
+#     return result
 
 
-@app.route('/insert', methods=['GET'])
-def insert():
-    b = Bid("0165c7d6-4e3d-4165-9c93-d423275a76bf", 10240, "x86_64", 4, 16, 3, 10, datetime(2020, 5, 2, 20, 00),
-            datetime(2020, 5, 2, 22, 00), datetime(2020, 5, 1, 10, 00))
-    o = Offer("08d727a9-485a-4bf8-82e0-ee5f724e2020", 10240, "x86_64", 4, 16, 3, 20, datetime(2020, 5, 2, 10, 00),
-              datetime(2020, 5, 2, 12, 00), datetime(2020, 5, 1, 8, 00))
-    c = Contract(o, b, 10, datetime(2020, 5, 2, 20, 00), datetime(2020, 5, 2, 22, 00))
-    contracts = [c]
-    insert_contract(contracts)
-    return jsonify("inserted contract")
+# def insert_contract(contracts):
+#     for contract in contracts:
+#         new_contract = Contracts(contract.contractID, statuses.AVAILABLE, contract.start_time, contract.end_time,
+#                                  contract.cost)
+#         db.session.add(new_contract)
+#         new_cbo = cbo_relation(contract.contractID, contract.offerID, contract.bidID)
+#         db.session.commit()
+#         db.session.add(new_cbo)
+#         db.session.commit()
+#         Bids.query.filter(Bids.bid_id == contract.bidID).update({"status": statuses.MATCHED})
+#         Offers.query.filter(Offers.offer_id == contract.offerID).update({"status": statuses.MATCHED})
+#         db.session.commit()
 
 
-@app.route('/run_matcher', methods=['GET'])
-def run_matcher():
-    return render_template("matcher.html")
+# @app.route('/insert', methods=['GET'])
+# def insert():
+#     b = Bid("0165c7d6-4e3d-4165-9c93-d423275a76bf", 10240, "x86_64", 4, 16, 3, 10, datetime(2020, 5, 2, 20, 00),
+#             datetime(2020, 5, 2, 22, 00), datetime(2020, 5, 1, 10, 00))
+#     o = Offer("08d727a9-485a-4bf8-82e0-ee5f724e2020", 10240, "x86_64", 4, 16, 3, 20, datetime(2020, 5, 2, 10, 00),
+#               datetime(2020, 5, 2, 12, 00), datetime(2020, 5, 1, 8, 00))
+#     c = Contract(o, b, 10, datetime(2020, 5, 2, 20, 00), datetime(2020, 5, 2, 22, 00))
+#     contracts = [c]
+#     insert_contract(contracts)
+#     return jsonify("inserted contract")
 
 
-@app.route('/update_status', methods=['GET'])
-def update_status():
-    pass
+# @app.route('/run_matcher', methods=['GET'])
+# def run_matcher():
+#     return render_template("matcher.html")
+
+
+# @app.route('/update_status', methods=['GET'])
+# def update_status():
+#     pass
 
 
 # Run Server
 if __name__ == "__main__":
-    app.run()
+    app.run(host='0.0.0.0')
 
