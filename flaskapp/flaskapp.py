@@ -317,8 +317,16 @@ def list_bids():
     db_result = Bids.query.all()
     return db_result
 
+def list_active_bids():
+    db_result = Bids.query.filter(Bids.status == statuses.AVAILABLE)
+    return db_result    
+
 def list_offers():
     db_result = Offers.query.all()
+    return db_result
+
+def list_active_offers():
+    db_result = Offers.query.filter(Offers.status == statuses.AVAILABLE)
     return db_result
 
 
@@ -336,9 +344,228 @@ def insert_contract(contracts):
         db.session.commit()
 
 
-## START ENGINE.PY ##
+## START AUCTION.PY ##
+# #
+def lowest_exp_bids(bids):
+    exp = int(bids[0].expire_time.strftime("%Y%m%d%H%M")) - int(current_time)
+    for i in range(len(bids)):
+        exp2 = int(bids[i].expire_time.strftime("%Y%m%d%H%M")) - int(current_time)
+        if exp2 < exp:
+            exp = exp2
+            current_bid = bids[i]
+    return current_bid
 
-## END ENGINE.PY ##
+# #
+def matching_requirements(current_bid, bids):
+    current_bids = [current_bid]
+    for i in range(len(bids)):
+        if current_bid.bid_id != bids[i].bid_id:
+            if current_bid.config_query == bids[i].config_query:
+                current_bids.append(bids[i])
+    return current_bids
+
+# #
+def time_clash(bids):
+    clash_bids = [bids[0]]
+    start_time = int(bids[0].start_time.strftime("%Y%m%d%H%M"))
+    end_time = int(bids[0].end_time.strftime("%Y%m%d%H%M"))
+    for i in range(len(bids)):
+        startIt = int(bids[i].start_time.strftime("%Y%m%d%H%M"))
+        if startIt >= start_time:
+            if startIt <= end_time:
+                clash_bids.append(bids[i])
+    return clash_bids
+
+# #
+def second_price_auction(bids):
+    high_price = bids[0].cost
+    second_price = 0
+    for i in range(len(bids)):
+        if bids[i].cost >= high_price:
+            expensiveBid = bids[i]
+            second_price = high_price
+            #print(second_price, high_price)
+            high_price = expensiveBid.cost
+        elif second_price < bids[i].cost:
+            second_price = bids[i].cost
+    if second_price == high_price:
+        second_price = 0
+        for i in range(len(bids)):
+            if bids[i].cost < high_price:
+                if bids[i].cost > second_price:
+                    second_price = bids[i].cost
+
+    return expensiveBid, second_price + 0.01
+
+# #
+def check_offers_price(bid, offers):
+    cheap_offers = []
+    for i in range(len(offers)):
+        if offers[i].cost <= bid.cost:
+            cheap_offers.append(offers[i])
+    return cheap_offers
+
+# #
+def check_time_overlap(bid, offers):
+    overlap_offers = []
+    for i in range(len(offers)):
+        bidStart = int(bid.start_time.strftime("%Y%m%d%H%M"))
+        bidEnd = int(bid.end_time.strftime("%Y%m%d%H%M"))
+        offerStart = int(offers[i].start_time.strftime("%Y%m%d%H%M"))
+        offerEnd = int(offers[i].end_time.strftime("%Y%m%d%H%M"))
+        
+        if offerStart <= bidStart:
+            if offerEnd >= bidEnd:
+                overlap_offers.append(offers[i])
+
+        elif offerStart < bidEnd:
+            if offerEnd > bidEnd:
+                overlap_offers.append(offers[i])
+
+        elif offerStart < bidStart:
+            if offerEnd > bidStart:
+                overlap_offers.append(offers[i])
+
+        elif offerStart < bidEnd:
+            if offerEnd > bidStart:
+                overlap_offers.append(offers[i])
+
+    return overlap_offers
+
+# #
+def expensive_offer(offers):
+    price = 0
+    for i in range(len(offers)):
+        if offers[i].cost > price:
+            price = offers[i].cost
+            offer = offers[i]
+    return offer
+
+# #
+def run_matcher():
+    de_bid = ""
+    de_offer = ""
+    new_bids = {}
+    new_offers = {}
+    timeMatch = 0
+
+
+    bids = list_bids()
+    offers = list_offers()
+
+
+    lowestExpBid = lowest_exp_bids(bids)
+    matchingBids = matching_requirements(lowestExpBid, bids)
+    clashBids = time_clash(matchingBids)
+    [current_bid,s_price] = second_price_auction(clashBids)
+    currentOffers = check_offers_price(current_bid,offers)
+    matchingOffers = check_time_overlap(current_bid,currentOffers)
+    current_offer = expensive_offer(matchingOffers)
+
+    while(1):
+        if current_offer != []:
+            bidStart = int(current_bid.start_time.strftime("%Y%m%d%H%M"))
+            bidEnd = int(current_bid.end_time.strftime("%Y%m%d%H%M"))
+            offerStart = int(current_offer.start_time.strftime("%Y%m%d%H%M"))
+            offerEnd = int(current_offer.end_time.strftime("%Y%m%d%H%M"))
+            status = 1
+            if bidStart > offerStart:
+            # bid starts later than offer
+            # create new offer in beginning
+                id2 = generate_id()
+                new_offers["before_offer"] = Offers(id2,current_offer.project_id, current_offer.status, current_offer.resource_id, current_offer.start_time, current_bid.start_time, current_offer.expire_time, current_offer.config, current_offer.cost)
+                c_start = current_bid.start_time
+
+            elif bidStart < offerStart:
+            # bid starts earlier than offer
+            # create new bid in beginning
+                id2 = generate_id()
+                new_bids["before_bid"] = Bids(id2, current_bid.project_id, current_bid.quantity, current_bid.start_time, current_offer.start_time, current_bid.expire_time, current_bid.duration, current_bid.status, current_bid.config_query, current_bid.cost)
+                c_start = current_offer.start_time
+            else:
+                timeMatch = timeMatch+1
+
+            if bidEnd > offerEnd:
+            # bid ends later than offer
+            # create new bid in end
+                id2 = generate_id()
+                new_bids["after_bid"] = Bids(id2, current_bid.project_id, current_bid.quantity, current_offer.end_time, current_bid.end_time, current_bid.expire_time, current_bid.duration, current_bid.status, current_bid.config_query, current_bid.cost)
+                c_end = current_offer.end_time
+
+            elif bidEnd < offerEnd:
+            # bid ends earlier than offer
+            # create new offer in end
+                id2 = generate_id()
+                new_bids["after_offer"] = Offers(id2,current_offer.project_id, current_offer.status, current_offer.resource_id, current_bid.end_time, current_offer.end_time, current_offer.expire_time, current_offer.config, current_offer.cost)
+                c_end = current_bid.end_time
+            else:
+                timeMatch = timeMatch + 1
+
+            cid = generate_id()
+            if timeMatch == 2:
+                c_start = current_bid.start_time
+                c_end = current_bid.end_time
+            if current_offer.cost > s_price:
+                new_contract = Contracts(cid,"matched", c_start, c_end, current_bid.cost)
+            else:
+                new_contract = Contracts(cid,"matched",c_start, c_end, s_price)
+            new_cbo = cbo_relation(cid, current_offer.offer_id, current_bid.bid_id)
+            break
+        else:
+            #no offer matches the bid
+            #remove the highest priced bid and go to the next one.
+            if (len(clashBids) == 0):
+                # if there are no more bids that match / fit the same requirements as the lowest expiry bid, move on to the next expiry time
+                idx = bids.index(lowestExpBid)
+                bids.pop(idx)
+                if (len(bids) > 0):
+                    lowestExpBid = lowest_exp_bids(bids)
+                    matchingBids = matching_requirements(lowestExpBid, bids)
+                    clashBids = time_clash(matchingBids)
+                    [current_bid,s_price] = second_price_auction(clashBids)
+                    currentOffers = check_offers_price(current_bid,offers)
+                    matchingOffers = check_time_overlap(current_bid,currentOffers)
+                    current_offer = expensive_offer(matchingOffers)
+                else:
+                    print("All viable bids and offers have been matched.")
+                    status = 0
+                    break
+            else:     
+                clashBids.pop(0)
+                [current_bid,s_price] = second_price_auction(clashBids)
+                currentOffers = check_offers_price(current_bid,offers)
+                matchingOffers = check_time_overlap(current_bid,currentOffers)
+                current_offer = expensive_offer(matchingOffers)
+
+
+        
+
+
+
+    de_bid = current_bid.bid_id
+    de_offer = current_offer.offer_id
+
+
+
+    # for bid in bids:
+    #     print(bid.__dict__)
+    # print("######")
+    # for offer in offers:
+    #     print(offer.__dict__)
+    # print('#####')
+    
+    # Output variables
+    matcher_output = {}
+    matcher_output["status"] = status
+    matcher_output["bid_deactivate"] = de_bid
+    matcher_output["offer_deactivate"] = de_offer
+    matcher_output["new_bids"] = new_bids
+    matcher_output["new_offers"] = new_offers
+    matcher_output["new_contract"] = new_contract    
+    matcher_output["new_cbo"] = new_cbo
+    return matcher_output
+
+## END AUCTION.PY ##
 
 def handle_matcher():
     status = 1
@@ -372,7 +599,7 @@ def handle_matcher():
             bid_de.status = statuses.MATCHED
             db.session.commit()
 
-            offer_de = Offers.query.filter_by(bid_id=matcher_output["offer_deactivate"]).first()
+            offer_de = Offers.query.filter_by(offer_id=matcher_output["offer_deactivate"]).first()
             offer_de.status = statuses.MATCHED
             db.session.commit()
 
