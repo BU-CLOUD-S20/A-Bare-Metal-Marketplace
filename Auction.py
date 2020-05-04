@@ -11,7 +11,7 @@ current_time = now.strftime("%Y%m%d%H%M")
 
 
 class Bids():
-    def init(self, bid_id, project_id, quantity, start_time, end_time, expire_time, duration, status, config_query, cost):
+    def __init__(self, bid_id, project_id, quantity, start_time, end_time, expire_time, duration, status, config_query, cost):
         self.bid_id = bid_id
         self.project_id = project_id
         self.quantity = quantity
@@ -24,7 +24,7 @@ class Bids():
         self.cost = cost
 
 class Offers:
-    def init(self, offer_id, project_id, start_time, end_time, expire_time, status, resource_id, config, cost):
+    def __init__(self, offer_id, project_id, start_time, end_time, expire_time, status, resource_id, config, cost):
         self.offer_id = offer_id
         self.project_id = project_id
         self.status = status
@@ -46,9 +46,9 @@ class Contracts:
 
 class cbo_relation:
     def __init__(self, contract_id, offer_id, bid_id):
-        self.bidID = bid_id
-        self.offerID = offer_id
-        self.contractID = contract_id
+        self.bid_id = bid_id
+        self.offer_id = offer_id
+        self.contract_id = contract_id
 
 # #
 def lowest_exp_bids(bids):
@@ -158,7 +158,6 @@ def list_offers():
     #     result.append(Offers(db_offer.offer_id, config.get('memory_gb'), config.get('cpu_arch'),
     #                         config.get('cpu_physical_count'), config.get('cpu_core_count'), config.get('cpu_ghz'),
     #                         db_offer.cost, db_offer.start_time, db_offer.end_time, db_offer.expire_time))
-    print(db_result[0].offer_id)
     return db_result
 
 
@@ -194,6 +193,7 @@ def main():
 
     while(1):
         if current_offer != []:
+            c_start = current_bid.start_time
             bidStart = int(current_bid.start_time.strftime("%Y%m%d%H%M"))
             bidEnd = int(current_bid.end_time.strftime("%Y%m%d%H%M"))
             offerStart = int(current_offer.start_time.strftime("%Y%m%d%H%M"))
@@ -226,7 +226,7 @@ def main():
             # bid ends earlier than offer
             # create new offer in end
                 id2 = generate_id()
-                new_bids["after_offer"] = Offers(id2,current_offer.project_id, current_offer.status, current_offer.resource_id, current_bid.end_time, current_offer.end_time, current_offer.expire_time, current_offer.config, current_offer.cost)
+                new_offers["after_offer"] = Offers(id2,current_offer.project_id, current_offer.status, current_offer.resource_id, current_bid.end_time, current_offer.end_time, current_offer.expire_time, current_offer.config, current_offer.cost)
                 c_end = current_bid.end_time
             else:
                 timeMatch = timeMatch + 1
@@ -240,6 +240,7 @@ def main():
             else:
                 new_contract = Contracts(cid,"matched",c_start, c_end, s_price)
             new_cbo = cbo_relation(cid, current_offer.offer_id, current_bid.bid_id)
+            print(new_cbo.contract_id)
             break
         else:
             #no offer matches the bid
