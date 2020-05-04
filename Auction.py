@@ -16,10 +16,12 @@ class Bid:
         self.bidID = id1
         self.requirements = [memory, cpu_arch, cpu_physical_count, cpu_core_count, cpu_ghz]
         self.cost = cost
+        self.start_format = start_time
         self.start_time = int(start_time.strftime("%Y%m%d%H%M"))
         self.end_time = int(end_time.strftime("%Y%m%d%H%M"))
+        self.end_format = end_time
         self.expiry_time = int(expiry_time.strftime("%Y%m%d%H%M")) - int(current_time)
-
+        self.expiry_format = expiry_time
 
 class Offer:
     def __init__(self, id1, memory, cpu_arch, cpu_physical_count, cpu_core_count, cpu_ghz, cost, start_time, end_time,
@@ -30,17 +32,24 @@ class Offer:
         self.start_time = int(start_time.strftime("%Y%m%d%H%M"))
         self.end_time = int(end_time.strftime("%Y%m%d%H%M"))
         self.expiry_time = int(expiry_time.strftime("%Y%m%d%H%M")) - int(current_time)
+        self.start_format = start_time
+        self.end_format = end_time
+        self.expiry_format = expiry_time
 
 
-class Contract:
-    def __init__(self, Offer, Bid, cost, start_time, end_time):
-        self.bidID = Bid.bidID
-        self.offerID = Offer.offerID
+class Contracts:
+    def __init__(self, contract_id, status, start_time, end_time, cost):
         self.start_time = start_time
         self.end_time = end_time
-        self.contractID = "abcd3"
-        # self.allocation_time = Offer.allocation_time
+        self.contractID = contract_id
         self.cost = cost
+        self.status = status
+
+class cbo_relation:
+    def __init__(self, contract_id, offer_id, bid_id):
+        self.bidID = bid_id
+        self.offerID = offer_id
+        self.contractID = contract_id
 
 
 def lowest_exp_bids(bids):
@@ -221,60 +230,100 @@ if __name__ == "__main__":
     status = 0
     de_bid = ""
     de_offer = ""
-    cr_bid = {}
-    cr_offer = {}
+    new_bids = {}
+    new_offers = {}
+    timeMatch = 0
+
+
     bids = list_bids()
     offers = list_offers()
 
-    while(1):
-        lowestExpBid = lowest_exp_bids(bids)
-        matchingBids = matching_requirements(lowestExpBid, bids)
-        clashBids = time_clash(matchingBids)
-        [current_bid,s_price] = second_price_auction(clashBids)
-        currentOffers = check_offers_price(current_bid,offers)
-        matchingOffers = check_time_overlap(current_bid,currentOffers)
-        current_offer = expensive_offer(matchingOffers)
-        if current_offer != []:
-            if current_offer.cost > s_price:
-                current_contract = create_contract(current_bid, current_offer,current_bid[0].cost)
-            else:
-                current_contract = create_contract(current_bid, current_offer, current_bid[1])
-            contracts.append(current_contract)
+
+    lowestExpBid = lowest_exp_bids(bids)
+    matchingBids = matching_requirements(lowestExpBid, bids)
+    clashBids = time_clash(matchingBids)
+    [current_bid,s_price] = second_price_auction(clashBids)
+    currentOffers = check_offers_price(current_bid,offers)
+    matchingOffers = check_time_overlap(current_bid,currentOffers)
+    current_offer = expensive_offer(matchingOffers)
+
+    if current_offer != []:
+
+        if current_bid.start_time > current_offer.start_time:
+        # bid starts later than offer
+        # create new offer in beginning
+            id2 = generate_id()
+            reqs = current_offer.requirements
+            new_offers["before_offer"] = Offer(id2, reqs[0], reqs[1], reqs[2], reqs[3], reqs[4], current_offer.cost, current_offer.start_format, current_bid.start_format, current_offer.expiry_format)
+            c_start = current_bid.start_format
+
+        elif current_bid.start_time < current_offer.start_time:
+        # bid starts earlier than offer
+        # create new bid in beginning
+            id2 = generate_id()
+            reqs = current_bid.requirements
+            new_bids["before_bid"] = Bid(id2, reqs[0], reqs[1], reqs[2], reqs[3], reqs[4], current_bid.cost, current_bid.start_format, current_offer.start_format, current_bid.expiry_format)
+            c_start = current_offer.start_format
         else:
-            #Need to write what happens if no offer matches the bid
+            timeMatch = timeMatch+1
+
+        if current_bid.end_time > current_offer.end_time:
+        # bid ends later than offer
+        # create new bid in end
+            id2 = generate_id()
+            reqs = current_bid.requirements
+            new_bids["after_bid"] = Bid(id2, reqs[0], reqs[1], reqs[2], reqs[3], reqs[4], current_bid.cost, current_offer.end_format, current_bid.end_format, current_bid.expiry_format)
+            c_end = current_offer.end_format
+
+        elif current_bid.end_time < current_offer.end_time:
+        # bid ends earlier than offer
+        # create new offer in end
+            id2 = generate_id()
+            reqs = current_offer.requirements
+            new_bids["after_offer"] = Offer(id2, reqs[0], reqs[1], reqs[2], reqs[3], reqs[4], current_offer.cost, current_bid.end_format, current_offer.end_format, current_offer.expiry_format)
+            c_end = current_bid.end_format
+        else:
+            timeMatch = timeMatch + 1
+
+        cid = generate_id()
+        if timeMatch == 2:
+            c_start = current_bid.start_format
+            c_end = current_bid.end_format
+        if current_offer.cost > s_price:
+            new_contract = Contracts(cid,"Matched", c_start, c_end, current_bid.cost)
+        else:
+            new_contract = Contracts(cid,"Matched",c_start, c_end, s_price)
+        new_cbo = cbo_relation(cid, current_offer.offerID, current_bid.bidID)
+
+    else:
+        #Need to write what happens if no offer matches the bid
+        print("placeholder")
+
+
+        
 
 
 
+    de_bid = current_bid.bidID
+    de_offer = current_offer.offerID
 
 
 
-
-
-
-
-
-
-
-
-    for bid in bids:
-        print(bid.__dict__)
-    print("######")
-    for offer in offers:
-        print(offer.__dict__)
-    print('#####')
+    # for bid in bids:
+    #     print(bid.__dict__)
+    # print("######")
+    # for offer in offers:
+    #     print(offer.__dict__)
+    # print('#####')
     
-    de_bid = Bid("0165c7d6-4e3d-4165-9c93-d423275a76bf", 10240, "x86_64", 4, 16, 3, 10, datetime(2020, 5, 2, 20, 00), datetime(2020, 5, 2, 22, 00), datetime(2020, 5, 1, 10, 00))
-    de_offer = Offer("08d727a9-485a-4bf8-82e0-ee5f724e2020", 10240, "x86_64", 4, 16, 3, 20, datetime(2020, 5, 2, 10, 00),
-              datetime(2020, 5, 2, 12, 00), datetime(2020, 5, 1, 8, 00))
-    cr_contract = Contract(de_offer, de_bid, 10, datetime(2020, 5, 2, 20, 00), datetime(2020, 5, 2, 22, 00))
-
     # Output variables
     matcher_output = {}
     matcher_output["status"] = status
     matcher_output["bid_deactivate"] = de_bid
     matcher_output["offer_deactivate"] = de_offer
-    matcher_output["new_bids"] = cr_bid
-    matcher_output["new_offers"] = cr_offer
-    matcher_output["new_contract"] = cr_contract    
-
+    matcher_output["new_bids"] = new_bids
+    matcher_output["new_offers"] = new_offers
+    matcher_output["new_contract"] = new_contract    
+    matcher_output["new_cbo"] = new_cbo
+    print(matcher_output)
 
