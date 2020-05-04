@@ -1,5 +1,6 @@
 import uuid
 from datetime import datetime
+from datetime import timedelta
 from hashlib import blake2s
 import database_setup.APIs.marketAPI as MarketAPI
 import database_setup.statuses as statuses
@@ -35,7 +36,7 @@ class Contract:
     def __init__(self, Offer, Bid, cost, start_time, end_time):
         self.bidID = Bid.bidID
         self.offerID = Offer.offerID
-        self.start_time =start_time
+        self.start_time = start_time
         self.end_time = end_time
         self.contractID = "abcd3"
         # self.allocation_time = Offer.allocation_time
@@ -168,8 +169,7 @@ def Bare_Metal_Auction(bids, offers):
         lowestExpBid = lowest_exp_bids(bids)
         matchingBids = matching_requirements(lowestExpBid, bids)
         clashBids = time_clash(matchingBids)
-        current_bid = second_price_auction(clashBids)
-
+        [current_bid,s_price] = second_price_auction(clashBids)
         currentOffers = check_offers_price(current_bid[0],offers)
         matchingOffers = check_time_overlap(current_bid[0],currentOffers)
         current_offer = expensive_offer(matchingOffers)
@@ -225,7 +225,37 @@ if __name__ == "__main__":
     cr_offer = {}
     bids = list_bids()
     offers = list_offers()
-    #Bare_Metal_Auction(bids,offers)
+
+    while(1):
+        lowestExpBid = lowest_exp_bids(bids)
+        matchingBids = matching_requirements(lowestExpBid, bids)
+        clashBids = time_clash(matchingBids)
+        [current_bid,s_price] = second_price_auction(clashBids)
+        currentOffers = check_offers_price(current_bid,offers)
+        matchingOffers = check_time_overlap(current_bid,currentOffers)
+        current_offer = expensive_offer(matchingOffers)
+        if current_offer != []:
+            if current_offer.cost > s_price:
+                current_contract = create_contract(current_bid, current_offer,current_bid[0].cost)
+            else:
+                current_contract = create_contract(current_bid, current_offer, current_bid[1])
+            contracts.append(current_contract)
+        else:
+            #Need to write what happens if no offer matches the bid
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     for bid in bids:
         print(bid.__dict__)
     print("######")
@@ -233,14 +263,10 @@ if __name__ == "__main__":
         print(offer.__dict__)
     print('#####')
     
-    de_bid = Bid("0165c7d6-4e3d-4165-9c93-d423275a76bf", 10240, "x86_64", 4, 16, 3, 10, datetime(2020, 5, 2, 20, 00),
-            datetime(2020, 5, 2, 22, 00), datetime(2020, 5, 1, 10, 00))
+    de_bid = Bid("0165c7d6-4e3d-4165-9c93-d423275a76bf", 10240, "x86_64", 4, 16, 3, 10, datetime(2020, 5, 2, 20, 00), datetime(2020, 5, 2, 22, 00), datetime(2020, 5, 1, 10, 00))
     de_offer = Offer("08d727a9-485a-4bf8-82e0-ee5f724e2020", 10240, "x86_64", 4, 16, 3, 20, datetime(2020, 5, 2, 10, 00),
               datetime(2020, 5, 2, 12, 00), datetime(2020, 5, 1, 8, 00))
     cr_contract = Contract(de_offer, de_bid, 10, datetime(2020, 5, 2, 20, 00), datetime(2020, 5, 2, 22, 00))
-    #contracts = [c]
-    #add_contract(contracts)
-    #print("added contract")
 
     # Output variables
     matcher_output = {}
