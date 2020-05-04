@@ -220,6 +220,11 @@ def get_bids():
     result = bids_schema.dump(all_bids)
     return jsonify(result)
 
+@app.route('/user_get_bids', methods=['GET'])
+def user_get_bids():
+    db_result = Bids.query.filter(Bids.project_id == request.json['project_id']).all()
+    result = bids_schema.dump(db_result)
+    return jsonify(result)
 
 @app.route("/add_offer", methods=['POST'])
 def add_offer():
@@ -245,10 +250,40 @@ def add_offer():
 
     return offer_schema.jsonify(new_offer)
 
+@app.route("/user_add_offer", methods=['POST'])
+def user_add_offer():
+
+    offer_id = generate_id()
+    project_id = request.json['project_id']
+    resource_id = request.json['resource_id']
+    start_time_l = request.json['start_time']
+    end_time_l = request.json['end_time']
+    expire_time_l = request.json['expire_time']
+    status = statuses.AVAILABLE
+    config = request.json['config']
+    cost = request.json['cost'] 
+
+    start_time = datetime(start_time_l[0], start_time_l[1], start_time_l[2], start_time_l[3], start_time_l[4])
+    end_time = datetime(end_time_l[0], end_time_l[1], end_time_l[2], end_time_l[3], end_time_l[4])
+    expire_time = datetime(expire_time_l[0], expire_time_l[1], expire_time_l[2], expire_time_l[3], expire_time_l[4])
+
+    new_offer = Offers(offer_id, project_id, start_time, end_time, expire_time, status, resource_id, config, cost)
+
+    db.session.add(new_offer)
+    db.session.commit()
+
+    return offer_schema.jsonify(new_offer)
+
 @app.route('/get_offers', methods=['GET'])
 def get_offers():
     all_offers = Offers.query.all()
     result = offers_schema.dump(all_offers)
+    return jsonify(result)
+
+@app.route('/user_get_offers', methods=['GET'])
+def user_get_offers():
+    db_result = Offers.query.filter(Offers.project_id == request.json['project_id']).all()
+    result = offers_schema.dump(db_result)
     return jsonify(result)
 
 
