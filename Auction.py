@@ -51,7 +51,7 @@ class cbo_relation:
         self.offerID = offer_id
         self.contractID = contract_id
 
-
+# #
 def lowest_exp_bids(bids):
     exp = bids[0].expiry_time
     for i in range(len(bids)):
@@ -60,7 +60,7 @@ def lowest_exp_bids(bids):
             current_bid = bids[i]
     return current_bid
 
-
+# #
 def matching_requirements(current_bid, bids):
     current_bids = [current_bid]
     for i in range(len(bids)):
@@ -69,7 +69,7 @@ def matching_requirements(current_bid, bids):
                 current_bids.append(bids[i])
     return current_bids
 
-
+# #
 def time_clash(bids):
     clash_bids = [bids[0]]
     start_time = bids[0].start_time
@@ -80,7 +80,7 @@ def time_clash(bids):
                 clash_bids.append(bids[i])
     return clash_bids
 
-
+# #
 def second_price_auction(bids):
     high_price = bids[0].cost
     second_price = 0
@@ -101,7 +101,7 @@ def second_price_auction(bids):
 
     return expensiveBid, second_price + 0.01
 
-
+# #
 def check_offers_price(bid, offers):
     cheap_offers = []
     for i in range(len(offers)):
@@ -109,7 +109,7 @@ def check_offers_price(bid, offers):
             cheap_offers.append(offers[i])
     return cheap_offers
 
-
+# #
 def check_time_overlap(bid, offers):
     overlap_offers = []
     for i in range(len(offers)):
@@ -131,7 +131,7 @@ def check_time_overlap(bid, offers):
 
     return overlap_offers
 
-
+# #
 def expensive_offer(offers):
     price = 0
     for i in range(len(offers)):
@@ -140,7 +140,7 @@ def expensive_offer(offers):
             offer = offers[i]
     return offer
 
-
+# #
 def create_contract(bid, offer, price):
     new_contract = Contract(bid, offer)
     if bid.start_time == offer.start_time:
@@ -226,7 +226,7 @@ def add_contract(contracts):
 def generate_id():
     return ''.join(random.choice('0123456789abcdef') for i in range(36))
 
-
+# #
 def main():
     de_bid = ""
     de_offer = ""

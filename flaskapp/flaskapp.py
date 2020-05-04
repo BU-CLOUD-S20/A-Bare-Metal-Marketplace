@@ -320,7 +320,7 @@ def list_bids():
         config = db_bid.config_query
         result.append(Bid(db_bid.bid_id, config.get('memory_gb'), config.get('cpu_arch'),
                           config.get('cpu_physical_count'), config.get('cpu_core_count'), config.get('cpu_ghz'),
-                          db_bid.cost, db_bid.start_time, db_bid.end_time , db_bid.expiry_time))
+                          db_bid.cost, db_bid.start_time, db_bid.end_time , db_bid.expire_time))
     return result
 
 def list_offers():
@@ -330,7 +330,7 @@ def list_offers():
         config = db_offer.config
         result.append(Offer(db_offer.offer_id, config.get('memory_gb'), config.get('cpu_arch'),
                             config.get('cpu_physical_count'), config.get('cpu_core_count'), config.get('cpu_ghz'),
-                            db_offer.cost, db_offer.start_time, db_offer.end_time, db_offer.expiry_time))
+                            db_offer.cost, db_offer.start_time, db_offer.end_time, db_offer.expire_time))
     return result
 
 
@@ -347,15 +347,18 @@ def insert_contract(contracts):
         Offers.query.filter(Offers.offer_id == contract.offerID).update({"status": statuses.MATCHED})
         db.session.commit()
 
-def run_matcher():
-    ### COPY ME IN
-    return {"status": 1, "bid_deactivate": "42069", "offer_deactivate": "42069", "new_bids": {}, "new_offers": {}, "new_contract": aContract, "new_cbo": aCBO}
+
+## START ENGINE.PY ##
+
+## END ENGINE.PY ##
 
 def handle_matcher():
     status = 1
     while(status == 1):
         matcher_output = run_matcher()
-        status = matcher_output[status]
+
+        status = matcher_output["status"]
+
         if (status == 1):
 
             if "before_bid" in matcher_output["new_bids"]:
