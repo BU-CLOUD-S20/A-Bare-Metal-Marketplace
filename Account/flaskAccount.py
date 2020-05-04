@@ -123,6 +123,14 @@ def get_users():
     return jsonify(result)
 
 
+@app.route('/get_user', methods=['POST'])
+def get_user():
+    user_id = request.json['user_id']
+    all_users = Users.query.filter(Users.user_id == user_id).one()
+    result = users_schema.dump(all_users)
+    return jsonify(result)
+
+
 @app.route("/add_contract", methods=['POST'])
 def add_contract():
     contract_id = request.json['contract_id']
