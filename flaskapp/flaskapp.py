@@ -11,6 +11,10 @@ from datetime import datetime
 import os
 import sys
 
+from multiprocessing import Process, Value
+import time
+import random
+
 import statuses
 
 now = datetime.now()
@@ -29,6 +33,10 @@ db = SQLAlchemy(app)
 
 # Marshmallow Init 
 ma = Marshmallow(app)
+
+# Generation of IDs
+def generate_id():
+    return ''.join(random.choice('0123456789abcdef') for i in range(36))
 
 # Bids
 class Bids(db.Model):
@@ -269,7 +277,7 @@ def get_cbos():
     return jsonify(result)
 
 
-####################################################################################### ALGORITHMICS ###############################################
+## ALGORITHMICS ##
 
 class Bid:
     def __init__(self, id1, memory, cpu_arch, cpu_physical_count, cpu_core_count, cpu_ghz, cost, start_time, end_time,
@@ -299,7 +307,7 @@ class Contract:
         self.offerID = Offer.offerID
         self.start_time =start_time
         self.end_time = end_time
-        self.contractID = "e7de4e71-163d-4627-934c-1b5db1348c0b"
+        self.contractID = generate_id()
         # self.allocation_time = Offer.allocation_time
         self.cost = cost
 
@@ -312,7 +320,7 @@ def list_bids():
         config = db_bid.config_query
         result.append(Bid(db_bid.bid_id, config.get('memory_gb'), config.get('cpu_arch'),
                           config.get('cpu_physical_count'), config.get('cpu_core_count'), config.get('cpu_ghz'),
-                          db_bid.cost, db_bid.start_time, db_bid.end_time))
+                          db_bid.cost, db_bid.start_time, db_bid.end_time , db_bid.expiry_time))
     return result
 
 def list_offers():
@@ -322,7 +330,7 @@ def list_offers():
         config = db_offer.config
         result.append(Offer(db_offer.offer_id, config.get('memory_gb'), config.get('cpu_arch'),
                             config.get('cpu_physical_count'), config.get('cpu_core_count'), config.get('cpu_ghz'),
-                            db_offer.cost, db_offer.start_time, db_offer.end_time))
+                            db_offer.cost, db_offer.start_time, db_offer.end_time, db_offer.expiry_time))
     return result
 
 
@@ -339,30 +347,86 @@ def insert_contract(contracts):
         Offers.query.filter(Offers.offer_id == contract.offerID).update({"status": statuses.MATCHED})
         db.session.commit()
 
-
-@app.route('/insert', methods=['GET'])
-def insert():
-    b = Bid("0165c7d6-4e3d-4165-9c93-d423275a76bf", 10240, "x86_64", 4, 16, 3, 10, datetime(2020, 5, 2, 20, 00),
-            datetime(2020, 5, 2, 22, 00), datetime(2020, 5, 1, 10, 00))
-    o = Offer("08d727a9-485a-4bf8-82e0-ee5f724e2020", 10240, "x86_64", 4, 16, 3, 20, datetime(2020, 5, 2, 10, 00),
-              datetime(2020, 5, 2, 12, 00), datetime(2020, 5, 1, 8, 00))
-    c = Contract(o, b, 10, datetime(2020, 5, 2, 20, 00), datetime(2020, 5, 2, 22, 00))
-    contracts = [c]
-    insert_contract(contracts)
-    return jsonify("inserted contract")
-
-
-@app.route('/run_matcher', methods=['GET'])
 def run_matcher():
-    return render_template("matcher.html")
+    ### COPY ME IN
+    return {"status": 1, "bid_deactivate": "42069", "offer_deactivate": "42069", "new_bids": {}, "new_offers": {}, "new_contract": aContract, "new_cbo": aCBO}
+
+def handle_matcher():
+    status = 1
+    while(status == 1):
+        matcher_output = run_matcher()
+        status = matcher_output[status]
+        if (status == 1):
+
+            if "before_bid" in matcher_output["new_bids"]:
+                db.session.add(matcher_output["new_bids"]["before_bid"])
+                db.session.commit()
+            if "after_bid" in matcher_output["new_bids"]:
+                db.session.add(matcher_output["new_bids"]["after_bid"])
+                db.session.commit()
+            if "before_offer" in matcher_output["new_offers"]:
+                db.session.add(matcher_output["new_offers"]["before_offer"])
+                db.session.commit()
+            if "after_offer" in matcher_output["new_offers"]:
+                db.session.add(matcher_output["new_offers"]["after_offer"])
+                db.session.commit()
+
+            db.session.add(matcher_output["new_contract"])
+            db.session.commit()
+
+            db.session.add(matcher_output["new_cbo"])
+            db.session.commit()
+
+            bid_de = Bids.query.filter_by(bid_id=matcher_output["bid_deactivate"]).first()
+            bid_de.status = statuses.MATCHED
+            db.session.commit()
+
+            offer_de = Offers.query.filter_by(bid_id=matcher_output["offer_deactivate"]).first()
+            offer_de.status = statuses.MATCHED
+            db.session.commit()
+
+            ### ACCT SERVICE STUFF
+
+
+    return
+
+
+
+#@app.route('/insert', methods=['GET'])
+#def insert():
+#    b = Bid("0165c7d6-4e3d-4165-9c93-d423275a76bf", 10240, "x86_64", 4, 16, 3, 10, datetime(2020, 5, 2, 20, 00),
+#            datetime(2020, 5, 2, 22, 00), datetime(2020, 5, 1, 10, 00))
+#    o = Offer("08d727a9-485a-4bf8-82e0-ee5f724e2020", 10240, "x86_64", 4, 16, 3, 20, datetime(2020, 5, 2, 10, 00),
+#              datetime(2020, 5, 2, 12, 00), datetime(2020, 5, 1, 8, 00))
+#    c = Contract(o, b, 10, datetime(2020, 5, 2, 20, 00), datetime(2020, 5, 2, 22, 00))
+#    contracts = [c]
+#    insert_contract(contracts)
+#    return jsonify("inserted contract")
+
+
+@app.route('/force_matcher', methods=['GET'])
+def force_matcher():
+    handle_matcher()
+    return jsonify("matcher run")
 
 
 @app.route('/update_status', methods=['GET'])
 def update_status():
     pass
 
+def loop_matcher(delay):
+    while(True):
+        print('Matcher Automatically Run')
+        handle_matcher()
+        #do expired status update here
+        time.sleep(delay)
+        
 
 # Run Server
 if __name__ == "__main__":
-    app.run()
+   matcher_delay = 3600 # 1 hour in seconds
+   p = Process(target=loop_matcher, args=(matcher_delay,))
+   p.start()  
+   app.run(host='0.0.0.0', debug=True, use_reloader=False)
+   p.join()
 
