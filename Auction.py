@@ -52,9 +52,9 @@ class cbo_relation:
 
 # #
 def lowest_exp_bids(bids):
-    exp = int(bids[0].expiry_time.strftime("%Y%m%d%H%M")) - int(current_time)
+    exp = int(bids[0].expire_time.strftime("%Y%m%d%H%M")) - int(current_time)
     for i in range(len(bids)):
-        exp2 = int(bids[i].expiry_time.strftime("%Y%m%d%H%M")) - int(current_time)
+        exp2 = int(bids[i].expire_time.strftime("%Y%m%d%H%M")) - int(current_time)
         if exp2 < exp:
             exp = exp2
             current_bid = bids[i]
@@ -148,8 +148,29 @@ def expensive_offer(offers):
 
 
 def generate_id():
-    return ''.join(random.choice('0123456789abcdef') for i in range(36))
 
+    return ''.join(random.choice('0123456789abcdef') for i in range(36))
+def list_offers():
+    # result = []
+    db_result = MarketAPI.offer_select_all_available()
+    # for db_offer in db_result:
+    #     config = db_offer.config
+    #     result.append(Offers(db_offer.offer_id, config.get('memory_gb'), config.get('cpu_arch'),
+    #                         config.get('cpu_physical_count'), config.get('cpu_core_count'), config.get('cpu_ghz'),
+    #                         db_offer.cost, db_offer.start_time, db_offer.end_time, db_offer.expire_time))
+    print(db_result[0].offer_id)
+    return db_result
+
+
+def list_bids():
+    # result = []
+    db_result = MarketAPI.bid_select_all_available()
+    # for db_bid in db_result:
+    #     config = db_bid.config_query
+    #     result.append(Bid(db_bid.bid_id, config.get('memory_gb'), config.get('cpu_arch'),
+    #                       config.get('cpu_physical_count'), config.get('cpu_core_count'), config.get('cpu_ghz'),
+    #                       db_bid.cost, db_bid.start_time, db_bid.end_time, db_bid.expire_time))
+    return db_result
 # #
 def main():
     de_bid = ""
@@ -218,7 +239,7 @@ def main():
                 new_contract = Contracts(cid,"matched", c_start, c_end, current_bid.cost)
             else:
                 new_contract = Contracts(cid,"matched",c_start, c_end, s_price)
-            new_cbo = cbo_relation(cid, current_offer.offerID, current_bid.bidID)
+            new_cbo = cbo_relation(cid, current_offer.offer_id, current_bid.bid_id)
             break
         else:
             #no offer matches the bid
@@ -251,8 +272,8 @@ def main():
 
 
 
-    de_bid = current_bid.bidID
-    de_offer = current_offer.offerID
+    de_bid = current_bid.bid_id
+    de_offer = current_offer.offer_id
 
 
 
@@ -290,27 +311,6 @@ if __name__ == "__main__":
 #         MarketAPI.bid_update_status_by_id(contract.bidID, statuses.MATCHED)
 #         MarketAPI.offer_update_status_by_id(contract.offerID, statuses.MATCHED)
 
-
-def list_offers():
-    result = []
-    db_result = MarketAPI.offer_select_all_available()
-    for db_offer in db_result:
-        config = db_offer.config
-        result.append(Offer(db_offer.offer_id, config.get('memory_gb'), config.get('cpu_arch'),
-                            config.get('cpu_physical_count'), config.get('cpu_core_count'), config.get('cpu_ghz'),
-                            db_offer.cost, db_offer.start_time, db_offer.end_time, db_offer.expire_time))
-    return result
-
-
-def list_bids():
-    result = []
-    db_result = MarketAPI.bid_select_all_available()
-    for db_bid in db_result:
-        config = db_bid.config_query
-        result.append(Bid(db_bid.bid_id, config.get('memory_gb'), config.get('cpu_arch'),
-                          config.get('cpu_physical_count'), config.get('cpu_core_count'), config.get('cpu_ghz'),
-                          db_bid.cost, db_bid.start_time, db_bid.end_time, db_bid.expire_time))
-    return result
 
 
 # def Bare_Metal_Auction(bids, offers): 
