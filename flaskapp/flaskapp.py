@@ -314,24 +314,12 @@ class Contract:
 
 # Database Pulls
 def list_bids():
-    result = []
     db_result = Bids.query.all()
-    for db_bid in db_result:
-        config = db_bid.config_query
-        result.append(Bid(db_bid.bid_id, config.get('memory_gb'), config.get('cpu_arch'),
-                          config.get('cpu_physical_count'), config.get('cpu_core_count'), config.get('cpu_ghz'),
-                          db_bid.cost, db_bid.start_time, db_bid.end_time , db_bid.expire_time))
-    return result
+    return db_result
 
 def list_offers():
-    result = []
     db_result = Offers.query.all()
-    for db_offer in db_result:
-        config = db_offer.config
-        result.append(Offer(db_offer.offer_id, config.get('memory_gb'), config.get('cpu_arch'),
-                            config.get('cpu_physical_count'), config.get('cpu_core_count'), config.get('cpu_ghz'),
-                            db_offer.cost, db_offer.start_time, db_offer.end_time, db_offer.expire_time))
-    return result
+    return db_result
 
 
 def insert_contract(contracts):
