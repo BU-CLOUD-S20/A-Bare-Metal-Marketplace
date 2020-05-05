@@ -6,6 +6,9 @@
 
 Presentations:
 
+-Final Presentation Vide
+<LINK TBD>
+
 -Bolted Paper Presentation 
 https://docs.google.com/presentation/d/1I2IVUlbipttOq9JroxmVZ2BtYHUy6iadvFhX7GVvFZI/edit?usp=sharing
 
@@ -47,6 +50,55 @@ https://docs.google.com/presentation/d/19kACETfZ-FhiFkoOMcIhrVeHBjpvXL-2O-pMGKSB
 * [Bolted](https://www.usenix.org/system/files/atc19-mosayyebzadeh.pdf)
 
 ** **
+## 0.   Setup Guide
+
+There are 3 parts to setting up this project independently:
+Two servers (Market server and Account server) as well as user cli application.
+
+On all of these, start by cloning the repo:
+git clone https://github.com/BU-CLOUD-S20/A-Bare-Metal-Marketplace
+
+
+SERVER SETUP:
+Set up database for both account and auction services locally:
+#sudo apt-get install mysql-server
+#Go into mysql using:
+mysql -u root -p
+#Create a new user:
+CREATE USER ‘username’@’localhost’ IDENTIFIED BY ‘password’;
+GRANT privileges ON *.* TO ‘username’@’localhost’;
+#Create market and account database:
+Create database market;
+Create database account;
+#Go to /database_setup/Models/marketModel and accountModel, use the user you just created in mysql and switch 
+engine = create_engine("mysql+pymysql://username:password@localhost/market")
+To:
+engine = create_engine("mysql+pymysql://username:password@localhost/market")
+#and
+engine = create_engine("mysql+pymysql://username:password@localhost/account")
+To:
+engine = create_engine("mysql+pymysql://username:password@localhost/account")
+#Then run these two files to generate tables for market db and account db
+
+Set up Flask and dependencies for both account and market services:
+#Install Python3 and virtualenv on both servers
+#“cd A-Bare-Metal-Marketplace/flaskapp”
+note: flaskapp/venv/bin/activate is included with installed dependencies but a separate environment and dependencies can be used as well
+#Use “ipconfig” and find ip for both servers
+#Modify account_url in flaskapp.py with the ip of account server
+#Use “source venv/bin/activate” on both servers 
+#Run “python flaskapp.py” on market server and “python flaskAccount.py” on account server
+note: At this point server admin control can be tested with Postman or similar tools from a remote node
+note: Port 5000 is used for the marketplace and 5001 is used for the account. These ports must be open on the network
+
+USER SETUP
+Set up CLI node
+#Install python3 and virtualenv
+#“cd A-Bare-Metal-Marketplace/CLI”
+note: CLI/venv/bin/activate is included with installed dependencies but a separate environment and dependencies can be used as well
+#Modify bmm.py with the ip for the account and market servers
+#“source venv/bin/activate”
+#“python bmm.py --help” should output a list of commands
 
 ## 1.   Vision and Goals Of The Project:
 
@@ -106,21 +158,19 @@ The scope of this project is to design an auction system and related features- i
 
 ** **
 
-## 4. Solution Concept
+## 4. Solution Architecture
 
 Global Architectural Structure Of the Project:
 
 
 
-![Current System Overview](./images/overview-3.png)
+![Current System Overview](./images/overview-4.png)
 
 Microservices and Communication Structure:
 
 
 
-![Microservice Structure](./images/microservices.png)
-
-Overall, this project aims to be implemented in OpenStack with the use of Ironic for bare-metal provisioning.
+![Microservice Structure](./images/microservices-2.png)
 
 
 ### Design Implications and Discussion:
@@ -134,6 +184,28 @@ Overall, this project aims to be implemented in OpenStack with the use of Ironic
 * Matching API- Connects to auction system to serve matches
 
 The microservice itself needs to be light to run as to not consume unnecessary resources.
+Algorithmic steps for auction engine:
+
+#import data
+1. Import bids from the database
+2. Import offers from the database
+
+ #select a bid to match
+3. Select the bid with lowest expiry time and match with bids that have similar physical machine requirements
+4. Eliminate the bids that do not have time overlap with the lowest expiry bid.  The ones that do have a time clash are our clashing bids. 
+5. These clashing bids are sent to the second price auction selector, where the highest bid with its actual price of the bid is set as high_price and (price of second highest bid+0.01) is set as second_price
+
+#select offer to match our selected bid
+6. Eliminate all offers more expensive than the high_price of our selected bid
+7. Select all offers whose offer time is part of the rental time of the selected bid.
+8. The most expensive offer from these offers is selected to be matched to our bid
+9. If the price of this offer is higher than the second_price, it is matched for bid price, if the price is less or equal to the second price, it is matched for the second price. 
+
+ #contract creation and splicing of bids and offers
+10. Create a contract and if the entire bid time was not fulfilled by the selected offer, create another bid for the remaining time. Vice versa, if the offer time of the matched offer is not fulfilled by the bid it matched to, create another offer for the remaining time. 
+
+Rinse and repeat till all bids or all offers have expired. 
+
 
 ## 5. Acceptance criteria
 
