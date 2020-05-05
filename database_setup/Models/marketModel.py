@@ -5,7 +5,6 @@ import sqlalchemy_jsonfield
 sys.path.append("/home/stardust/A-Bare-Metal-Marketplace/database_setup")
 import database_setup.statuses as statuses
 
-
 engine = create_engine("mysql+pymysql://marketplace:123456@localhost/market")
 
 Base = declarative_base()

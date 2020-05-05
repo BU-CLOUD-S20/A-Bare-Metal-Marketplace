@@ -234,7 +234,7 @@ def main():
                 c_start = current_bid.start_time
                 c_end = current_bid.end_time
             if current_offer.cost > s_price:
-                new_contract = Contracts(cid,"matched"", c_start, c_end, current_bid.cost)
+                new_contract = Contracts(cid,"matched", c_start, c_end, current_bid.cost)
             else:
                 new_contract = Contracts(cid,"matched",c_start, c_end, s_price)
             new_cbo = cbo_relation(cid, current_offer.offer_id, current_bid.bid_id)
