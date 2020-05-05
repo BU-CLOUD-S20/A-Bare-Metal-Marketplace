@@ -6,7 +6,7 @@
 
 Presentations:
 
--Final Presentation Vide
+-Final Presentation Video
 <LINK TBD>
 
 -Bolted Paper Presentation 
