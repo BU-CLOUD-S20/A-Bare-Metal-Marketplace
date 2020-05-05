@@ -61,44 +61,44 @@ git clone https://github.com/BU-CLOUD-S20/A-Bare-Metal-Marketplace
 
 SERVER SETUP:
 Set up database for both account and auction services locally:
--sudo apt-get install mysql-server
--Go into mysql using:
+* sudo apt-get install mysql-server
+* Go into mysql using:
 mysql -u root -p
--Create a new user:
+* Create a new user:
 CREATE USER ‘username’@’localhost’ IDENTIFIED BY ‘password’;
 GRANT privileges ON *.* TO ‘username’@’localhost’;
--Create market and account database:
+* Create market and account database:
 Create database market;
 Create database account;
--Go to /database_setup/Models/marketModel and accountModel, use the user you just created in mysql and switch 
+* Go to /database_setup/Models/marketModel and accountModel, use the user you just created in mysql and switch 
 engine = create_engine("mysql+pymysql://username:password@localhost/market")
 To:
 engine = create_engine("mysql+pymysql://username:password@localhost/market")
--and
+* and
 engine = create_engine("mysql+pymysql://username:password@localhost/account")
 To:
 engine = create_engine("mysql+pymysql://username:password@localhost/account")
--Then run these two files to generate tables for market db and account db
+* Then run these two files to generate tables for market db and account db
 
 Set up Flask and dependencies for both account and market services:
--Install Python3 and virtualenv on both servers
--“cd A-Bare-Metal-Marketplace/flaskapp”
+* Install Python3 and virtualenv on both servers
+* “cd A-Bare-Metal-Marketplace/flaskapp”
 note: flaskapp/venv/bin/activate is included with installed dependencies but a separate environment and dependencies can be used as well
--Use “ipconfig” and find ip for both servers
--Modify account_url in flaskapp.py with the ip of account server
--Use “source venv/bin/activate” on both servers 
--Run “python flaskapp.py” on market server and “python flaskAccount.py” on account server
+* Use “ipconfig” and find ip for both servers
+* Modify account_url in flaskapp.py with the ip of account server
+* Use “source venv/bin/activate” on both servers 
+* Run “python flaskapp.py” on market server and “python flaskAccount.py” on account server
 note: At this point server admin control can be tested with Postman or similar tools from a remote node
 note: Port 5000 is used for the marketplace and 5001 is used for the account. These ports must be open on the network
 
 USER SETUP
 Set up CLI node
--Install python3 and virtualenv
--“cd A-Bare-Metal-Marketplace/CLI”
+* Install python3 and virtualenv
+* “cd A-Bare-Metal-Marketplace/CLI”
 note: CLI/venv/bin/activate is included with installed dependencies but a separate environment and dependencies can be used as well
-#Modify bmm.py with the ip for the account and market servers
--“source venv/bin/activate”
--“python bmm.py --help” should output a list of commands
+* Modify bmm.py with the ip for the account and market servers
+* “source venv/bin/activate”
+* “python bmm.py --help” should output a list of commands
 
 ## 1.   Vision and Goals Of The Project:
 
