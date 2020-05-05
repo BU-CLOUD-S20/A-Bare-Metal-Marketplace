@@ -2,9 +2,14 @@ import click
 import requests
 import json
 
-market_url  = 'http://206.189.232.188:5000'
-account_url = 'http://206.189.232.188:5001'
-project_id  = 'deadbeef-abcd-0000-aaaa-deadbeef1234'
+# market_url  = 'http://206.189.232.188:5000'
+# account_url = 'http://206.189.232.188:5001'
+# project_id  = 'deadbeef-abcd-0000-aaaa-deadbeef1234'
+
+market_url  = 'http://127.0.0.1:5000'
+account_url = 'http://127.0.0.1:5001'
+project_id  = 'ba0ee0fe-ee77-474e-8588-cf6a023c6c05'
+
 
 def get_market(path, sendData):
     response = requests.get(market_url+path, json=sendData)

@@ -740,6 +740,6 @@ if __name__ == "__main__":
    matcher_delay = 3600 # 1 hour in seconds
    p = Process(target=loop_matcher, args=(matcher_delay,))
    p.start()  
-   app.run(host='0.0.0.0', debug=True, use_reloader=False)
+   app.run(debug=True, use_reloader=False)
    p.join()
 
