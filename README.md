@@ -8,20 +8,15 @@ Presentations:
 
 [Final Presentation Video](https://www.youtube.com/watch?v=aItVPYOFiwE&feature=youtu.bet)
 
--Bolted Paper Presentation 
-https://docs.google.com/presentation/d/1I2IVUlbipttOq9JroxmVZ2BtYHUy6iadvFhX7GVvFZI/edit?usp=sharing
+[Bolted Paper Presentation](https://docs.google.com/presentation/d/1I2IVUlbipttOq9JroxmVZ2BtYHUy6iadvFhX7GVvFZI/edit?usp=sharing)
 
--Sprint 4
-https://docs.google.com/presentation/d/1FfAsXFmRbjcQh_8ObwwD5Mmz-GOpC9f5Iq1T69fxsO0/edit?usp=sharing
+[Sprint 4](https://docs.google.com/presentation/d/1FfAsXFmRbjcQh_8ObwwD5Mmz-GOpC9f5Iq1T69fxsO0/edit?usp=sharing)
 
--Sprint 3
-https://docs.google.com/presentation/d/15wrRBRzJkTVKug-aKJ7ESHm5jCBQKkHdeGBn9Ujc0kY/edit?usp=sharing
+[Sprint 3](https://docs.google.com/presentation/d/15wrRBRzJkTVKug-aKJ7ESHm5jCBQKkHdeGBn9Ujc0kY/edit?usp=sharing)
 
--Sprint 2
-https://docs.google.com/presentation/d/1Es-8C4n9V-fOHEZmo0kG868NgTe7vPsfINWeYcmxHRg/edit?usp=sharing
+[Sprint 2](https://docs.google.com/presentation/d/1Es-8C4n9V-fOHEZmo0kG868NgTe7vPsfINWeYcmxHRg/edit?usp=sharing)
 
--Sprint 1
-https://docs.google.com/presentation/d/19kACETfZ-FhiFkoOMcIhrVeHBjpvXL-2O-pMGKSBFQE/edit?usp=sharing
+[Sprint 1](https://docs.google.com/presentation/d/19kACETfZ-FhiFkoOMcIhrVeHBjpvXL-2O-pMGKSBFQE/edit?usp=sharing)
 
 ### Context: 
 * Many hosts do not use cloud servers due to multiple constraints including security, privacy, or a need for specific hardware. Hosts often rent space in a data center for their servers.
