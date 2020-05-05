@@ -2,13 +2,9 @@ import click
 import requests
 import json
 
-# market_url  = 'http://206.189.232.188:5000'
-# account_url = 'http://206.189.232.188:5001'
-# project_id  = 'deadbeef-abcd-0000-aaaa-deadbeef1234'
-
-market_url  = 'http://127.0.0.1:5000'
-account_url = 'http://127.0.0.1:5001'
-project_id  = 'ba0ee0fe-ee77-474e-8588-cf6a023c6c05'
+market_url  = 'http://206.189.232.188:5000'
+account_url = 'http://206.189.232.188:5001'
+project_id  = 'aaaaaaaa-abcd-0000-aaaa-aaaaaaaaaaaa'
 
 
 def get_market(path, sendData):
@@ -31,7 +27,7 @@ def cli():
 @click.option('--quantity', default = 1)
 @click.option('--expire', default = "2100:1:1:0:0")
 @click.option('--memory-gb', default = 1)
-@click.option('--cpu-arch', default = 'x86-64')
+@click.option('--cpu-arch', default = 'x86_64')
 @click.option('--cpu-count', default = 1)
 @click.option('--core-count', default = 1)
 @click.option('--cpu-ghz', default = 2)
@@ -139,6 +135,20 @@ def get_balance():
         balance = get_account(path, sendData)
         click.echo('Current Balance:')
         click.echo(balance)
+    except:
+        click.echo('No Balance')
+
+
+@cli.command()
+def get_contracts():
+    try:
+        path = '/user_get_contracts'
+
+        sendData = {'project_id': project_id}
+
+        contracts = get_market(path, sendData)
+        click.echo('Here are your contracts:')
+        click.echo(contracts)
     except:
         click.echo('Connection Refused')
 
