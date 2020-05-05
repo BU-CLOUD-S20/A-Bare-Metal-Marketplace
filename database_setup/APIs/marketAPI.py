@@ -8,7 +8,7 @@ import database_setup.Models.marketModel as Market
 import database_setup.statuses as statuses
 import database_setup.data as data
 
-engine = create_engine("mysql+pymysql://remote:123456@206.189.232.188/market")
+engine = create_engine("mysql+pymysql://marketplace:123456@localhost/market")
 
 
 def bid_insert(values):
@@ -201,8 +201,8 @@ def offer_update_status_by_id(offer_id, status):
     session.commit()
 
 
-# for bid in data.bids:
-#     bid_insert(bid)
-# for offer in data.offers:
-#     offer_insert(offer)
+for bid in data.bids:
+    bid_insert(bid)
+for offer in data.offers:
+    offer_insert(offer)
 # bid_insert({'bid_id': '24ea1cc1-811f-437e-a748-b8a0f00cd401', 'project_id': 'ba0ee0fe-ee77-474e-8588-cf6a023c6c05', 'quantity': 1, 'start_time': datetime(2020, 2, 29, 10, 30), 'end_time': datetime(2020, 3, 1, 10, 30), 'expire_time': datetime(2020, 3, 10, 10, 30), 'duration': 16400, 'status': 'available', 'config_query': {'memory_gb': 10240, 'cpu_arch': 'x86_64', 'cpu_physical_count': 4, 'cpu_core_count': 16, 'cpu_ghz': 3}, 'cost': 11})

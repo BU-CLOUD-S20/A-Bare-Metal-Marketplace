@@ -127,7 +127,7 @@ def get_offers():
 @cli.command()
 def get_balance():
     try:
-        path = '/get_users'
+        path = '/get_user'
 
         sendData = {'project_id': project_id}
 

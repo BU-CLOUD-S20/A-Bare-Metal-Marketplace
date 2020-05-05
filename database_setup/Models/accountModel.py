@@ -5,8 +5,9 @@ from sqlalchemy.orm import sessionmaker
 sys.path.append("/home/stardust/A-Bare-Metal-Marketplace/database_setup")
 import database_setup.statuses as statuses
 
+from datetime import datetime
 
-engine = create_engine("mysql+pymysql://market:123456@localhost/account")
+engine = create_engine("mysql+pymysql://marketplace:123456@localhost/account")
 Base = declarative_base()
 
 
@@ -44,3 +45,6 @@ def init():
 
 if __name__ == "__main__":
     init()
+    # a = datetime(2020, 6, 2, 10, 0)
+    # b = a.strftime("%Y:%m:%d:%H:%M")
+    # c = [int(i) for i in b.split(':')]

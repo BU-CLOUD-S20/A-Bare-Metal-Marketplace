@@ -17,6 +17,9 @@ import random
 
 import statuses
 
+import requests
+import json
+
 now = datetime.now()
 # print(now)
 current_time = now.strftime("%Y%m%d%H%M")
@@ -406,6 +409,7 @@ def insert_contract(contracts):
 ## START AUCTION.PY ##
 # #
 def lowest_exp_bids(bids):
+    current_bid = bids[0]
     exp = int(bids[0].expire_time.strftime("%Y%m%d%H%M")) - int(current_time)
     for i in range(len(bids)):
         exp2 = int(bids[i].expire_time.strftime("%Y%m%d%H%M")) - int(current_time)
@@ -516,14 +520,15 @@ def run_matcher():
     bids = list_active_bids()
     offers = list_active_offers()
 
-    if len(offers) > 0 and len(offers) > 0: 
+    if len(bids) > 0 and len(offers) > 0:
         lowestExpBid = lowest_exp_bids(bids)
         matchingBids = matching_requirements(lowestExpBid, bids)
         clashBids = time_clash(matchingBids)
         [current_bid,s_price] = second_price_auction(clashBids)
         currentOffers = check_offers_price(current_bid,offers)
-        if len(currentOffers) > 0 : 
+        if len(currentOffers) > 0:
             matchingOffers = check_time_overlap(current_bid,currentOffers)
+        # if len(matchingOffers) > 0:
             current_offer = expensive_offer(matchingOffers)
 
             while(1):
@@ -540,7 +545,7 @@ def run_matcher():
                     # bid starts later than offer
                     # create new offer in beginning
                         id2 = generate_id()
-                        new_offers["before_offer"] = Offers(id2,current_offer.project_id, current_offer.status, current_offer.resource_id, current_offer.start_time, current_bid.start_time, current_offer.expire_time, current_offer.config, current_offer.cost)
+                        new_offers["before_offer"] = Offers(id2, current_offer.project_id, current_offer.start_time, current_bid.start_time, current_offer.expire_time, current_offer.status, current_offer.resource_id, current_offer.config, current_offer.cost)
                         c_start = current_bid.start_time
 
                     elif bidStart < offerStart:
@@ -563,7 +568,7 @@ def run_matcher():
                     # bid ends earlier than offer
                     # create new offer in end
                         id2 = generate_id()
-                        new_bids["after_offer"] = Offers(id2,current_offer.project_id, current_offer.status, current_offer.resource_id, current_bid.end_time, current_offer.end_time, current_offer.expire_time, current_offer.config, current_offer.cost)
+                        new_bids["after_offer"] = Offers(id2,current_offer.project_id, current_bid.end_time, current_offer.end_time, current_offer.expire_time, current_offer.status, current_offer.resource_id, current_offer.config, current_offer.cost)
                         c_end = current_bid.end_time
                     else:
                         timeMatch = timeMatch + 1
@@ -651,19 +656,28 @@ def handle_matcher():
             ### ACCT SERVICE POST REQUEST
 ### ACCT SERVICE STUFF
             contract_id = matcher_output["new_contract"].contract_id
+
             start_time = matcher_output["new_contract"].start_time
+            start_tmp = start_time.strftime("%Y:%m:%d:%H:%M")
+            start_time_l = [int(i) for i in start_tmp.split(':')]
+
             end_time = matcher_output["new_contract"].end_time
+            end_tmp = end_time.strftime("%Y:%m:%d:%H:%M")
+            end_time_l = [int(i) for i in end_tmp.split(':')]
+
             contract_status = matcher_output["new_contract"].status
             cost = matcher_output["new_contract"].cost
-            provider_id = matcher_output["offer_deactivate"].project_id
-            renter_id = matcher_output["bid_deactivate"].project_id
+            provider_id = Offers.query.filter(Offers.offer_id == matcher_output["offer_deactivate"]).one().project_id
+            renter_id = Bids.query.filter(Bids.bid_id == matcher_output["bid_deactivate"]).one().project_id
 
-            data = {'contract_id': contract_id, 'start_time': start_time, 'end_time': end_time,
+            data = {'contract_id': contract_id, 'start_time': start_time_l, 'end_time': end_time_l,
                     'status': contract_status, 'cost': cost, 'provider_id': provider_id, 'renter_id': renter_id}
 
-            res = request.post("http://0.0.0.0:5001/run_transaction", data=json.dumps(data),
-                               headers={'Content-Type': 'application/json'})
-            contract_approved = res.json['flag']
+            res = requests.post("http://127.0.0.1:5001/run_transaction", data=json.dumps(data),
+                                headers={'Content-Type': 'application/json'})
+            r_json = res.json()
+            contract_approved = r_json.get("flag", True)
+            # print(contract_approved)
 
             if contract_approved:
                 if "before_bid" in matcher_output["new_bids"]:

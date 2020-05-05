@@ -304,6 +304,8 @@ def run_transaction():
     # renter_id = "r1"
 
     contract = Contracts(contract_id, status, start_time, end_time, cost)
+    print(provider_id)
+    print(renter_id)
     provider = Users.query.filter(Users.user_id == provider_id).one()
     renter = Users.query.filter(Users.user_id == renter_id).one()
 

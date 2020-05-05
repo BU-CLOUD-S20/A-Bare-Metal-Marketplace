@@ -5,6 +5,7 @@ from sqlalchemy.orm import sessionmaker
 sys.path.append("/home/stardust/A-Bare-Metal-Marketplace/database_setup")
 sys.path.append("/home/stardust/A-Bare-Metal-Marketplace/database_setup/Models")
 import database_setup.Models.accountModel as Account
+import database_setup.data as data
 
 engine = create_engine("mysql+pymysql://marketplace:123456@localhost/account")
 
@@ -12,7 +13,7 @@ engine = create_engine("mysql+pymysql://marketplace:123456@localhost/account")
 def user_insert(values):
     Session = sessionmaker(bind=engine)
     session = Session()
-    user = Account.Users(username=values['username'], role=values['role'], credit=values['credit'])
+    user = Account.Users(user_id=values['user_id'], username=values['username'], role=values['role'], credit=values['credit'])
     session.add(user)
     session.commit()
 
@@ -133,4 +134,6 @@ def relation_update_by_id(contract_id, relation):
     session.commit()
 
 
-# if __name__ == "__main__":
+if __name__ == "__main__":
+    for user in data.users:
+        user_insert(user)
