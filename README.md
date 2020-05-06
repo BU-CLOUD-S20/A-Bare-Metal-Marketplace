@@ -64,14 +64,8 @@ GRANT privileges ON *.* TO ‘username’@’localhost’;
 * Create market and account database:
 Create database market;
 Create database account;
-* Go to /database_setup/Models/marketModel and accountModel, use the user you just created in mysql and switch 
-engine = create_engine("mysql+pymysql://username:password@localhost/market")
-To:
-engine = create_engine("mysql+pymysql://username:password@localhost/market")
-* and
-engine = create_engine("mysql+pymysql://username:password@localhost/account")
-To:
-engine = create_engine("mysql+pymysql://username:password@localhost/account")
+* Go to /database_setup/Models/marketModel and accountModel, use the user you just created in mysql and switch engine = create_engine("mysql+pymysql://username:password@localhost/market") with what we had in marketModel.py
+* and switch engine = create_engine("mysql+pymysql://username:password@localhost/account") with what we had in accountModel.py
 * Then run these two files to generate tables for market db and account db
 
 Set up Flask and dependencies for both account and market services:
